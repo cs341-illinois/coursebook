@@ -507,7 +507,7 @@ int main() {
   char *child_stack = malloc(STACK_SIZE);
   // Remember stacks work by growing down, so we need
   // to give the top of the stack
-  char *stack_top = stack + STACK_SIZE;
+  char *stack_top = child_stack + STACK_SIZE;
 
   // clone create thread
   pid_t pid = clone(thread_start, stack_top, SIGCHLD, NULL);
