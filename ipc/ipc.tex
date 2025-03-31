@@ -573,7 +573,7 @@ The maximum size of the buffer is system-dependent; typical values from 4KiB up 
 	 #define MESG "..............................."
 	 while(1) {
 	 printf("%d\n",b);
-	 write(fh[1], MESG, sizeof(MESG))
+	 write(fh[1], MESG, sizeof(MESG));
 	 b+=sizeof(MESG);
 	 }
 	 return 0;
