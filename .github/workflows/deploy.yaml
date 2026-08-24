@@ -5,9 +5,22 @@ on:
     branches:
       - master
 
+# Deploy pushes the wiki, force-pushes epub_deploy and pdf_deploy, and
+# nudges the website repo. Cancelling that halfway through can leave the
+# three deploy targets on different commits, so cancel-in-progress stays
+# FALSE: a second push to master queues behind the first instead of
+# killing it. GitHub keeps at most one run pending per group, so a burst
+# of pushes still collapses to "the run in flight, then the newest one" --
+# the intermediate ones are dropped before they start, which costs
+# nothing and is safe because only the newest commit needs deploying.
+concurrency:
+  group: deploy-master
+  cancel-in-progress: false
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
 
     # Needed so the built-in GITHUB_TOKEN can push the deploy branches
     # and the wiki.
@@ -15,6 +28,10 @@ jobs:
       contents: write
 
     strategy:
+      # WIKI, EPUB and PDF deploy to three independent targets. With
+      # the default fail-fast a WIKI failure cancels the PDF job, so
+      # pdf_deploy silently goes stale even though the PDF was fine.
+      fail-fast: false
       matrix:
         build_focus: [WIKI, EPUB, PDF]
     env:
@@ -31,6 +48,8 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.11'
+        cache: pip
+        cache-dependency-path: requirements.txt
 
     - name: Install
       run: |
