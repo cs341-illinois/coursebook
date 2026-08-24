@@ -32,13 +32,12 @@ cd ${GITHUB_WORKSPACE}
 
 # Part 2, Update the site
 #
-# Disabled. site_deploy.sh pushes an empty commit to a DIFFERENT repo to
-# nudge the website into rebuilding, and the built-in GITHUB_TOKEN is
-# scoped to this repo only, so it cannot do that. Re-enabling it needs a
-# PAT (or a deploy key) in a secret.
-#
-# It also still names illinois-cs241/illinois-cs241.github.io, which is
-# two renames stale - the site now lives at
-# cs341-illinois/cs341-illinois.github.io - so that URL needs updating
-# before this is switched back on.
-# bash _scripts/site_deploy.sh
+# site_deploy.sh pushes an empty commit to the website repo to trigger a
+# rebuild there. That needs the SITE_DEPLOY_KEY deploy key, which the
+# workflow writes to /tmp/deploy_site. Skip rather than fail when it is
+# absent, so forks and any run without the secret still succeed.
+if [ -f /tmp/deploy_site ]; then
+    bash _scripts/site_deploy.sh
+else
+    echo "Skipping site deploy: /tmp/deploy_site is not present"
+fi

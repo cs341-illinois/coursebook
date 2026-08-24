@@ -43,6 +43,7 @@ jobs:
     - name: Deploy site
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SITE_DEPLOY_KEY: ${{ secrets.SITE_DEPLOY_KEY }}
       run: |
         # https://github.community/t/github-actions-bot-email-address/17204/6
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -66,5 +67,20 @@ jobs:
         # eval "$(ssh-agent -s)"
         # chmod 600 /tmp/deploy_site
         # chmod 600 /tmp/deploy_wiki
+
+        # Install the website deploy key so site_deploy.sh can nudge the
+        # site into rebuilding. GITHUB_TOKEN cannot do this: it is scoped
+        # to this repo, and pushes made with it deliberately do not
+        # trigger workflows. A deploy key has no expiry and is exempt
+        # from the org's SAML SSO. If the secret is absent (a fork, say)
+        # the site deploy is skipped rather than failing the run.
+        if [ -n "$SITE_DEPLOY_KEY" ]; then
+          mkdir -p ~/.ssh
+          ssh-keyscan github.com >> ~/.ssh/known_hosts 2>/dev/null
+          printf '%s\n' "$SITE_DEPLOY_KEY" > /tmp/deploy_site
+          chmod 600 /tmp/deploy_site
+        else
+          echo "SITE_DEPLOY_KEY not set - the site deploy will be skipped"
+        fi
 
         bash _scripts/deploy.sh
