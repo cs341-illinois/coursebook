@@ -345,7 +345,7 @@ The system is about to deadlock, but the approach resolves it.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.9\textwidth]{deadlock/drawings/dining_stalling.eps}
-	\caption{Stalling solution almost deadlock}
+	\caption{Stallings solution almost deadlock}
 \end{figure}
 
 
@@ -379,7 +379,7 @@ This prioritizes philosophers that have already eaten but can be made fairer by 
 	Since no other blockers, the philosopher previous $p_{n-3}$ will grab her first lock.
 	This is now a reduction to the previous proof of Stallings because we now have $n$ resources but only $n-1$ philosophers, meaning this cannot deadlock.
 	
-	If the philosopher doesn't obtain that first lock, then we have a reduction to Stalling's proof above because we now have $n-1$ philosophers vying for $n$ resources.
+	If the philosopher doesn't obtain that first lock, then we have a reduction to Stallings' proof above because we now have $n-1$ philosophers vying for $n$ resources.
 	Since we can't reach deadlock in either case, this solution cannot deadlock which is what we needed to show.
 	
 \end{proof}
@@ -387,7 +387,7 @@ This prioritizes philosophers that have already eaten but can be made fairer by 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.9\textwidth]{deadlock/drawings/dining_partial.eps}
-	\caption{Stalling solution partial deadlock}
+	\caption{Stallings solution partial deadlock}
 \end{figure}
 
 There are a few other solutions (clean/dirty forks and the actor model) in the appendix.

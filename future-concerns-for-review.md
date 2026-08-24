@@ -62,6 +62,26 @@ a broken chapter fails the build instead of shipping quietly.
 Decide whether each should be wired in or deleted; leaving unreferenced
 sources invites edits that silently do nothing.
 
+### The POSIX signals table is rendering broken in the published PDF
+
+`signals/signals.tex:70` declares `\begin{tabular}{|c|c|c|}` — three columns —
+but every row supplies four cells. That is a fatal "Extra alignment tab"
+error, swallowed by the build suppression described above.
+
+Confirmed consequence: on **page 307 of the published PDF** the fourth column
+breaks onto its own line for every row:
+
+```
+Name Portable Number Default Action
+Usual Use
+SIGINT 2 T erminate (Can be caught)
+Stop a process nicely
+```
+
+Fixed in the accompanying commit (declared four columns). Listed here because
+it is the third confirmed instance of a real LaTeX error surviving into the
+published book, which is the strongest argument for tightening the build.
+
 ### `honors/containers.tex` has three empty subsections
 
 "Linux Namespaces", "Building a container from scratch" and "Containers in
@@ -425,8 +445,13 @@ diagram in particular carries information not present in its caption).
 ### malloc/malloc.tex:83 — "these limitations" has no antecedent
 "An advanced discussion of these limitations is \href{...}{in this article}." The preceding sentence describes what `calloc` does; no limitations have been mentioned yet. A student cannot tell what limitations are meant. Also the linked host (locklessinc.com) may be dead — worth checking.
 
-### malloc/malloc.tex:85 — "calloc(x,y) is identical to calloc(y,x)"
-This is a technical claim. It is true of the resulting allocation size, but not of intent/readability, and it is not true in general once overflow checking is considered (`n * size` overflow behavior is symmetric, but glibc's zeroing heuristics are size-driven). Left untouched; a human should decide whether to qualify it.
+### ~~malloc/malloc.tex:85 — "calloc(x,y) is identical to calloc(y,x)"~~ WITHDRAWN — false positive
+This item was raised and then **withdrawn on review**. The original claim
+argued the book's statement was unsafe "once overflow checking is
+considered", while simultaneously conceding that `n * size` overflow is
+symmetric — which is self-contradictory. Multiplication is commutative, so
+`calloc(x,y)` and `calloc(y,x)` request the same size and overflow at
+exactly the same point. **The book is correct as written.** No action needed.
 
 ### malloc/malloc.tex:211 vs figure caption — "perfect-fit" vs "Best fit"
 Prose says "A perfect-fit strategy finds the smallest hole"; the figure caption immediately below says "Best fit finds an exact match", and the rest of the chapter (and the Topics list) uses "Best Fit". Terminology inconsistency that could confuse a student; renaming is an editorial call.
