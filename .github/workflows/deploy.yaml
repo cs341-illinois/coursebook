@@ -9,6 +9,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    # Needed so the built-in GITHUB_TOKEN can push the deploy branches
+    # and the wiki.
+    permissions:
+      contents: write
+
     strategy:
       matrix:
         build_focus: [WIKI, EPUB, PDF]
@@ -36,6 +41,8 @@ jobs:
         bash _scripts/script.sh
 
     - name: Deploy site
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         # https://github.community/t/github-actions-bot-email-address/17204/6
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -44,13 +51,20 @@ jobs:
         export COMMITTER_EMAIL="github-actions@github.com"
         export AUTHOR_NAME="Github Actions"
 
+        # The encrypted deploy keys below no longer authenticate: the repo
+        # has no deploy keys registered at all, so every push failed with
+        # "git@github.com: Permission denied (publickey)". They were most
+        # likely dropped when the org was renamed illinois-cs241 ->
+        # cs341-illinois. We now push with the built-in GITHUB_TOKEN
+        # instead, which needs no secret to rotate and survives renames.
+        #
         # Needed to add the --no-tty --batch --yes flags to get gpg to work in Github Actions
         # Based on this: https://discuss.circleci.com/t/error-sending-to-agent-inappropriate-ioctl-for-device/17465/3
-        gpg --no-tty --batch --yes --passphrase ${{ secrets.GPG_PASSPHRASE }} --output /tmp/deploy_site --decrypt site-deploy.enc
-        gpg --no-tty --batch --yes --passphrase ${{ secrets.GPG_PASSPHRASE }} --output /tmp/deploy_wiki --decrypt wiki-deploy.enc
-
-        eval "$(ssh-agent -s)"
-        chmod 600 /tmp/deploy_site
-        chmod 600 /tmp/deploy_wiki
+        # gpg --no-tty --batch --yes --passphrase ${{ secrets.GPG_PASSPHRASE }} --output /tmp/deploy_site --decrypt site-deploy.enc
+        # gpg --no-tty --batch --yes --passphrase ${{ secrets.GPG_PASSPHRASE }} --output /tmp/deploy_wiki --decrypt wiki-deploy.enc
+        #
+        # eval "$(ssh-agent -s)"
+        # chmod 600 /tmp/deploy_site
+        # chmod 600 /tmp/deploy_wiki
 
         bash _scripts/deploy.sh
