@@ -20,6 +20,10 @@ import requests
 
 link_cache_days = 30
 
+# Per-request timeout for the link check. Without this a host that
+# blackholes connections stalls the build for minutes.
+link_timeout_seconds = 15
+
 # Metadata gleaned from the file
 meta = dict(
     name="",
@@ -129,10 +133,21 @@ def output_yaml(elem, doc):
                 raise BadLinkException(url)
 
             print('Requesting url "{}"'.format(url), file=sys.stderr)
-            # Ping the image
-            head = requests.head(url)
-            if head.status_code < 200 and head.status_code > 299:
-                raise BadLinkException(url)
+            # Ping the image. A link we cannot reach is reported but is not
+            # fatal: the build machine's connectivity is not a property of
+            # the book. GitHub runners have no IPv6 route, for example, so
+            # any host with an AAAA record (www.gnu.org) raises
+            # "[Errno 101] Network is unreachable" even though it is fine.
+            try:
+                head = requests.head(url, timeout=link_timeout_seconds)
+            except requests.exceptions.RequestException as e:
+                print('WARNING: could not reach "{}": {}'.format(url, e),
+                      file=sys.stderr)
+                return elem
+
+            if not (200 <= head.status_code <= 299):
+                print('WARNING: url "{}" returned status {}'.format(
+                    url, head.status_code), file=sys.stderr)
 
             # Otherwise reset the cache
             link_cache[url] = datetime.datetime.now().isoformat()
