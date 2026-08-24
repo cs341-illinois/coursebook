@@ -438,7 +438,7 @@ int s = (requested_bytes + tag_overhead_bytes + 15) / 16
 \end{lstlisting}
 
 The additional constant ensures incomplete units are rounded up. Note, real code is more likely to symbol sizes e.g. \keyword{sizeof(x)\ -\ 1}, rather than coding numerical constant 15.
-\href{http://www.ibm.com/developerworks/library/pa-dalign/}{Here's a great article on memory alignment, if you are further interested}
+\href{https://web.archive.org/web/20190313121701/https://www.ibm.com/developerworks/library/pa-dalign/}{Here's a great article on memory alignment, if you are further interested}
 
 Another added effect could be internal fragmentation happens when the given block is larger than their allocation size.
 Let's say that we have a free block of size 16B (not including metadata).
