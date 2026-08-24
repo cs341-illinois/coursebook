@@ -19,14 +19,13 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v4
 
-    # Python 3.7 has no build for ubuntu-24.04 (which ubuntu-latest now
-    # points at), so setup-python could not find it. 3.9 is the newest
-    # release that still works with the pinned panflute 1.10.6, which
-    # imports MutableSequence from collections (removed in 3.10).
+    # Python 3.7 has no build for ubuntu-24.04 or 26.04, so setup-python
+    # could not find it. 3.11 has builds for 22.04, 24.04 and 26.04, and
+    # works with panflute 1.12.5, which still targets pandoc 2.7's AST.
     - name: Setup python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.9'
+        python-version: '3.11'
 
     - name: Install
       run: |
