@@ -1,4 +1,4 @@
-panflute==1.10.6
+panflute==1.12.5
 PyYAML>=4.2b1
 Jinja2>=2.10.1
 requests==2.32.2

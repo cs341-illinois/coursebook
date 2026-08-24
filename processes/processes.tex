@@ -114,7 +114,7 @@ Each process gets the following.
 The stack is the place where automatically allocated variables and function call return addresses are stored.
 Every time a new variable is declared, the program moves the stack pointer down to reserve space for the variable.
 This segment of the stack is writable but not executable.
-This behavior is controlled by the no-execute (NX) bit, sometimes called the W\^X (write XOR execute) bit, which helps prevent malicious code, such as \keyword{shellcode} from being run on the stack.
+This behavior is controlled by the no-execute (NX) bit, sometimes called the W\^{}X (write XOR execute) bit, which helps prevent malicious code, such as \keyword{shellcode} from being run on the stack.
 
 If the stack grows too far -- meaning that it either grows beyond a preset boundary or intersects the heap -- the program will stack overflow error, most likely resulting in a SEGFAULT.
 \textbf{The stack is statically allocated by default; there is only a certain amount of space to which one can write.}
@@ -170,7 +170,7 @@ int assumed_to_be_zero;
 This is where all executable instructions are stored, and is readable (function pointers) but not writable.
 The program counter moves through this segment executing instructions one after the other.
 It is important to note that this is the only executable section of the program, by default.
-If a program's code while it's running, the program most likely will SEGFAULT.
+If a program's code is modified while it's running, the program most likely will SEGFAULT.
 There are ways around it, but we will not be exploring these in this course.
 Why doesn't it always start at zero?
 This is because of a security feature called \href{https://en.wikipedia.org/wiki/Address_space_layout_randomization}{address space layout randomization}.
@@ -201,7 +201,7 @@ Processes could also contain the following information:
     \item \textbf{File Descriptors} - A list of mappings from integers to real devices (files, USB flash drives, sockets)
     \item \textbf{Permissions} - What \keyword{user} the file is running on and what \keyword{group} the process belongs to.
           The process can then only perform operations based on the permissions given to the \keyword{user} or \keyword{group}, such as accessing files.
-          There are tricks to make a program take a different user than who started the program i.e. \keyword{sudo} takes a program that a \keyword{user} starts and executes it as \keyword{root}.
+          There are tricks to make a program take a different user than who started the program (e.g., \keyword{sudo} takes a program that a \keyword{user} starts and executes it as \keyword{root}).
           More specifically, a process has a real user ID (identifies the owner of the process), an effective user ID (used for non-privileged users trying to access files only accessible by superusers), and a saved user ID (used when privileged users perform non-privileged actions).
     \item \textbf{Arguments} - a list of strings that tell your program what parameters to run under.
     \item \textbf{Environment Variables} - a list of key-value pair strings in the form \keyword{NAME=VALUE} that one can modify. These are often used to specify paths to libraries and binaries, program configuration settings, etc.
@@ -215,7 +215,7 @@ According to the POSIX specification, a process only needs a thread and address 
 
 Process forking is a powerful and dangerous tool.
 If you make a mistake resulting in a fork bomb, \textbf{you can bring down an entire system}.
-To reduce the chances of this, limit your maximum number of processes to a small number e.g. 40 by typing \keyword{ulimit\ -u\ 40} into a command line.
+To reduce the chances of this, limit your maximum number of processes to a small number e.g. 1024 by typing \keyword{ulimit\ -u\ 1024} into a command line.
 Note, this limit is only for the user, which means if you fork bomb, then you won't be able to kill all created process since calling \keyword{killall} requires your shell to \keyword{fork()}.
 Quite unfortunate.
 One solution is to spawn another shell instance as another user (for example root) beforehand and kill processes from there.
@@ -444,7 +444,7 @@ Here is a summary of what is relevant:
 \begin{enumerate}
     \item Fork will return a non-negative integer on success.
     \item A child will inherit any open file descriptors of the parent.
-          That means if a parent half of the file and forks, the child will start at that offset.
+          That means if a parent reads half of the file and forks, the child will start at that offset.
           A read on the child's end will shift the parent's offset by the same amount.
           Any other flags are also carried over.
     \item Pending signals are not inherited.
@@ -628,7 +628,7 @@ Exit statuses or the value stored in the integer pointer for both of the calls a
 
 \subsection{Exit statuses}
 
-To find the return value of \keyword{main()} or value included in \keyword{exit()}), Use the \keyword{Wait macros} - typically a program will use \keyword{WIFEXITED} and \keyword{WEXITSTATUS} .
+To find the return value of \keyword{main()} or value included in \keyword{exit()} from a child process, use the \keyword{Wait macros}. Typically, a program will use \keyword{WIFEXITED} and \keyword{WEXITSTATUS}.
 See \keyword{wait}/\keyword{waitpid} man page for more information.
 
 \begin{lstlisting}[language=C]
@@ -745,7 +745,7 @@ void cleanup(int signal) {
 
 \section{exec}
 
-To make the child process execute another program, use one of the \href{http://man7.org/linux/man-pages/man3/exec.3.html}{\keyword{exec}} functions after forking.
+To make the child process execute another program, use one of the \keyword{exec} functions after forking.
 The \keyword{exec} set of functions replaces the process image with that of the specified program.
 This means that any lines of code after the \keyword{exec} call are replaced with those of the executed program.
 Any other work a program wants the child process to do should be done before the \keyword{exec} call.
@@ -813,9 +813,9 @@ The example writes "Captain's Log" to a file then prints everything in /usr/incl
 There's no error checking in the above code (we assume close, open, chdir etc. work as expected).
 
 \begin{enumerate}
-    \item \keyword{open} -- will use the lowest available file descriptor (i.e. 1) ; so standard out(stdout) is now redirected to the log file.
-    \item \keyword{chdir} -- Change the current directory to /usr/include
-    \item \keyword{execl} -- Replace the program image with /bin/ls and call its main() method
+    \item \keyword{open} -- will use the lowest available file descriptor (i.e. 1), so standard out (stdout) is now redirected to the log file.
+    \item \keyword{chdir} -- Change the current directory to /usr/include.
+    \item \keyword{execl} -- Replace the program image with /bin/ls and call its main() method.
     \item \keyword{perror} -- We don't expect to get here - if we did then \keyword{exec} failed.
     \item We need the "return 0;" because compilers complain if we don't have it.
 \end{enumerate}
@@ -823,17 +823,17 @@ There's no error checking in the above code (we assume close, open, chdir etc. w
 \subsection{POSIX Exec Details}
 
 POSIX details all of the semantics that exec needs to cover \cite{exec_2018}.
-Note the following
+Note the following:
 
 \begin{enumerate}
 \item File descriptors are preserved after an exec. That means if a program open a file and doesn't to close it, it remains open in the child.
   This is a problem because usually the child doesn't know about those file descriptors. Nevertheless, they take up a slot in the file descriptor table and could possibly prevent other processes from accessing the file.
   The one exception to this is if the file descriptor has the Close-On-Exec flag set (O\_CLOEXEC) -- we will go over setting flags later.
-\item Various signal semantics. The executed processes preserve the signal mask and the pending signal set but does not preserve the signal handlers since it is a different program.
-\item Environment variables are preserved unless using an environ version of exec
-\item The operating system may open up 0, 1, 2 -- stdin, stdout, stderr, if they are closed after exec, most of the time they leave them closed.
+\item Various signal semantics: the executed processes preserve the signal mask and the pending signal set but do not preserve the signal handlers since it is a different program.
+\item Environment variables are preserved unless using an environ version of exec.
+\item The operating system may open up 0, 1, 2 -- stdin, stdout, stderr, if they are closed after exec; most of the time they leave them closed.
 \item The executed process runs as the same PID and has the same parent and process group as the previous process.
-\item The executed process is run on the same user and group with the same working directory
+\item The executed process is run on the same user and group with the same working directory.
 \end{enumerate}
 
 \subsection{Shortcuts}
@@ -882,7 +882,7 @@ Meanwhile, the parent uses \keyword{wait} (or \keyword{waitpid}) to wait for the
 \caption{Fork, exec, wait diagram}
 \end{figure}
 
-\begin{lstlisting}[language=C][language=C]
+\begin{lstlisting}[language=C]
 #include <unistd.h>
 
 int main() {
@@ -907,7 +907,7 @@ It can proceed and execute another function, or it can also modify the state of 
 
 Environment variables are variables that the system keeps for all processes to use.
 Your system has these set up right now!
-In Bash, some are already defined
+In Bash, some are already defined.
 
 \begin{lstlisting}[language=bash]
 $ echo $HOME

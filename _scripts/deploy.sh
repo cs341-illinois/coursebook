@@ -27,8 +27,8 @@ else
     # Grab an orphaned branch, so git doesn't calculate diffs
     git checkout --orphan $BRANCH;
 
-    # Set up ssh 
-    git config --global core.sshCommand "ssh -i /tmp/deploy_wiki -F /dev/null";
+    # Set up ssh
+    # git config --global core.sshCommand "ssh -i /tmp/deploy_wiki -F /dev/null";
 
 
     # Remove all other files, we won't need them
@@ -42,9 +42,10 @@ else
     git add -A;
     git commit -m "Adding build on $(date)" --author "$COMMITTER_EMAIL <$AUTHOR_NAME>" || true
 
-    # Swap the https origin for the ssh origin so we can push
+    # Push over https with the built-in GITHUB_TOKEN. Actions masks the
+    # token in the log, and it is scoped to this repo only.
     OLD_ORIGIN=`git remote get-url origin`;
-    git remote set-url origin git@github.com:${GITHUB_REPOSITORY}.git;
+    git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git";
     git push origin --force $BRANCH;
 
     # Swap it back

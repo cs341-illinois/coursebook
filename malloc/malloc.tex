@@ -24,7 +24,7 @@ If \keyword{malloc} can either return a pointer to at least that much free space
 That means that malloc can return NULL even if there is some space.
 Robust programs should check the return value.
 If your code assumes \keyword{malloc} succeeds, and it does not, then your program will likely crash (segfault) when it tries to write to address 0.
-Also, malloc leaves garbage in memory because of performance -- check your code to make sure that a program all program values are initialized.
+Also, malloc leaves garbage in memory because of performance -- check your code to make sure that all program values are initialized.
 
 \item \keyword{realloc(void *space, size\_t bytes)} allows a program to resize an existing memory allocation that was previously allocated on the heap (via malloc, calloc, or realloc) \cite[P. 349]{jones2010wg14}.
 The most common use of realloc is to resize memory used to hold an array of values.
@@ -438,7 +438,7 @@ int s = (requested_bytes + tag_overhead_bytes + 15) / 16
 \end{lstlisting}
 
 The additional constant ensures incomplete units are rounded up. Note, real code is more likely to symbol sizes e.g. \keyword{sizeof(x)\ -\ 1}, rather than coding numerical constant 15.
-\href{http://www.ibm.com/developerworks/library/pa-dalign/}{Here's a great article on memory alignment, if you are further interested}
+\href{https://web.archive.org/web/20190313121701/https://www.ibm.com/developerworks/library/pa-dalign/}{Here's a great article on memory alignment, if you are further interested}
 
 Another added effect could be internal fragmentation happens when the given block is larger than their allocation size.
 Let's say that we have a free block of size 16B (not including metadata).

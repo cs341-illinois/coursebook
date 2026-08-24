@@ -14,18 +14,18 @@ But in some cases, notably python uses this, multiprocessing is the way to make 
 
 \section{Processes vs threads}
 
-Creating separate processes is useful when
+Creating separate processes is useful when:
 
 \begin{itemize}
 \item When more security is desired. For example, Chrome browser uses different processes for different tabs.
-\item When running an existing and complete program then a new process is required, for example starting `gcc'.
+\item When running an existing and complete program then a new process is required, for example starting `gcc`.
 \item When you are running into synchronization primitives and each process is operating on something in the system.
 \item When you have too many threads -- the kernel tries to schedule all the threads near each other which could cause more harm than good.
 \item When you don't want to worry about race conditions
 \item When the amount of communication is minimal enough that simple IPC needs to be used.
 \end{itemize}
 
-On the other hand, creating threads is more useful when
+On the other hand, creating threads is more useful when:
 \begin{itemize}
 \item You want to leverage the power of a multi-core system to do one task
 \item When you can't deal with the overhead of processes
@@ -124,11 +124,10 @@ We do ignore that often, though.
 
 \section{Pthread Functions}
 
-Here are some common pthread functions.
+Here are some common pthread functions:
 
 \begin{itemize}
-\item \keyword{pthread\_create}.
-Creates a new thread.
+\item \keyword{pthread\_create} creates a new thread.
 Every thread gets a new stack.
 If a program calls \keyword{pthread\_create} twice, Your process will contain three stacks - one for each thread.
 The first thread is created when the process start, the other two after the create.
@@ -185,7 +184,7 @@ return 42;
 \end{itemize}
 
 There are many ways to exit threads.
-Here is a non-complete list.
+Here is a non-complete list:
 
 \begin{itemize}
 \item Returning from the thread function
@@ -442,7 +441,7 @@ One, once the array gets small enough, we ditch the Parallel Merge Sort algorith
 The other thing that we know is that CPUs don't have infinite cores.
 To get around that, we typically keep a worker pool.
 You won't see the speedup right away because of things like cache coherency and scheduling extra threads.
-Over the bigger pieces of code though, you will start to see speedups.
+Over the bigger pieces of code, though, you will start to see speedups.
 
 Another embarrassingly parallel problem is parallel map.
 Say we want to apply a function to an entire array, one element at a time.
@@ -488,8 +487,8 @@ From \href{https://en.wikipedia.org/wiki/Embarrassingly_parallel}{Wikipedia}
 
 In the beginning of the chapter, we mentioned that threads are processes.
 What do we mean by that?
-You can create a thread like a process
-Take a look at the example code below
+You can create a thread like a process.
+Take a look at the example code below.
 
 \begin{lstlisting}[language=C]
 
@@ -543,7 +542,7 @@ You have to be careful and research edge cases.
 
 \subsection{Further Reading}
 
-Guiding questions
+Guiding questions:
 
 \begin{itemize}
 \item What is the first argument to pthread create?
