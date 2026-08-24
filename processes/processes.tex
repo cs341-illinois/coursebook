@@ -215,7 +215,7 @@ According to the POSIX specification, a process only needs a thread and address 
 
 Process forking is a powerful and dangerous tool.
 If you make a mistake resulting in a fork bomb, \textbf{you can bring down an entire system}.
-To reduce the chances of this, limit your maximum number of processes to a small number e.g. 40 by typing \keyword{ulimit\ -u\ 40} into a command line.
+To reduce the chances of this, limit your maximum number of processes to a small number e.g. 1024 by typing \keyword{ulimit\ -u\ 1024} into a command line.
 Note, this limit is only for the user, which means if you fork bomb, then you won't be able to kill all created process since calling \keyword{killall} requires your shell to \keyword{fork()}.
 Quite unfortunate.
 One solution is to spawn another shell instance as another user (for example root) beforehand and kill processes from there.
