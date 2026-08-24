@@ -17,13 +17,16 @@ jobs:
 
     steps:
     - name: Checkout repo
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Setup python (3.7.17)
-      uses: actions/setup-python@v2
+    # Python 3.7 has no build for ubuntu-24.04 (which ubuntu-latest now
+    # points at), so setup-python could not find it. 3.9 is the newest
+    # release that still works with the pinned panflute 1.10.6, which
+    # imports MutableSequence from collections (removed in 3.10).
+    - name: Setup python
+      uses: actions/setup-python@v5
       with:
-        python-version: 3.7.17
-         #3.6.15
+        python-version: '3.9'
 
     - name: Install
       run: |
