@@ -57,7 +57,7 @@ We will do this in the book and in the Networking chapter for the sake of consis
 \textbf{Confusingly in the real world, there is a different convention.}
 That convention is that when a file is displayed in the operating system, \textbf{KB is the same as KiB}.
 When we are talking about computer networks, CDs, other storage \textbf{KB is not the same as KiB} and is the ISO / Metric Definition above.
-This is a historical quirk was brought by a clash between network developers and memory/hard storage developers.
+This is a historical quirk that was brought about by a clash between network developers and memory/hard storage developers.
 Hard storage and memory developers found that if a bit could take one of two states, it would be natural to call a Kilo- prefix 1024 because it was about 1000.
 Network developers had to deal with bits, real-time signal processing, and various other factors, so they went with the already accepted convention that Kilo- means 1000 of something \cite{iec}.
 What you need to know is if you see KB in the wild, that it may be 1024 based on the context.
@@ -146,7 +146,7 @@ It may seem overwhelming, but by the end of this chapter, we will be able to mak
 
 To reason about data on some form of storage -- spinning disks, solid state drives, magnetic tape -- it is common practice to first consider the medium of storage as a collection of \emph{blocks}.
 A block can be thought of as a contiguous region on disk.
-While its size is sometimes determined by some property of the underlying hardware, it is more frequently determined based on the size of a page of memory for a given system, so that data from the disk can be cached in memory for faster access -- a important feature of many filesystems.
+While its size is sometimes determined by some property of the underlying hardware, it is more frequently determined based on the size of a page of memory for a given system, so that data from the disk can be cached in memory for faster access -- an important feature of many filesystems.
 
 A filesystem has a special block denoted as a \emph{superblock} that stores metadata about the filesystem such as a journal (which logs changes to the filesystem), a table of inodes, the location of the first inode on disk, etc.
 The important thing about a superblock is that it is in a known location on disk.
@@ -213,16 +213,16 @@ Except for the problem of too many layers of indirection.
 To solve this problem, we introduce \keyword{indirect blocks}.
 A single indirect block is a block that stores pointers to more data blocks.
 Similarly, a double indirect block stores pointers to single indirect blocks, and the concept can be generalized to arbitrary levels of indirection.
-This is a important concept, as inodes are stored in the superblock, or some other structure in a well known location with a constant amount of space, indirection allows exponential increases in the amount of space an inode can keep track of.
+This is an important concept, as inodes are stored in the superblock, or some other structure in a well known location with a constant amount of space, indirection allows exponential increases in the amount of space an inode can keep track of.
 
 As a worked example, suppose we divide the disk into 4KiB blocks and we want to address up to $2^{32}$ blocks.
 The maximum disk size is $4KiB *2^{32} = 16TiB$ remember $2^{10} = 1024$.
 A disk block can store $\frac{4KiB}{4B}$ possible pointers or 1024 pointers.
 Four byte wide pointers are needed because we want to address 32 bits worth of blocks.
-Each pointer refers to a 4KiB disk block, so you can refer up to $1024*4KiB = 4MiB$ of data.
+Each pointer refers to a 4KiB disk block, so you can refer to up to $1024*4KiB = 4MiB$ of data.
 For the same disk configuration, a double indirect block stores 1024 pointers to 1024 indirection tables.
-Thus a double-indirect block can refer up to $1024 * 4MiB = 4GiB$ of data.
-Similarly, a triple indirect block can refer up to 4TiB of data.
+Thus a double-indirect block can refer to up to $1024 * 4MiB = 4GiB$ of data.
+Similarly, a triple indirect block can refer to up to 4TiB of data.
 This is three times as slow for reading between blocks, due to increased levels of indirection.
 The actual intra-block reading times don't change.
 
@@ -232,7 +232,7 @@ A directory is a mapping of names to inode numbers.
 It is typically a normal file, but with some special bits set in its inode and a specific structure for its contents.
 POSIX provides a small set of functions to read the filename and inode number for each entry, which we will talk about in depth later in this chapter.
 
-Let's think about what directories looks like in the actual file system.
+Let's think about what directories look like in the actual file system.
 Theoretically, they are files.
 The disk blocks will contain \emph{directory entries} or \emph{dirents}.
 What that means is that our disk block can look like this
@@ -264,7 +264,7 @@ In standard UNIX filesystems, the following entries are specially added on reque
 \end{enumerate}
 
 Counterintuitively, \keyword{...} could be the name of a file or directory on disk (You can try this with \keyword{mkdir ...}), not the grandparent directory.
-Only the current directory and the parent directory have special aliases involving \keyword{.} (namely , \keyword{.} and \keyword{..}).
+Only the current directory and the parent directory have special aliases involving \keyword{.} (namely, \keyword{.} and \keyword{..}).
 Confusingly, the shell \keyword{zsh} does interpret \keyword{...} as a handy shortcut to the grandparent directory (should it exist) while expanding shell commands.
 
 Additional facts about name-related conventions:
@@ -282,7 +282,7 @@ Additional facts about name-related conventions:
 
 \subsection{Directory API}
 
-While interacting with a file in C is typically done by using \keyword{open} to open the file and then \keyword{read} or \keyword{write} to interact with the file before calling \keyword{close} to release resources, directories have special calls such as, \keyword{opendir}, \keyword{closedir} and \keyword{readdir}.
+While interacting with a file in C is typically done by using \keyword{open} to open the file and then \keyword{read} or \keyword{write} to interact with the file before calling \keyword{close} to release resources, directories have special calls such as \keyword{opendir}, \keyword{closedir} and \keyword{readdir}.
 There is no function \keyword{writedir} since typically that implies creating a file or link.
 The program would use something like \keyword{open} or \keyword{mkdir}.
 
@@ -321,7 +321,7 @@ If both the parent and the child use the above, the behavior is undefined.
 
 There are two main gotchas and one consideration.
 The \keyword{readdir} function returns ``.'' (current directory) and ``..'' (parent directory).
-The other is programs need to explicity exclude subdirectories from a search, otherwise the search may take a long time.
+The other is programs need to explicitly exclude subdirectories from a search, otherwise the search may take a long time.
 
 For many applications, it's reasonable to check the current directory first before recursively searching sub-directories.
 This can be achieved by storing the results in a linked list, or resetting the directory struct to restart from the beginning.
@@ -464,9 +464,9 @@ symlink(const char *target, const char *symlink);
                 \item Can refer to files (and directories) that exist outside of the current file system
         \end{itemize}
 
-        However, symlinks have a key disadvantage, they as slower than regular files and directories.
+        However, symlinks have a key disadvantage, they are slower than regular files and directories.
         When the link's contents are read, they must be interpreted as a new path to the target file, resulting in an additional call to open and read since the real file must be opened and read.
-        Another disadvantage is that POSIX forbids hard linking directories where as soft links are allowed.
+        Another disadvantage is that POSIX forbids hard linking directories whereas soft links are allowed.
         The \keyword{ln} command will only allow root to do this and only if you provide the \keyword{-d} option.
         However, even root may not be able to perform this because most filesystems prevent it!
 \end{enumerate}
@@ -498,7 +498,7 @@ Since \keyword{..} and \keyword{.} are special entries in directories, this is a
 Most filesystem functions will allow uncompressed paths to be passed in.
 The C library provides a function \keyword{realpath} to compress the path or get the absolute path.
 To simplify by hand, remember that \keyword{..} means `parent folder' and that \keyword{.} means `current folder'.
-Below is an example that illustrates the simplification of the \texttt{a/b/../c/.} by using \keyword{cd} in a shell to navigate a filesystem.
+Below is an example that illustrates the simplification of the path \texttt{a/b/../c/.} by using \keyword{cd} in a shell to navigate a filesystem.
 
 \begin{enumerate}
   \item \keyword{cd a} (in a)
@@ -527,7 +527,7 @@ stat("notes.txt", &s);
 printf("Last accessed %s", ctime(&s.st_atime));
 \end{lstlisting}
 
-There are actually three versions of \keyword{stat};
+There are actually three versions of \keyword{stat}:
 
 \begin{lstlisting}[language=C]
 int stat(const char *path, struct stat *buf);
@@ -594,7 +594,7 @@ You may have noticed that the \keyword{st\_mode} field in \keyword{struct stat} 
 It also contains the mode, a description detailing what a user can and can't do with a given file.
 There are usually three sets of permissions for any file.
 Permissions for the \emph{user}, the \emph{group} and \emph{other} (every user falling outside the first two categories).
-For each of the three categories, we need to keep track of whetherthe user is allowed to read the file, write to the file, and execute the file.
+For each of the three categories, we need to keep track of whether the user is allowed to read the file, write to the file, and execute the file.
 Since there are three categories and three permissions, permissions are usually represented as a 3-digit octal number.
 For each digit, the least significant byte corresponds to read privileges, the middle one to write privileges and the final byte to execute privileges.
 They are always presented as \emph{User}, \emph{Group}, \emph{Other} (\emph{UGO}).
@@ -619,12 +619,12 @@ Here are the bit conventions:
 \end{center}
 
 It is worth noting that the \keyword{rwx} bits have a slightly different meaning for directories.
-Write access to a directory that will allow a program to create or delete new files or directories inside.
+Write access to a directory will allow a program to create or delete new files or directories inside.
 You can think about this as having write access to the directory entry (dirent) mappings.
 Read-access to a directory will allow a program to list a directory's contents.
 This is read access to the directory entry (dirent) mapping.
 Execute will allow a program to enter the directory using cd.
-Without the execute bit, it any attempt create or remove files or directories will fail since you cannot access them.
+Without the execute bit, any attempt to create or remove files or directories will fail since you cannot access them.
 You can, however, list the contents of the directory.
 
 There are several command line utilities for interacting with a file's mode.
@@ -641,12 +641,12 @@ Groups have a variety of uses on UNIX systems.
 They can be assigned capabilities - a way of describing the level of control a user has over a system.
 For example, a group you may have run into is the \keyword{sudoers} group, a set of trusted users who are allowed to use the command \keyword{sudo} to temporarily gain higher privileges.
 We'll talk more about how \keyword{sudo} works in this chapter.
-Every file, upon creation, an owner, the creator of the file.
+Every file, upon creation, has an owner, the creator of the file.
 This owner's user ID (\keyword{uid}) can be found inside the \keyword{st\_mode} file of a \keyword{struct stat} with a call to \keyword{stat}.
 Similarly, the group ID (\keyword{gid}) is set as well.
 
 Every process can determine its \keyword{uid} and \keyword{gid} with \keyword{getuid} and \keyword{getgid}.
-When a process tries to open a file with a specific mode, it's \keyword{uid} and \keyword{gid} are compared with the \keyword{uid} and \keyword{gid} of the file.
+When a process tries to open a file with a specific mode, its \keyword{uid} and \keyword{gid} are compared with the \keyword{uid} and \keyword{gid} of the file.
 If the \keyword{uid}s match, then the process's request to open the file will be compared with the bits on the user field of the file's permissions.
 If the \keyword{gid}s match, then the process's request will be compared with the group field of the permissions.
 If none of the IDs match, then the other field will apply.
@@ -657,8 +657,8 @@ Before we discuss how to change permission bits, we should be able to read them.
 In C, the \keyword{stat} family of library calls can be used.
 To read permission bits from the command line, use \keyword{ls -l}.
 Note, the permissions will output in the format `trwxrwxrwx'.
-The first character indicates the type of file type.
-Possible values for the first character include but aren't limited to.
+The first character indicates the file type.
+Possible values for the first character include but aren't limited to:
 
 \begin{enumerate}
     \item (-) regular file
@@ -673,7 +673,7 @@ Possible values for the first character include but aren't limited to.
 Alternatively, use the program \keyword{stat} which presents all the information that one could retrieve from the \keyword{stat} library call.
 
 To change the permission bits, there is a system call, \keyword{int chmod(const char *path, mode\_t mode);}.
-To simplify our examples, we will be using the command line utility of the same name \keyword{chmod} short of ``change mode''.
+To simplify our examples, we will be using the command line utility of the same name \keyword{chmod}, short for ``change mode''.
 There are two common ways to use \keyword{chmod}, with either an octal value or with a symbolic string.
 
 \begin{lstlisting}[language=bash]
@@ -685,7 +685,7 @@ $ chmod o-rx file4
 \end{lstlisting}
 
 The base-8 (`octal') digits describe the permissions for each role: The user who owns the file, the group and everyone else.
-The octal number is the sum of three values given to the three types of permission: read(4), write(2), execute(1)
+The octal number is the sum of three values given to the three types of permission: read(4), write(2), execute(1).
 
 Example: \keyword{chmod 755 myfile}
 
@@ -725,8 +725,8 @@ S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH
 
 You may have noticed an additional bit that files with execute permission may have set.
 This bit is the \keyword{setuid} bit.
-It indicated that when run, the program will set the uid of the user to that of the owner of the file.
-Similar, there is a \keyword{setgid} bit which sets the gid of the executor to the gid of the owner.
+It indicates that when run, the program will set the uid of the user to that of the owner of the file.
+Similarly, there is a \keyword{setgid} bit which sets the gid of the executor to the gid of the owner.
 The canonical example of a program with \keyword{setuid} set is \keyword{sudo}.
 
 \keyword{sudo} is usually a program that is owned by the root user - a user that has all capabilities.
@@ -757,10 +757,10 @@ These functions can allow one to write a program that can only be run by a privi
 
 \subsection{The `sticky' bit}
 
-Sticky bits as we use them today serve a different purpose from initial introduction.
-Sticky bits were a bit that could be set on an executable file that would allow a program's text segment to remain in swap even after the end of the program's execution.
+Sticky bits as we use them today serve a different purpose from their initial introduction.
+The sticky bit was a bit that could be set on an executable file that would allow a program's text segment to remain in swap even after the end of the program's execution.
 This made subsequent executions of the same program faster.
-Today, this behavior is no longer supported and the sticky bit only holds meaning when set on a directory,
+Today, this behavior is no longer supported and the sticky bit only holds meaning when set on a directory.
 
 When a directory's sticky bit is set only the file's owner, the directory's owner, and the root user can rename or delete the file.
 This is useful when multiple users have write access to a common directory.
@@ -798,7 +798,7 @@ Linux provides 3 main virtual filesystems.
 \caption{Virtual Filesystem list}
 \begin{tabular}{ | c | c | }
 Device & Use Case \\ \hline
-\keyword{/dev} & A list of physical and virtual devices (for example network card, cdrom, random number generator \\
+\keyword{/dev} & A list of physical and virtual devices (for example network card, cdrom, random number generator) \\
 \keyword{/proc} & A list of resources used by each process and (by tradition) set of system information \\
 \keyword{/sys} & An organized list of internal kernel entities
 \end{tabular}
@@ -829,10 +829,10 @@ $ mkdir /tmp/mystuff
 $ chmod 700 /tmp/mystuff
 \end{lstlisting}
 
-There is a window of opportunity between when the directory is created and when it's permissions are changed.
+There is a window of opportunity between when the directory is created and when its permissions are changed.
 This leads to several vulnerabilities that are based on a race condition.
 
-Another user replaces \keyword{mystuff} with a hard link to an existing file or directory owned by the second user, then they would be able to read and control the contents of the \keyword{mystuff} directory.
+If another user replaces \keyword{mystuff} with a hard link to an existing file or directory owned by the second user, then they would be able to read and control the contents of the \keyword{mystuff} directory.
 Oh no - our secrets are no longer secret!
 
 However in this specific example, the \keyword{/tmp} directory has the sticky bit set, so only the owner may delete the \keyword{mystuff} directory, and the simple attack scenario described above is impossible.
@@ -859,7 +859,7 @@ Otherwise, there are the following reasons.
 \item Empirically, they both produce numbers that look random enough.
 \item \keyword{/dev/random} may block at an inconvenient time. If one is programming a service for high scalability and relies on \keyword{/dev/random}, an attacker can reliably exhaust the entropy pool and cause the service to block.
 \item Manual page authors pose a hypothetical attack where an attacker exhausts the entropy pool and guesses the seeding bits, but that attack has yet to be implemented.
-\item Some operating system don't have a true \keyword{/dev/random} like MacOS.
+\item Some operating systems don't have a true \keyword{/dev/random} like MacOS.
 \item Security experts will talk about Computational Security vs Information Theoretic security, more on this article \href{https://www.2uo.de/myths-about-urandom}{Urandom Myths}. Most encryption is computationally secure, which means \keyword{/dev/urandom} is as well.
 \end{enumerate}
 
@@ -880,7 +880,7 @@ This means the speed of the transfer is unaffected by hardware power.
 
 \subsection{Updating Modification Time}
 
-        The \keyword{touch} executable creates a file if it is non-existant and also updates the file's last modified time to be the current time.
+        The \keyword{touch} executable creates a file if it is non-existent and also updates the file's last modified time to be the current time.
         For example, we can make a new private file with the current time:
 
         \begin{lstlisting}[language=bash]
@@ -925,7 +925,7 @@ This means the speed of the transfer is unaffected by hardware power.
         engr-ews-homes.engr.illinois.edu:/fs1-homes/angrave/linux on /home/angrave type nfs (rw,soft,intr,tcp,noacl,acregmin=30,vers=3,sec=sys,sloppy,addr=128.174.252.102)
         \end{lstlisting}
 
-        Notice that each line includes the filesystem type source of the filesystem and mount point.
+        Notice that each line includes the filesystem type, source of the filesystem, and mount point.
         To reduce this output, we can pipe it into \keyword{grep} and only see lines that match a regular expression.
 
         \begin{lstlisting}[language=bash]
@@ -936,14 +936,14 @@ This means the speed of the transfer is unaffected by hardware power.
 
         \subsubsection{Filesystem Mounting}
 
-        Suppose you had downloaded a bootable Linux disk image from the \href{https://www.archlinux.org/download/}{arch linux download page}
+        Suppose you had downloaded a bootable Linux disk image from the \href{https://www.archlinux.org/download/}{arch linux download page}.
 
         \begin{lstlisting}[language=bash]
         $ wget $URL
         \end{lstlisting}
 
         Before putting the filesystem on a CD, we can mount the file as a filesystem and explore its contents.
-        Note: mount requires root access, so let's run it using sudo
+        Note: mount requires root access, so let's run it using sudo.
 
         \begin{lstlisting}[language=bash]
         $ mkdir arch
@@ -966,7 +966,7 @@ $ mount | grep arch
 \end{lstlisting}
 
 The iso9660 filesystem is a read-only filesystem originally designed for optical storage media (i.e.~CDRoms).
-Attempting to change the contents of the filesystem will fail
+Attempting to change the contents of the filesystem will fail.
 
 \begin{lstlisting}[language=bash]
 $ touch arch/nocando
@@ -996,7 +996,7 @@ The process to map a file into memory is as follows.
 
 \begin{enumerate}
 \item \keyword{mmap} requires a file descriptor, so we need to \keyword{open} the file first
-\item We seek to our desired size and write one byte to ensure that the file is sufficient length
+\item We seek to our desired size and write one byte to ensure that the file is of sufficient length
 \item When finished call munmap to unmap the file from memory.
 \end{enumerate}
 
@@ -1072,12 +1072,12 @@ If your data is important and needs to be force written to disk, call \keyword{s
 However, operating systems may ignore this request.
 Even if the data is evicted from the kernel buffers, the disk firmware may use an internal on-disk cache or may not yet have finished changing the physical media.
 Note, you can also request that all changes associated with a particular file descriptor are flushed to disk using \keyword{fsync(int fd)}.
-There is a fiery debate about this call being useless, initiated by PostgresQL's team \url{https://lwn.net/Articles/752063/}
+There is a fiery debate about this call being useless, initiated by PostgresQL's team \url{https://lwn.net/Articles/752063/}.
 
 If your operating system fails in the middle of an operation, most modern file systems do something called \textbf{journaling} to work around this.
-What the file system does is before it completes a potentially expensive operation, is that it writes what it is going to do down in a journal.
+What the file system does, before it completes a potentially expensive operation, is write down what it is going to do in a journal.
 In the case of a crash or failure, one can step through the journal and see which files are corrupt and fix them.
-This is a way to salvage hard disks in cases there is critical data and there is no apparent backup.
+This is a way to salvage hard disks in cases where there is critical data and there is no apparent backup.
 
 Even though it is unlikely for your computer, programming for data centers means that disks fail every few seconds.
 Disk failures are measured using ``Mean-Time-To-Failure (MTTF)''.
@@ -1101,7 +1101,7 @@ It is also common to combine these systems.
 If you have a lot of hard disks, consider RAID-10.
 This is where you have two systems of RAID-1, but the systems are hooked up in RAID-0 to each other.
 This means you would get roughly the same speed from the slowdowns but now any one disk can fail and you can recover that disk.
-If two disks from opposing raid partitions fail, there is a chance that you can recover though we don't could on it most of the time.
+If two disks from opposing raid partitions fail, there is a chance that you can recover though we don't count on it most of the time.
 
 \subsection{Higher Levels of RAID}
 
@@ -1128,7 +1128,7 @@ p = MTTR / (MTTF-one-disk / (N-1))
 
 Using typical numbers (MTTR=1day, MTTF=1000days, N-1 = 9, p=0.009)
 
-There is a 1\% chance that another drive will fail during the rebuild process (at that point you had better hope you still have an accessible backup of your original data.
+There is a 1\% chance that another drive will fail during the rebuild process (at that point you had better hope you still have an accessible backup of your original data).
 In practice, the probability of a second failure during the repair process is likely higher because rebuilding the array is I/O-intensive (and on top of normal I/O request activity).
 This higher I/O load will also stress the disk array.
 
@@ -1153,7 +1153,7 @@ If that is surprising to you, we encourage you to take a look at Hadoop, Gluster
 Filesystems are hot areas of research as of 2018 because people have realized that the software models that we have devised don't take full advantage of our current hardware.
 Additionally, the hardware that we use for storing information is getting better all the time.
 As such, you may end up designing a filesystem yourself someday.
-In this section, we will go over one of a fake filesystems and ``walk through'' some examples of how things work.
+In this section, we will go over a fake filesystem and ``walk through'' some examples of how things work.
 
 So, what does our hypothetical filesystem look like? 
 We will base it off of the \keyword{minixfs}, a simple filesystem that happens to be the first filesystem that Linux ran on.
@@ -1205,7 +1205,7 @@ Note that our calculations so far have been to determine how much data the user 
 What about the \textit{overhead} of storing this data incurred while using this filesystem?
 You'll notice that we use an indirect block to store the disk block numbers of blocks used beyond the two direct blocks.
 While doing our above calculations, we omitted this block.
-This would instead be counted as the overhead of the file, and thus the total overhead of storing this file on disk is $sizeof(indirect\_block)=4KiB)$.
+This would instead be counted as the overhead of the file, and thus the total overhead of storing this file on disk is $sizeof(indirect\_block)=4KiB$.
 
 Thinking about overhead, a related calculation could be to determine the max/min disk usage per file in this filesystem.
 
@@ -1215,7 +1215,7 @@ Note that when a user writes the first byte, a data block will be allocated.
 Since each data block is $4KiB$, we find that $4KiB$ is the minimum disk usage for a non-empty file.
 Here, we observe that the file size will only be $1B$, despite that $4KiB$ of the disk is used -- there is a distinction between file size and disk usage because of overhead!
 
-Finding maximum is slightly more involved.
+Finding the maximum is slightly more involved.
 As we saw earlier in this chapter, a filesystem with this structure can have $1024$ data block numbers in one indirect block.
 This implies that the maximum filesize can be $2*4KiB + 1024*4KiB = 4MiB + 8KiB$ (after accounting for the direct blocks as well).
 However, on disk we also store the indirect block itself.
@@ -1224,12 +1224,12 @@ This means that an additional $4KiB$ of overhead will be used to account for the
 Note that when only using direct blocks, completely filling up a direct block implies that our filesize and our disk usage are the same thing!
 While it would seem like we always want this ideal scenario, it puts a restrictive limit on the maximum filesize.
 Attempting to remedy this by increasing the number of direct blocks seems promising, but note that this requires increasing the size of an inode and reducing the amount of space available to store user data -- a tradeoff you will have to evaluate for yourself.
-Alternatively always trying to split your data up into chunks that never use indirect blocks is may exhaust the limited pool of available inodes.
+Alternatively always trying to split your data up into chunks that never use indirect blocks may exhaust the limited pool of available inodes.
 
 
 \subsection{Performing Reads}
 
-Performing reads tend to be pretty easy in our filesystem because our files are compact.
+Performing reads tends to be pretty easy in our filesystem because our files are compact.
 Let's say that we want to read the entirety of this particular file.
 What we'd start by doing is go to the inode's direct struct and find the first direct data block number.
 In our case, it is \#7.
@@ -1240,17 +1240,17 @@ What do we do after?
 We go to the indirect block and read the indirect block.
 We know that every 4 bytes of the indirect block is either a sentinel node (-1) or the number of \textit{another} data block.
 In our particular example, the first four bytes evaluate to the integer 5, meaning that our data continues on the 5th data block from the beginning.
-We do the same for data block \#4 and we stop after because we exceed the size of the inode
+We do the same for data block \#4 and we stop after because we exceed the size of the inode.
 
 Now, let's think about the edge cases.
-How would a program start the read starting at an arbitrary offset of $n$ bytes given that block sizes are $4 KiBs$.
+How would a program start the read starting at an arbitrary offset of $n$ bytes given that block sizes are $4 KiBs$?
 How many indirect blocks should there be if the filesystem is correct? (Hint: \textit{think about using the size of the inode})
 
 \subsection{Performing Writes}
 \subsubsection{Writing to files}
-Performing writes fall into two categories, writes to files and writes to directories.
+Performing writes falls into two categories, writes to files and writes to directories.
 First we'll focus on files and assume that we are writing a byte to the $6$th KiB of our file.
-To perform a write on a file at a particular offset, first the filesystem must go to the data block would start at that offset.
+To perform a write on a file at a particular offset, first the filesystem must go to the data block that would start at that offset.
 For this particular example we would have to go to the 2nd or indexed number 1 inode to perform our write.
 We would once again fetch this number from the inode, go to the root of the data blocks, go to the $5$th data block and perform our write at the $2$KiB offset from this block because we skipped the first four kibibytes of the file in block 7.
 We perform our write and go on our merry way.
@@ -1258,7 +1258,7 @@ We perform our write and go on our merry way.
 Some questions to consider.
 
 \begin {itemize}
-    \item How would a program perform a write go across data block boundaries?
+    \item How would a program perform a write that goes across data block boundaries?
     \item How would a program perform a write after adding the offset would extend the length of the file?
     \item How would a program perform a write where the offset is greater than the length of the original file?
 \end{itemize}
@@ -1275,7 +1275,7 @@ Don't forget to update the size of the directory so that the next creation doesn
 Some more questions: 
 
 \begin{itemize}
-    \item How would would a program perform a write when the last data block is already full?
+    \item How would a program perform a write when the last data block is already full?
     \item How about when all the direct blocks have been filled up and the inode doesn't have an indirect block?
     \item What about when the first indirect entry (\#4) is full?
 \end{itemize}
@@ -1330,7 +1330,7 @@ Be sure to check out the appendix for modern and cutting edge filesystems.
 \item
   What is a superblock? Inode? Data block?
 \item
-  How do we simplify \keyword{/./proc/../dev/./random}/
+  How do we simplify \keyword{/./proc/../dev/./random}?
 \item
   In ext2, what is stored in an inode, and what is stored in a directory entry?
 \item

@@ -112,11 +112,11 @@ printf("%s", ptr);
 \end{lstlisting}
 
 Notice how only 'EFGH' is printed.
-Why is that? Well as mentioned above, when performing 'bna+=1' we are increasing the **integer** pointer by 1, (translates to 4 bytes on most systems) which is equivalent to 4 characters (each character is only 1 byte)
+Why is that? Well as mentioned above, when performing 'bna+=1' we are increasing the **integer** pointer by 1, (translates to 4 bytes on most systems) which is equivalent to 4 characters (each character is only 1 byte).
 Because pointer arithmetic in C is always automatically scaled by the size of the type that is pointed to, POSIX standards forbid arithmetic on void pointers.
 Having said that, compilers will often treat the underlying type as \keyword{char}.
 Here is a machine translation.
-The following two pointer arithmetic operations are equal
+The following two pointer arithmetic operations are equal.
 
 \begin{lstlisting}[language=C]
 int *ptr1 = ...;

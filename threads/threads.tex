@@ -1,12 +1,12 @@
 \chapter{Threads}
 
-\epigraph{If you think your programs crashing before, wait until they crash ten times as fast}{}
+\epigraph{If you think your programs were crashing before, wait until they crash ten times as fast}{}
 
 A thread is short for `thread-of-execution'.
 It represents the sequence of instructions that the CPU has and will execute.
 To remember how to return from function calls, and to store the values of automatic variables and parameters a thread uses a stack.
 Almost weirdly, a thread is a process, meaning that creating a thread is similar to \keyword{fork}, except there is \textbf{no copying} meaning no copy on write.
-What this allows is for a process to share the same address space, variables, heap, file descriptors and etc.
+What this allows is for a process to share the same address space, variables, heap, file descriptors, etc.
 The actual system call to create a thread is similar to \keyword{fork}. It's \keyword{clone}.
 We won't go into the specifics, but you can read the \href{http://man7.org/linux/man-pages/man2/clone.2.html}{man pages} keeping in mind that it is outside the direct scope of this course.
 LWP or Lightweight Processes or threads are preferred to forking for a lot of scenarios because there is a lot less overhead creating them.
@@ -18,7 +18,7 @@ Creating separate processes is useful when:
 
 \begin{itemize}
 \item When more security is desired. For example, Chrome browser uses different processes for different tabs.
-\item When running an existing and complete program then a new process is required, for example starting `gcc`.
+\item When running an existing and complete program, a new process is required, for example starting `gcc`.
 \item When you are running into synchronization primitives and each process is operating on something in the system.
 \item When you have too many threads -- the kernel tries to schedule all the threads near each other which could cause more harm than good.
 \item When you don't want to worry about race conditions
@@ -30,12 +30,12 @@ On the other hand, creating threads is more useful when:
 \item You want to leverage the power of a multi-core system to do one task
 \item When you can't deal with the overhead of processes
 \item When you want communication between the processes simplified
-\item When you want to threads to be part of the same process
+\item When you want threads to be part of the same process
 \end{itemize}
 
 \section{Thread Internals}
 
-Your main function and other functions has automatic variables.
+Your main function and other functions have automatic variables.
 We will store them in memory using a stack and keep track of how large the stack is by using a simple pointer (the ``stack pointer'').
 If the thread calls another function, we move our stack pointer down, so that we have more space for parameters and automatic variables.
 Once it returns from a function, we can move the stack pointer back up to its previous value.
@@ -53,9 +53,9 @@ In a multi-threaded program, there are multiple stacks but only one address spac
 
 
 A program can have more than one thread running inside a process.
-The programget the first thread for free!
+The program gets the first thread for free!
 It runs the code you write inside `main'.
-If a program need more threads, it can call \keyword{pthread\_create} to create a new thread using the pthread library.
+If a program needs more threads, it can call \keyword{pthread\_create} to create a new thread using the pthread library.
 You'll need to pass a pointer to a function so that the thread knows where to start.
 
 The threads all live inside the same virtual memory because they are part of the same process.
@@ -97,7 +97,7 @@ void *(*start_routine) (void *), void *arg);
 
 The argument \keyword{void *(*start\_routine) (void *)} is difficult to read!
 It means a pointer that takes a \keyword{void *} pointer and returns a \keyword{void *} pointer.
-It looks like a function declaration except that the name of the function is wrapped with \keyword{(* .... )}
+It looks like a function declaration except that the name of the function is wrapped with \keyword{(* .... )}.
 
 \begin{lstlisting}[language=C]
 #include <stdio.h>
@@ -129,8 +129,8 @@ Here are some common pthread functions:
 \begin{itemize}
 \item \keyword{pthread\_create} creates a new thread.
 Every thread gets a new stack.
-If a program calls \keyword{pthread\_create} twice, Your process will contain three stacks - one for each thread.
-The first thread is created when the process start, the other two after the create.
+If a program calls \keyword{pthread\_create} twice, your process will contain three stacks - one for each thread.
+The first thread is created when the process starts, the other two after the create.
 Actually, there can be more stacks than this, but let's keep it simple.
 The important idea is that each thread requires a stack because the stack contains automatic variables and the old CPU PC register, so that it can go back to executing the calling function after the function is finished.
 
@@ -191,7 +191,7 @@ Here is a non-complete list:
 \item Calling \keyword{pthread\_exit}
 \item Canceling the thread with \keyword{pthread\_cancel}
 \item Terminating the process through a signal.
-\item calling \keyword{exit()} or \keyword{abort()}
+\item Calling \keyword{exit()} or \keyword{abort()}
 \item Returning from \keyword{main}
 \item Executing another program
 \item Unplugging your computer
@@ -298,7 +298,7 @@ int main() {
 \end{lstlisting}
 
 The above code suffers from a \keyword{race condition} - the value of i is changing.
-The new threads start later in the example output the last thread starts after the loop has finished.
+The new threads start later; in the example output, the last thread starts after the loop has finished.
 To overcome this race-condition, we will give each thread a pointer to its own data area.
 For example, for each thread we may want to store the id, a starting value and an output value.
 We will instead treat i as a pointer and cast it by value.
@@ -322,8 +322,8 @@ int main() {
 \end{lstlisting}
 
 Race conditions aren't in our code.
-They can be in provided code
-Some functions like \keyword{asctime}, \keyword{getenv}, \keyword{strtok}, \keyword{strerror} not thread-safe.
+They can be in provided code.
+Some functions like \keyword{asctime}, \keyword{getenv}, \keyword{strtok}, \keyword{strerror} are not thread-safe.
 Let's look at a simple function that is also not `thread-safe'.
 The result buffer could be stored in global memory.
 This is good in a single-threaded program.
@@ -434,10 +434,10 @@ void merge_sort(int *arr, size_t len){
 With your new understanding of threads, all you need to do is create a thread for the left half, and one for the right half.
 Given that your CPU has multiple real cores, you will see a speedup following \href{https://en.wikipedia.org/wiki/Amdahl's_law}{Amdahl's Law}.
 The time complexity analysis gets interesting here as well.
-The parallel algorithm runs in $O(\log^3(n))$ running time because we have the analysis assumes that we have a lot of cores.
+The parallel algorithm runs in $O(\log^3(n))$ running time because the analysis assumes that we have a lot of cores.
 
 In practice though, we typically do two changes.
-One, once the array gets small enough, we ditch the Parallel Merge Sort algorithm and do conventional sort that works fast on small arrays, usually cache coherency rules at this level.
+One, once the array gets small enough, we ditch the Parallel Merge Sort algorithm and do a conventional sort that works fast on small arrays, usually cache coherency rules at this level.
 The other thing that we know is that CPUs don't have infinite cores.
 To get around that, we typically keep a worker pool.
 You won't see the speedup right away because of things like cache coherency and scheduling extra threads.
@@ -457,7 +457,7 @@ int *map(int (*func)(int), int *arr, size_t len){
 \end{lstlisting}
 
 Since none of the elements depend on any other element, how would you go about parallelizing this?
-What do you think would be the best way to split up the work between threads.
+What do you think would be the best way to split up the work between threads?
 
 Check out thread scheduling in the appendix for more ways to schedule.
 
@@ -531,8 +531,8 @@ It seems pretty simple right?
 Why not use this functionality?
 First, there is a decent bit of boilerplate code.
 In addition, pthreads are part of the POSIX standard and have defined functionality.
-Pthreads let a program set various attributes -- some that resemble the option in clone -- to customize your thread.
-But as we mentioned earlier, with each later of abstraction for portability reasons we lose some functionality.
+Pthreads let a program set various attributes -- some that resemble the options in clone -- to customize your thread.
+But as we mentioned earlier, with each layer of abstraction for portability reasons we lose some functionality.
 clone can do some neat things like keeping different parts of your heap the same while creating copies of other pages.
 A program has finer control of scheduling because it is a process with the same mappings.
 
@@ -546,7 +546,7 @@ Guiding questions:
 
 \begin{itemize}
 \item What is the first argument to pthread create?
-\item What is the start routing in pthread create? How about arg?
+\item What is the start routine in pthread create? How about arg?
 \item Why might pthread create fail?
 \item What are a few things that threads share in a process? What are a few things that threads have different?
 \item How can a thread uniquely identify itself?
@@ -594,7 +594,7 @@ How does a program get a return value given a \keyword{pthread\_t}? What are the
 \item
 Why is \keyword{pthread\_join} important (think stack space, registers, return values)?
 \item
-What does \keyword{pthread\_exit} do if it is not the last thread? What other functions are called when after calling pthread\_exit?
+What does \keyword{pthread\_exit} do if it is not the last thread? What other functions are called after calling pthread\_exit?
 \item
 Give me three conditions under which a multi-threaded process will exit. Are there any more?
 \item

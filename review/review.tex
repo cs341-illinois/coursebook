@@ -91,7 +91,7 @@ char* mystrcat(char*dest, const char*src) {
 }
 \end{lstlisting}
 
-\item Implement version of size\_t strlen(const char*) using a loop and no function calls.
+\item Implement a version of size\_t strlen(const char*) using a loop and no function calls.
 
 \begin{lstlisting}[language=C]
 size_t mystrlen(const char*s) {
@@ -153,7 +153,7 @@ char* toString(int a, char*mesg, double val, void* ptr) {
 
 \item When would you use calloc instead of malloc? When would realloc be useful?
 
-\item What mistake did the programmer make in the following code? Is it possible to fix it
+\item What mistake did the programmer make in the following code? Is it possible to fix it?
 
 i) using heap memory?
 ii) using global (static) memory?
@@ -200,7 +200,7 @@ void *malloc(int size) {
   return (void *)sbrk(size);
 }
 \end{lstlisting}
-Be acceptable?
+be acceptable?
 \end{enumerate}
 
 \section{Threading and Synchronization}
@@ -227,7 +227,7 @@ void *format(int v) {
 }
 \end{lstlisting}
 
-\item Which one of the following may leave a process in running?
+\item Which one of the following may leave a process running?
 
 \begin{enumerate}
 \item Returning from the pthread's starting function in the last running thread.
@@ -260,7 +260,7 @@ int main(int argv, char** argc) {
 }
 \end{lstlisting}
 
-\item Complete the following code. The following code is supposed to print alternating \keyword{A} and \keyword{B}. It represents two threads that take turns to execute. Add condition variable calls to \keyword{func} so that the waiting thread need not to continually check the \keyword{turn} variable. Q: Is pthread\_cond\_broadcast necessary or is pthread\_cond\_signal sufficient?
+\item Complete the following code. The following code is supposed to print alternating \keyword{A} and \keyword{B}. It represents two threads that take turns to execute. Add condition variable calls to \keyword{func} so that the waiting thread need not continually check the \keyword{turn} variable. Q: Is pthread\_cond\_broadcast necessary or is pthread\_cond\_signal sufficient?
 
 \begin{lstlisting}[language=C]
 pthread_cond_t cv = PTHREAD_COND_INITIALIZER;
@@ -306,7 +306,7 @@ void sub(int value) {
 }
 \end{lstlisting}
 
-\item An thread unsafe data structure has \keyword{size()} \keyword{enq} and \keyword{deq} methods. Use condition variable and mutex lock to complete the thread-safe, blocking versions.
+\item A thread unsafe data structure has \keyword{size()} \keyword{enq} and \keyword{deq} methods. Use condition variable and mutex lock to complete the thread-safe, blocking versions.
 
 \begin{lstlisting}[language=C]
 void enqueue(void* data) {
@@ -332,7 +332,7 @@ void set_edge(graph_t* graph, int i, int j, double time);
 
 \end{lstlisting}
 
-For performance, multiple threads must be able to call \keyword{shortest} at the same time but the graph can only be modified by one thread when no threads other are executing inside \keyword{shortest} or \keyword{set\_edge}.
+For performance, multiple threads must be able to call \keyword{shortest} at the same time but the graph can only be modified by one thread when no other threads are executing inside \keyword{shortest} or \keyword{set\_edge}.
 
 \item Use mutex lock and condition variables to implement a reader-writer solution. An incomplete attempt is shown below. Though this attempt is thread safe (thus sufficient for demo day!), it does not allow multiple threads to calculate \keyword{shortest} path at the same time and will not have sufficient throughput.
 
@@ -371,7 +371,7 @@ void set_edge_safe(graph_t* graph, int i, int j, double dist) {
 
 \begin{enumerate}
 
-\item What do each of the Coffman conditions and what do they mean? Can you provide a definition of each one and an example of breaking them using mutexes?
+\item What are the Coffman conditions and what do they mean? Can you provide a definition of each one and an example of breaking them using mutexes?
 
 \item Give a real life example of breaking each Coffman condition in turn. A situation to consider: Painters, paint and paint brushes.
 
@@ -502,10 +502,10 @@ void xout(char* filename) {
 \item What is the file API?
 \item Where are the names of the files stored?
 \item What is contained in an inode?
-\item What are the two special file names in every directory
-\item How do you resolve the following path \keyword{a/../b/./c/../../c}
+\item What are the two special file names in every directory?
+\item How do you resolve the following path \keyword{a/../b/./c/../../c}?
 \item What are the rwx groups?
-\item What is an UID? GID? What is the difference between UID and Effective UID?
+\item What is a UID? GID? What is the difference between UID and Effective UID?
 \item What is umask?
 \item What is the sticky bit?
 \item What is a virtual file system?
@@ -514,9 +514,9 @@ void xout(char* filename) {
 
 \item In an \keyword{ext2} filesystem what is the minimum number of disk blocks that must be read from disk to access the first byte of the file \keyword{/dir1/subdirA/notes.txt} ? Assume the directory names and inode numbers in the root directory and all inodes are already in memory.
 
-\item In an \keyword{ext2} filesystem with 32 bit addresses and 4KiB disk blocks, an inode can store 10 direct disk block numbers. What is the minimum file size required to require a single indirection table? ii) a double direction table?
+\item In an \keyword{ext2} filesystem with 32 bit addresses and 4KiB disk blocks, an inode can store 10 direct disk block numbers. What is the minimum file size required to require a single indirection table? ii) a double indirection table?
 
-\item Fix the shell command \keyword{chmod} below to set the permission of a file \keyword{secret.txt} so that the owner can read,write,and execute permissions the group can read and everyone else has no access.
+\item Fix the shell command \keyword{chmod} below to set the permission of a file \keyword{secret.txt} so that the owner can read, write, and execute permissions the group can read and everyone else has no access.
 
 \begin{lstlisting}[language=bash]
 $ chmod 000 secret.txt
@@ -532,7 +532,7 @@ $ chmod 000 secret.txt
 \item What are the different layers of the internet?
 \item What is IP? What is an IP address?
 \item What is TCP? What is UDP? What are the differences?
-\item Create a TCP client that send ``Hello'' to a server.
+\item Create a TCP client that sends ``Hello'' to a server.
 \item Create a simple TCP echo server. This is a server that reads bytes from a client until it closes and echoes the bytes back to the client.
 \item Create a UDP client that would send a flood of packets to a hostname at argv[1].
 \item What is HTTP?
@@ -569,16 +569,16 @@ $ chmod 000 secret.txt
   \begin{enumerate}
   \item Packet reordering
   \item Flow control
-  \item Packet retranmission
+  \item Packet retransmission
   \item Simple error detection
   \item Encryption
   \end{enumerate}
 
 \item What protocol uses sequence numbers? What is their initial value? And why?
 
-\item What are the minimum network calls are required to build a TCP server? What is their correct order?
+\item What are the minimum network calls required to build a TCP server? What is their correct order?
 
-\item What are the minimum network calls are required to build a TCP client? What is their correct order?
+\item What are the minimum network calls required to build a TCP client? What is their correct order?
 
 \item When would you call bind on a TCP client?
 
@@ -636,7 +636,7 @@ ssize_t write_all(int fd, const char *buf, size_t nbyte) {
 \begin{enumerate}
 \item What are the three measures for data security?
 \item What is stack smashing?
-\item What is buffer overflows?
+\item What is a buffer overflow?
 \item How does an operating system provide security? What are some examples from Networking and Filesystems?
 \item What security features does TCP provide?
 \item Is DNS secure?
@@ -645,10 +645,10 @@ ssize_t write_all(int fd, const char *buf, size_t nbyte) {
 \section{Signals}
 
 \begin{enumerate}
-\item Give the names of two signals that are normally generated by the kernel
-\item Give the name of a signal that can not be caught by a signal
+\item Give the names of two signals that are normally generated by the kernel.
+\item Give the name of a signal that can not be caught by a signal handler.
 \item Why is it unsafe to call any function (something that it is not signal handler safe) in a signal handler?
 \item Write brief code that uses SIGACTION and a SIGNALSET to create a SIGALRM handler.
 \item What is the difference between a disposition, mask, and pending signal set?
-\item What attributes are passed over to process children? How about exececuted processes?
+\item What attributes are passed over to process children? How about executed processes?
 \end{enumerate}

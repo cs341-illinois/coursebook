@@ -11,7 +11,7 @@ void mystrcpy(char*dest, char* src) {
 }
 \end{lstlisting}
 
-In the above code it simply changes the dest pointer to point to source string.
+In the above code it simply changes the dest pointer to point to the source string.
 Also the NUL bytes are not copied.
 Here is a better version -
 
@@ -29,7 +29,7 @@ while( (*dest++ = *src++ )) {};
 
 \subsection{Double Frees}
 
-A double free error is when a program accidentally attempt to free the same allocation twice.
+A double free error is when a program accidentally attempts to free the same allocation twice.
 
 \begin{lstlisting}[language=C]
 int *p = malloc(sizeof(int));
@@ -111,7 +111,7 @@ gets(array); // Let's hope the input is shorter than my array!
 
 \subsection{Strings require strlen(s)+1 bytes}
 
-Every string must have a NUL byte after the last characters.
+Every string must have a NUL byte after the last character.
 To store the string ``Hi'' it takes 3 bytes: [H] [i] [\backslash 0].
 
 \begin{lstlisting}[language=C]
@@ -134,7 +134,7 @@ int myfunction() {
   ...
 \end{lstlisting}
 
-Automatic variables hold garbage or bit pattern that happened to be in memory or register.
+Automatic variables hold garbage or the bit pattern that happened to be in memory or register.
 It is an error to assume that it will always be initialized to zero.
 
 \subsection{Assuming Uninitialized memory will be zeroed}

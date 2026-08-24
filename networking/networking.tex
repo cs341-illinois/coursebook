@@ -11,14 +11,14 @@ POSIX also lets you peer underneath the hood and optimize all the little parts o
 As an addendum that you'll read more about in the next chapter, we will be strict in our notation for sizes.
 That means that when we refer to the SI prefixes of Kilo-, Mega-, etc, then we are always referring to a power of 10.
 A kilobyte is one thousand bytes, a megabyte is a thousand kilobytes and so on.
-If we need to refer to \keyword{1024} bytes, we will use the more accurate term Kibibyte. Mibibyte and Gibibyte are the analogs of Megabyte and Gigabyte respectively.
+If we need to refer to \keyword{1024} bytes, we will use the more accurate term Kibibyte. Mebibyte and Gibibyte are the analogs of Megabyte and Gigabyte respectively.
 We make this distinction to make sure that we aren't off by 24.
 The reasons for this misnomer will be explained in the filesystems chapter.
 
 \section{The OSI Model}
 
 The Open Source Interconnection 7 layer model (OSI Model) is a sequence of segments that define standards for both infrastructure and protocols for forms of radio communication, in our case the Internet.
-The 7 layer model is as follows
+The 7 layer model is as follows:
 
 \begin{enumerate}
 \item Layer 1: The Physical Layer.
@@ -44,7 +44,7 @@ The 7 layer model is as follows
 
 \item Layer 6: The Presentation Layer.
   This layer deals with encryption, compression, and data translation.
-  For example, portability between different operating systems like translating newlines to windows newlines.
+  For example, portability between different operating systems like translating newlines to Windows newlines.
 
 \item Layer 7: The Application Layer.
   HTTP and FTP are both defined at this level.
@@ -61,7 +61,7 @@ As for another definition, a protocol is a set of specifications put forward by 
 
 The following is a short introduction to internet protocol (IP), the primary way to send datagrams of information from one machine to another.
 ``IP4'', or more precisely, IPv4 is version 4 of the Internet Protocol that describes how to send packets of information across a network from one machine to another.
-Even as of 2018, IPv4 still dominates Internet traffic, but google reports that 24 countries now supply 15\% of their traffic through IPv6 \cite{internet_society_2018}.
+Even as of 2018, IPv4 still dominates Internet traffic, but Google reports that 24 countries now supply 15\% of their traffic through IPv6 \cite{internet_society_2018}.
 A significant limitation of IPv4 is that source and destination addresses are limited to 32 bits.
 IPv4 was designed at a time when the idea of 4 billion devices connected to the same network was unthinkable or at least not worth making the packet size larger.
 IPv4 addresses are written typically in a sequence of four octets delimited by periods "255.255.255.0" for example.
@@ -70,7 +70,7 @@ Each IPv4 datagram includes a small header - typically 20 octets, that includes 
 Conceptually the source and destination addresses can be split into two: a network number the upper bits and lower bits represent a particular host number on that network.
 
 A newer packet protocol IPv6 solves many of the limitations of IPv4 like making routing tables simpler and 128-bit addresses.
-However, little web traffic is IPv6 based on comparison as of 2018 \cite{internet_society_2018}
+However, little web traffic is IPv6 based on comparison as of 2018 \cite{internet_society_2018}.
 We write IPv6 addresses in a sequence of eight, four hexadecimal delimiters like "1F45:0000:0000:0000:0000:0000:0000:0000".
 Since that can get unruly, we can omit the zeros "1F45::". A machine can have an IPv6 address and an IPv4 address.
 
@@ -109,7 +109,7 @@ In the case of the Internet, every cycle matters when trying to route the world'
 To obtain a linked list of IP addresses of the current machine use \keyword{getifaddrs} which will return a linked list of IPv4 and IPv6 IP addresses among other interfaces as well.
 We can examine each entry and use \keyword{getnameinfo} to print the host's IP address.
 The \keyword{ifaddrs} struct includes the family but does not include the sizeof the struct.
-Therefore we need to manually determine the struct sized based on the family.
+Therefore we need to manually determine the struct size based on the family.
 
 \begin{lstlisting}[language=C]
 (family == AF_INET) ? sizeof(struct sockaddr_in) : sizeof(struct sockaddr_in6)
@@ -240,7 +240,7 @@ The page may load slower.
 
 Most services on the Internet today use TCP because it efficiently hides the complexity of the lower, packet-level nature of the Internet.
 TCP or Transport Control Protocol is a connection-based protocol that is built on top of IPv4 and IPv6 and therefore can be described as ``TCP/IP'' or ``TCP over IP''.
-TCP creates a \emph{pipe} between two machines and abstracts away the low-level packet-nature of the Internet. Thus, under most conditions, bytes sent over a TCP connection delivered and uncorrupted.
+TCP creates a \emph{pipe} between two machines and abstracts away the low-level packet-nature of the Internet. Thus, under most conditions, bytes sent over a TCP connection are delivered and uncorrupted.
 High performance and error-prone code won't even assume that!
 
 TCP has many features that set it apart from the other transport protocol UDP.
@@ -261,7 +261,7 @@ TCP has many features that set it apart from the other transport protocol UDP.
 \item Retransmission
   Packets can get dropped due to network errors or congestion.
   As such, they need to be retransmitted.
-  At the same time, the retransmission shouldn't cause packets more packets to be dropped.
+  At the same time, the retransmission shouldn't cause more packets to be dropped.
   This needs to balance the tradeoff between flooding the network and speed.
 
 \item Out of order packets.
@@ -285,7 +285,7 @@ TCP has many features that set it apart from the other transport protocol UDP.
 
 \item Congestion control.
   Congestion control is performed on the sender's side.
-  Congestion control is to avoid a sender from flooding the network with too many packets.
+  Congestion control is to prevent a sender from flooding the network with too many packets.
   This is important to make sure that each TCP connection is treated fairly.
   Meaning that two connections leaving a computer to google and youtube receive the same bandwidth and ping as each other.
   One can easily define a protocol that takes all the bandwidth and leaves other protocols in the dust, but this tends to be malicious because many times limiting a computer to a single TCP connection will yield the same result.
@@ -295,7 +295,7 @@ TCP has many features that set it apart from the other transport protocol UDP.
   There is a ``lifecycle'' to a TCP connection though.
   TCP handles setting up the connection through SYN SYN-ACK ACK. This means the client will send a SYNchronization packet that tells TCP what starting sequence to start on. Then the receiver will send a SYN-ACK message acknowledging the synchronization number.
   Then the client will ACKnowledge that with one last packet.
-  The connection is now open for both reading and writing on both ends
+  The connection is now open for both reading and writing on both ends.
   TCP will send data and the receiver of the data will acknowledge that it received a packet.
   Then every so often if a packet is not sent, TCP will trade zero-length packets to make sure the connection is still alive.
   At any point, the client and server can send a FIN packet meaning that the server will not transmit.
@@ -317,7 +317,7 @@ TCP doesn't provide many things, though.
 \item Delimiting Requests.
   TCP is naturally connection-oriented.
   Applications that are communicating over TCP need to find a unique way of telling each other that this request or response is over.
-  HTTP delimits the header through two carriage returns and uses either a length field or one keeps listening until the connection closes
+  HTTP delimits the header through two carriage returns and uses either a length field or one keeps listening until the connection closes.
 \end{enumerate}
 
 \subsection{Note on network orders}
@@ -346,7 +346,7 @@ If two computers are CPU bound by converting the messages between network orders
 
 Why is network order defined to be big-endian?
 The simple answer is that RFC1700 says so \cite{RFC1700}.
-If you want more information, we'll cite the famous article located that argued for a particular version \cite{cohen_1980}.
+If you want more information, we'll cite the famous article that argued for a particular version \cite{cohen_1980}.
 The most important part is that it is standard.
 What happens when we don't have one standard?
 We have 4 different USB plug types (Regular, Micro, Mini, and USB-C) that don't interact well with each other.
@@ -365,7 +365,7 @@ There are three basic system calls to connect to a remote machine.
 The \keyword{getaddrinfo} call if successful, creates a linked-list of \keyword{addrinfo} structs and sets the given pointer to point to the first one.
 
 Also, you can use the hints struct to only grab certain entries like certain IP protocols, etc.
-The addrinfo structure that is passed into \keyword{getaddrinfo} to define the kind of connection you'd like.
+The addrinfo structure is passed into \keyword{getaddrinfo} to define the kind of connection you'd like.
 For example, to specify stream-based protocols over IPv6, you can use the following snippet.
 
 \begin{lstlisting}[language=C]
@@ -398,7 +398,7 @@ if(result) {
 The socket call creates a network socket and returns a descriptor that can be used with \keyword{read} and \keyword{write}.
 In this sense, it is the network analog of \keyword{open} that opens a file stream -- except that we haven't connected the socket to anything yet!
 
-Sockets are created with a domain \keyword{AF\_INET} for \keyword{IPv4} or \keyword{AF\_INET6} for \keyword{IPv6}, \keyword{socket\_type} is whether to use UDP, TCP, or other some other socket type, the \keyword{protocol} is an optional choice of protocol configuration for our examples this we can leave this as 0 for default.
+Sockets are created with a domain \keyword{AF\_INET} for \keyword{IPv4} or \keyword{AF\_INET6} for \keyword{IPv6}, \keyword{socket\_type} is whether to use UDP, TCP, or some other socket type, the \keyword{protocol} is an optional choice of protocol configuration; for our examples we can leave this as 0 for default.
 This call creates a socket object in the kernel with which one can communicate with the outside world/network.
 You can use the result of \keyword{getaddressinfo} to fill in the \keyword{socket} parameters, or provide them manually.
 
@@ -414,7 +414,7 @@ Finally, the connect call attempts the connection to the remote machine.
 We pass the original socket descriptor and also the socket address information which is stored inside the addrinfo structure.
 There are different kinds of socket address structures that can require more memory.
 So in addition to passing the pointer, the size of the structure is also passed.
-To help identify errors and mistakes it is good practice to check the return value of all networking calls, including \keyword{connect}
+To help identify errors and mistakes it is good practice to check the return value of all networking calls, including \keyword{connect}.
 
 
 \begin{lstlisting}[language=C]
@@ -425,10 +425,10 @@ connect(sockfd, p->ai_addr, p->ai_addrlen)
 \item (Optional) To clean up code call \keyword{freeaddrinfo(struct addrinfo *ai)} on the first level \keyword{addrinfo} struct.
 \end{enumerate}
 
-There is an old function \keyword{gethostbyname} is deprecated.
-It's the old way convert a hostname into an IP address.
+There is an old function \keyword{gethostbyname} that is deprecated.
+It's the old way to convert a hostname into an IP address.
 The port address still needs to be manually set using \keyword{htons} function.
-It's much easier to write code to support IPv4 AND IPv6 using the newer \keyword{getaddrinfo}
+It's much easier to write code to support IPv4 AND IPv6 using the newer \keyword{getaddrinfo}.
 
 This is all that is needed to create a \textit{simple} TCP client.
 However, network communications offer many different levels of abstraction and several attributes and options that can be set at each level.
@@ -445,7 +445,7 @@ Keep in mind if you are connected to a website, you want to conform to the HTTP 
 There are libraries to do this.
 Usually, you don't connect at the socket level.
 The number of bytes read or written may be smaller than expected.
-Thus, it is important to check the return value of \keyowrd{read} and \keyword{write}.
+Thus, it is important to check the return value of \keyword{read} and \keyword{write}.
 A simple HTTP client that sends a request to a compliant URL is below.
 First, we'll start with the boring stuff and the parsing code.
 
@@ -547,7 +547,7 @@ void send_request(host_info *info) {
 \end{lstlisting}
 
 The example above demonstrates a request to the server using the HyperText Transfer Protocol.
-In general, there are six parts
+In general, there are six parts:
 
 \begin{enumerate}
 \item The method. GET, POST, etc.
@@ -565,7 +565,7 @@ HTTP/1.1 200 OK
 \end{lstlisting}
 
 If the client had requested a non-existent path, e.g.
-\keyword{GET /nosuchfile.html HTTP/1.0} Then the first line includes the response code is the well-known \keyword{404} response code.
+\keyword{GET /nosuchfile.html HTTP/1.0} Then the first line includes the well-known \keyword{404} response code.
 
 \begin{lstlisting}
 HTTP/1.1 404 Not Found
@@ -576,15 +576,15 @@ For more information, RFC 7231 has the most current specifications on the most c
 \section{Layer 4: TCP Server}
 
 The four system calls required to create a minimal TCP server are \keyword{socket}, \keyword{bind}, \keyword{listen}, and \keyword{accept}.
-Each has a specific purpose and should be called in roughly the above order
+Each has a specific purpose and should be called in roughly the above order.
 
 \begin{enumerate}
 
   \item \keyword{int socket(int domain, int socket\_type, int protocol)}
 
   To create an endpoint for networking communication.
-  A new socket by itself is stores bytes.
-  Though we've specified either a packet or stream-based connections, it is unbound to a particular network interface or port.
+  A new socket by itself stores bytes.
+  Though we've specified either a packet or stream-based connection, it is unbound to a particular network interface or port.
   Instead, socket returns a network descriptor that can be used with later calls to bind, listen and accept.
 
   As one gotcha, these sockets must be declared passive.
@@ -593,7 +593,7 @@ Each has a specific purpose and should be called in roughly the above order
   Additionally, server sockets remain open when the peer disconnects.
   Instead, the client communicates with a separate active socket on the server that is specific to that connection.
 
-  Since a TCP connection is defined by the sender address and port along with a receiver address and port, a particular server port there can be one passive server socket but multiple active sockets.
+  Since a TCP connection is defined by the sender address and port along with a receiver address and port, for a particular server port there can be one passive server socket but multiple active sockets.
   One for each currently open connection.
   The server's operating system maintains a lookup table that associates a unique tuple with active sockets so that incoming packets can be correctly routed to the correct socket.
 
@@ -621,7 +621,7 @@ bind(...);
   \item \keyword{int listen(int sockfd, int backlog);}
 
     The \keyword{listen} call specifies the queue size for the number of incoming, unhandled connections.
-    There are the connections unassigned to a file descriptor by \keyword{accept}.
+    These are the connections unassigned to a file descriptor by \keyword{accept}.
     Typical values for a high-performance server are 128 or more.
 
   \item \keyword{int accept(int sockfd, struct sockaddr *addr, socklen\_t *addrlen);}
@@ -667,20 +667,20 @@ int client_id = accept(passive_socket,
 
   One can use the macros \keyword{NI\_MAXHOST} to denote the maximum length of a hostname, and \keyword{NI\_MAXSERV} to denote the maximum length of a port.
   \keyword{NI\_NUMERICHOST} gets the hostname as a numeric IP address and similarly for \keyword{NI\_NUMERICSERV} although the port is usually numeric, to begin with.
-  The \href{https://man.openbsd.org/getnameinfo.3#NI\_NUMERICHOST}{Open BSD man pages have more information}
+  The \href{https://man.openbsd.org/getnameinfo.3#NI\_NUMERICHOST}{Open BSD man pages have more information}.
 
   \item \keyword{int close(int fd)} and \keyword{int shutdown(int fd, int how)}
 
   Use the \keyword{shutdown} call when you no longer need to read any more data from the socket, write more data, or have finished doing both.
   When you call \keyword{shutdown} on socket on the read and/or write ends, that information is also sent to the other end of the connection.
   If you shut down the socket for further writing at the server end, then a moment later, a blocked \keyword{read} call could return 0 to indicate that no more bytes are expected.
-  Similarly, a write to a TCP connection that has been shut down for reading will generate a SIGPIPE
+  Similarly, a write to a TCP connection that has been shut down for reading will generate a SIGPIPE.
 
   Use \keyword{close} when your process no longer needs the socket file descriptor.
 
   If you \keyword{fork}-ed after creating a socket file descriptor, all processes need to close the socket before the socket resources can be reused.
   If you shut down a socket for further read, all processes are affected because you've changed the socket, not the file descriptor.
-  Well written code will \keyword{shutdown} a socket before calling \keyword{close} it.
+  Well written code will \keyword{shutdown} a socket before calling \keyword{close} on it.
 
 \end{enumerate}
 
@@ -761,7 +761,7 @@ buffer[len] = '\0';
 printf("Read %d chars\n", len);
 printf("===\n");
 printf("%s\n", buffer);
-\end{lstlisting}[language=C]
+\end{lstlisting}
 
 \subsection{Sorry To Interrupt}
 
@@ -786,7 +786,7 @@ while bytes_read isn't count {
 }
 \end{lstlisting}
 
-We can assure you that the following code \textit{experience errors}.
+We can assure you that the following code \textit{experiences errors}.
 Can you see why?
 On the surface, it does restart a call after a read or write.
 But what else happens when the error is EINTR?
@@ -804,7 +804,7 @@ Packets may be duplicated or arrive out of order.
 
 A typical use case for UDP is when receiving up to date data is more important than receiving all of the data.
 For example, a game may send continuous updates of player positions.
-A streaming video signal may send picture updates using UDP
+A streaming video signal may send picture updates using UDP.
 
 \subsection{UDP Attributes}
 
@@ -837,7 +837,7 @@ Of course, there is more configuration involved, but choosing between UDP over T
 
 \subsection{UDP Client}
 
-UDP Clients are pretty versatile below is a simple client that sends a packet to a server specified through the command line.
+UDP Clients are pretty versatile. Below is a simple client that sends a packet to a server specified through the command line.
 Note that this client sends a packet and doesn't wait for an acknowledgment.
 It fires and forgets.
 The example below also uses \keyword{gethostbyname} because some legacy functionality still works pretty well for setting up a client.
@@ -894,7 +894,7 @@ int send_ret = sendto(sock_fd, // Socket
    sizeof(ipaddr)); // How long the address is
 \end{lstlisting}
 
-The above code simply sends ``Hello'' through a UDP.
+The above code simply sends ``Hello'' through UDP.
 There is no idea of if the packet arrives, is processed, etc.
 
 \subsection{UDP Server}
@@ -915,7 +915,7 @@ hints.ai_flags =  AI_PASSIVE;
 Next, use getaddrinfo to specify the port number.
 We don't need to specify a host as we are creating a server socket, not sending a packet to a remote host.
 Be careful not to send ``localhost'' or any other synonym for the loop-back address.
-We may end up trying to passively listen to ourselves and resulting in bind errors.
+We may end up trying to passively listen to ourselves, resulting in bind errors.
 
 \begin{lstlisting}[language=C]
 getaddrinfo(NULL, "300", &hints, &res);
@@ -992,35 +992,35 @@ To make sure that you have enough space, use 64 KiB as storage space.
 
 \section{Layer 7: HTTP}
 
-Layer 7 of the OSI layer deals with application-level interfaces.
-Meaning that you can ignore everything below this layer and treat the Internet as a way of communicating with another computer than can be secure and the session may reconnect.
-Common layer 7 protocols are the following
+Layer 7 of the OSI model deals with application-level interfaces.
+Meaning that you can ignore everything below this layer and treat the Internet as a way of communicating with another computer that can be secure and the session may reconnect.
+Common layer 7 protocols are the following:
 
 \begin{enumerate}
   \item HTTP(S) - Hypertext Transfer Protocol.
     Sends arbitrary data and executes remote actions on a web server.
-    The S standards for secure where the TCP connection uses the TLS protocol to ensure that the communication can't be read easily by an onlooker.
+    The S stands for secure where the TCP connection uses the TLS protocol to ensure that the communication can't be read easily by an onlooker.
   \item FTP - File Transfer Protocol.
-    Transfers a file from one computer to another
+    Transfers a file from one computer to another.
   \item TFTP - Trivial File Transfer Protocol.
     Same as above but using UDP.
   \item DNS - Domain Name Service.
-    Translates hostnames to IP addresses
+    Translates hostnames to IP addresses.
   \item SMTP - Simple Mail Transfer Protocol.
-    Allows one to send plain text emails to an email server
+    Allows one to send plain text emails to an email server.
   \item SSH - Secure SHell.
     Allows one computer to connect to another computer and execute commands remotely.
-  \item Bitcoin - Decentralized cryptocurrency
-  \item BitTorrent - Peer to peer file sharing protocol
+  \item Bitcoin - Decentralized cryptocurrency.
+  \item BitTorrent - Peer to peer file sharing protocol.
   \item NTP - Network Time Protocol.
-    This protocol helps keep your computer's clock synced with the outside world
+    This protocol helps keep your computer's clock synced with the outside world.
 \end{enumerate}
 
 \subsection{What's my name?}
 
 Remember when we were talking before about converting a website to an IP address?
 A system called ``DNS'' (Domain Name Service) is used.
-If the IP address is missing form a machine's cache then it sends a UDP packet to a local DNS server.
+If the IP address is missing from a machine's cache then it sends a UDP packet to a local DNS server.
 This server may query other upstream DNS servers.
 
 DNS by itself is fast but insecure.
@@ -1029,14 +1029,14 @@ For example, a coffee shop internet connection could easily subvert your DNS req
 The way this is usually subverted is that after the IP address is obtained then a connection is usually made over HTTPS.
 HTTPS uses what is called the TLS (formerly known as SSL) to secure transmissions and verify that the hostname is recognized by a Certificate Authority.
 Certificate Authorities often get hacked so be careful of equating a green lock to secure.
-Even with this added layer of security, the united states government has recently issued a request for everyone to upgrade their DNS to DNSSec which includes additional security-focused technologies to verify with high probability that an IP address is truly associated with a hostname.
+Even with this added layer of security, the United States government has recently issued a request for everyone to upgrade their DNS to DNSSec which includes additional security-focused technologies to verify with high probability that an IP address is truly associated with a hostname.
 
-Digression aside, DNS works like this in a nutshell
+Digression aside, DNS works like this in a nutshell:
 \begin{enumerate}
 \item Send a UDP packet to your DNS server
 \item If that DNS server has the packet cached return the result
 \item If not, ask higher-level DNS servers for the answer. Cache and send the result
-  \item If either packet is not answered from within a guessed timeout, resend the request.
+  \item If either packet is not answered within a guessed timeout, resend the request.
 \end{enumerate}
 
 If you want the full bits and pieces, feel free to look at the Wikipedia page.
@@ -1209,7 +1209,7 @@ To shut down an epoll instance, close its file descriptor.
 close(epfd);
 \end{lstlisting}
 
-Also to non-blocking \keyword{read()} and \keyword{write()}, any calls to \keyword{connect()} on a non-blocking socket will also be non-blocking.
+In addition to non-blocking \keyword{read()} and \keyword{write()}, any calls to \keyword{connect()} on a non-blocking socket will also be non-blocking.
 To wait for the connection to complete, use \keyword{select()} or epoll to wait for the socket to be writable.
 There are reasons to use epoll over select but due to interface, there are fundamental problems with doing so.
 
@@ -1286,13 +1286,13 @@ There are several problems with using epoll. Here we will detail a few.
 
 \begin{enumerate}
 \item There are two modes. Level triggered and edge-triggered. Level triggered means that while the file descriptor has events on it, it will be returned by epoll when calling the ctl function. In edge-triggered, the caller will only get the file descriptor once it goes from zero events to an event.
-  This means if you forget to read, write, accept etc on the file descriptor until you get a EWOULDBLOCK, that file descriptor will be dropped.
+  This means if you forget to read, write, accept etc on the file descriptor until you get an EWOULDBLOCK, that file descriptor will be dropped.
 \item If at any point you duplicate a file descriptor and add it to epoll, you will get an event from that file descriptor and the duplicated one.
-\item You can add an epoll object to epoll. Edge triggered and level-triggered modes are the same because ctl will reset the state to zero events
+\item You can add an epoll object to epoll. Edge triggered and level-triggered modes are the same because ctl will reset the state to zero events.
 \item Depending on the conditions, you may get a file descriptor that was closed from Epoll. This isn't a bug. The reason that this happens is epoll works on the kernel object level, not the file descriptor level.
   If the kernel object lives longer and the right flags are set, a process could get a closed file descriptor.
   This also means that if you close the file descriptor, there is no way to remove the kernel object.
-\item Epoll has the \keyword{EPOLLONESHOT} flag which will remove a file descriptor after it has been returned in \keyword{epoll\_wait}
+\item Epoll has the \keyword{EPOLLONESHOT} flag which will remove a file descriptor after it has been returned in \keyword{epoll\_wait}.
 \item Epoll using level-triggered mode could starve certain file descriptors because it is unknown how much data the application will read from each descriptor.
 \end{enumerate}
 
@@ -1386,7 +1386,7 @@ For example, a server may have to process requests from clients that are still r
 
 A secure RPC will need to implement additional security checks including authentication and authorization, validate data and encrypt communication between the client and host.
 A lot of the time, the RPC system can do this efficiently for you. Consider if you have both an RPC client and server on the same machine.
-Starting up a thrift or Google RPC server could validate and route the request to a local socket which wouldn't be sent over the network.
+Starting up a Thrift or Google RPC server could validate and route the request to a local socket which wouldn't be sent over the network.
 
 \subsection{Transferring Structured Data}
 

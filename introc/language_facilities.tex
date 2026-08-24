@@ -60,7 +60,7 @@ const char *ptr = "hi";
 \end{lstlisting}
 
 	    \item \keyword{continue} is a control flow statement that exists only in loop constructions.
-        Continue will skip the rest of the loop body and set the program counter back to the start of the loop before.
+        Continue will skip the rest of the loop body and set the program counter back to the start of the loop.
 
 \begin{lstlisting}[language=C]
 int i = 10;
@@ -158,13 +158,13 @@ for (i = 0; i < 10; i++) {
 
 	      As of the C89 standard, one cannot declare variables inside the \keyword{for} loop initialization block.
         This is because there was a disagreement in the standard for how the scoping rules of a variable defined in the loop would work.
-        It has since been resolved with more recent standards, so people can use the for loop that they know and love today
+        It has since been resolved with more recent standards, so people can use the for loop that they know and love today.
 
 \begin{lstlisting}[language=C]
 for(int i = 0; i < 10; ++i) {
 \end{lstlisting}
 
-	      The order of evaluation for a \keyword{for} loop is as follows
+	      The order of evaluation for a \keyword{for} loop is as follows.
 
 	      \begin{enumerate}
 		      \item Perform the initialization statement.
@@ -176,7 +176,7 @@ for(int i = 0; i < 10; ++i) {
 
 	    \item \keyword{goto} is a keyword that allows you to do conditional jumps.
         Do not use \keyword{goto} in your programs.
-        The reason being is that it makes your code infinitely more hard to understand when strung together with multiple chains, which is called spaghetti code.
+        The reason is that it makes your code infinitely harder to understand when strung together with multiple chains, which is called spaghetti code.
         It is acceptable to use in some contexts though, for example, error checking code in the Linux kernel.
         The keyword is usually used in kernel contexts when adding another stack frame for cleanup isn't a good idea.
         The canonical example of kernel cleanup is as below.
@@ -213,7 +213,7 @@ return;
 	    \item \keyword{if else else-if} are control flow keywords.
         There are a few ways to use these (1) A bare if (2) An if with an else (3) an if with an else-if (4) an if with an else if and else.
         Note that an else is matched with the most recent if.
-        A subtle bug related to a mismatched if and else statement, is the \href{https://en.wikipedia.org/wiki/Dangling\_else}{dangling else problem}.
+        A subtle bug related to a mismatched if and else statement is the \href{https://en.wikipedia.org/wiki/Dangling\_else}{dangling else problem}.
         The statements are always executed from the if to the else.
         If any of the intermediate conditions are true, the if block performs that action and goes to the end of that block.
 
@@ -280,7 +280,7 @@ add_array(a, a) // Undefined
 \end{lstlisting}
 
 	    \item \keyword{return} is a control flow operator that exits the current function.
-        If the function is \keyword{void} then it simply exits the functions.
+        If the function is \keyword{void} then it simply exits the function.
         Otherwise, another parameter follows as the return value.
 
 	      \begin{lstlisting}[language=C]
@@ -316,7 +316,7 @@ printf("%zu", 1);
 
 	      Which then the compiler is allowed to operate on further.
         The compiler must have a complete definition of the type at compile-time - not link time - or else you may get an odd error.
-        Consider the following
+        Consider the following.
 
 	      \begin{lstlisting}[language=C]
 // file.c
@@ -342,7 +342,7 @@ sizeof(str1) //11 because it is an array
 sizeof(str2) //8 because it is a pointer
 \end{lstlisting}
 
-	      Be careful, using sizeof for the length of a string!
+	      Be careful using sizeof for the length of a string!
 
 	\item \keyword{static} is a type specifier with three meanings.
 
@@ -388,7 +388,7 @@ struct hostname google = {"80", "www.google.com", "/"};
 
 	    \item \keyword{switch case default} Switches are essentially glorified jump statements.
         Meaning that you take either a byte or an integer and the control flow of the program jumps to that location.
-        Note that, the various cases of a switch statement fall through. It means that if execution starts in one case, the flow of control will continue to all subsequent cases, until a break statement.
+        Note that the various cases of a switch statement fall through. It means that if execution starts in one case, the flow of control will continue to all subsequent cases, until a break statement.
 	      \\
 	      \begin{lstlisting}[language=C]
 switch(/* char or int */) {
@@ -482,7 +482,7 @@ a.values.blue = 0x0;
 // When writing to a file
 fprintf(picture, "%d", a.encoded);
 \end{lstlisting}
-	    \item \keyword{unsigned} is a type modifier that forces \keyword{unsigned} behavior in the variables they modify.
+	    \item \keyword{unsigned} is a type modifier that forces \keyword{unsigned} behavior in the variables it modifies.
         Unsigned can only be used with primitive int types (like \keyword{int} and \keyword{long}).
         There is a lot of behavior associated with unsigned arithmetic. For the most part, unless your code involves bit shifting, it isn't essential to know the difference in behavior with regards to unsigned and signed arithmetic.
 
@@ -566,7 +566,7 @@ These operators are listed in order of precedence.
 	\item \keyword{-{}-} is the decrement operator. This has the same semantics as the increment operator except that it decreases the value of the variable by one.
 	\item \keyword{sizeof} is the sizeof operator, that is evaluated at the time of compilation. This is also mentioned in the keywords section.
 	\item \keyword{a <mop> b} where \keyword{<mop> in \{+, -, *, \%, /\}} are the arithmetic binary operators. If the operands are both number types, then the operations are plus, minus, times, modulo, and division respectively. If the left operand is a pointer and the right operand is an integer type, then only plus or minus may be used and the rules for pointer arithmetic are invoked.
-	\item \keyword{>>/<<} are the bit shift operators. The operand on the right has to be an integer type whose signedness is ignored unless it is signed negative in which case the behavior is undefined. The operator on the left decides a lot of semantics. If we are left shifting, there will always be zeros introduced on the right. If we are right shifting there are a few different cases
+	\item \keyword{>>/<<} are the bit shift operators. The operand on the right has to be an integer type whose signedness is ignored unless it is signed negative in which case the behavior is undefined. The operator on the left decides a lot of semantics. If we are left shifting, there will always be zeros introduced on the right. If we are right shifting there are a few different cases.
 	      \begin{itemize}
 		    \item If the operand on the left is signed, then the integer is sign-extended.
           This means that if the number has the sign bit set, then any shift right will introduce ones on the left.
@@ -592,7 +592,7 @@ sig >> 2; // 0000000000000000
 	\item \keyword{\&\&} is the logical AND operator.
     If the first operand is zero, the second won't be evaluated and the expression will evaluate to 0. Otherwise, it yields a 1-0 value of the second operand.
 	\item \keyword{||} is the logical OR operator.
-    If the first operand is not zero, then second won't be evaluated and the expression will evaluate to 1.
+    If the first operand is not zero, then the second won't be evaluated and the expression will evaluate to 1.
     Otherwise, it yields a 1-0 value of the second operand.
 	\item \keyword{!} is the logical NOT operator.
     If the operand is zero, then this will return 1.

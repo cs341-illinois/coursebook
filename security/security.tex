@@ -10,7 +10,7 @@ Our goal is to introduce you to the field of making programs do what you want to
 
 \section{Security Terminology and Ethics}
 
-There is some terminology that needs to be explained to get someone who has little to no experience in computer security up to speed
+There is some terminology that needs to be explained to get someone who has little to no experience in computer security up to speed.
 
 \begin{enumerate}
 \item An \textbf{Attacker} is typically the user who is trying to break into the system. Breaking into the system means performing an action that the developer of the system didn't intend. It could also mean accessing a system you shouldn't have access to.
@@ -20,22 +20,22 @@ There is some terminology that needs to be explained to get someone who has litt
 
 \textbf{Danger Will Robinson} Before we let you go much further, it is important that we talk about ethics.
 Before you skip over this section, know that your career quite literally can be terminated over an unethical decision that you might make.
-The computer fraud and security act is a broad, and arguably terrible law, that casts any non-authorized use of a `protected computer' of a computer as a felony.
+The computer fraud and security act is a broad, and arguably terrible law, that casts any non-authorized use of a `protected computer' as a felony.
 Since most computers are involved in some interstate/international commerce (the internet) most computers fall under this category.
 It is important to think about your actions and have some ladder of accountability before executing any attack or defense.
 To be more concrete, make sure supervisors in your organization have given you their blessing before trying to execute an attack.
 
 First if at all possible, get written permission from one of your superiors.
 We do realize that this is a cop-out and this puts the blame up a level, but at the risk of sounding cynical organizations will often put blame on an individual employee to avoid damages \todo{Citation Needed}.
-If not possible, try to go through the engineering steps
+If not possible, try to go through the engineering steps.
 
 \begin{enumerate}
 \item Figure out what the problem is that you are trying to solve.
   You can't solve a problem that you don't fully understand.
-\item Determine whetheryou need to ``hack'' the system.
+\item Determine whether you need to ``hack'' the system.
   A hack is defined generally as trying to use a system unintendedly.
-  First, you should determine if your use is intended or unintended or somewhere in the middle -- get a decision for them.
-  If you can't get that, make a reasonable judgement as to what the intended use.
+  First, you should determine if your use is intended or unintended or somewhere in the middle -- get a decision from them.
+  If you can't get that, make a reasonable judgement as to what the intended use is.
 \item Figure out a reasonable estimate of what the cost is to ``hacking'' the system.
   Get that reasonable estimate checked out with a few engineers so they can highlight things that you may have missed.
   Try to get someone to sign off on the plan.
@@ -57,9 +57,9 @@ In lieu, you must be able to say that you reacted as a ``reasonable'' engineer w
 There are three commonly accepted goals to help understand if a system is secure.
 
 \begin{enumerate}
-\item Information Confidentiality means that only authorized parties are allowed to see a piece of information
-\item Information Integrity means that only authorized parties are allowed the modify a piece of information, regardless of whether they are allowed to see it.
-  It ensures that information remains in complete during transit.
+\item Information Confidentiality means that only authorized parties are allowed to see a piece of information.
+\item Information Integrity means that only authorized parties are allowed to modify a piece of information, regardless of whether they are allowed to see it.
+  It ensures that information remains complete during transit.
 \item Information Availability means information, or a service, is available when it is needed.
 \item The triad above forms the Confidentiality, Integrity, and Availability (CIA) triad, often authenticity is added as well.
 \end{enumerate}
@@ -70,7 +70,7 @@ If any of these are broken, the security of a system (either a service or piece 
 
 \subsection{Stack Smashing}
 
-Consider the following code snippet
+Consider the following code snippet.
 
 \begin{lstlisting}[language=C]
 void greeting(const char *name) {
@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 
 There is no checking on the bounds of strcpy!
 This means that we could potentially pass in a large string and get the program to do something unintended, usually via replacing the return address of the function with the address of malicious code.
-Most strings will cause the program to exit with a segmentation fault
+Most strings will cause the program to exit with a segmentation fault.
 
 \begin{lstlisting}
 $ ./a.out john
@@ -119,8 +119,8 @@ Turning on stack canaries as explained later will fix this issue as well.
 \subsection{Buffer Overflow}
 
 Most of you are already familiar with Buffer Overflows!
-A lot of time they are fairly tame, leading to simple program crashes or funny mistakes.
-Here is a complete example
+A lot of the time they are fairly tame, leading to simple program crashes or funny mistakes.
+Here is a complete example.
 
 \begin{lstlisting}
 > cat main.c
@@ -167,10 +167,10 @@ Out of order execution is an amazing development that has been recently adopted 
 Processors now instead of executing a sequence of instructions (let's say assigning a variable and then another variable) execute instructions before the current one is done \cite[P. 45]{guide2011intel}.
 This is because modern processors spend a lot of time waiting for memory accesses and other I/O driven applications.
 This means that a processor, while it is waiting for an operation to complete, will execute the next few operations.
-If any of the operations would possibly alter the final result, there is a barrier, or if the re-ordering violates the data dependencies of the instructions, the processor keep the instructions in the stated order \cite[P. 296]{guide2011intel}.
+If any of the operations would possibly alter the final result, there is a barrier, or if the re-ordering violates the data dependencies of the instructions, the processor keeps the instructions in the stated order \cite[P. 296]{guide2011intel}.
 
 Naturally, this allowed CPUs to become more energy-efficient while executing more instructions in real-time and increased security risks from complex architectures.
-What system programmers are worried about is that operation with mutex locks among threads are out of order -- meaning that a pure software implementation of a mutex will fail without copious memory barriers.
+What system programmers are worried about is that operations with mutex locks among threads are out of order -- meaning that a pure software implementation of a mutex will fail without copious memory barriers.
 Therefore, the programmer has to acknowledge that updates may be missed among a series of threads, given that there is no barrier, on modern processors.
 
 One of the most prominent bugs concerning this is Spectre \cite{kocher2018spectre}.
@@ -211,7 +211,7 @@ Since the address was never logically reached by the program, the result is disc
 
 Now here is the trick.
 Even though the value of the calculation would have resulted in a SEGFAULT, the bug doesn't clear the cache that refers to the physical memory where 0xCAFE is located. This is an inexact explanation, but essentially how it works.
-Since it is still in the cache, if you again trick the processor to read form the cache using \keyword{val} then you will read a memory value that you wouldn't be able to read normally.
+Since it is still in the cache, if you again trick the processor to read from the cache using \keyword{val} then you will read a memory value that you wouldn't be able to read normally.
 This could include important information such as passwords, payment information, etc.
 
 \subsection{Operating Systems Security}
@@ -241,7 +241,7 @@ This could include important information such as passwords, payment information,
   A page can either be written to or executed but not both.
   This is to prevent buffer overflows where attackers write arbitrary code, often stored on the stack or heap, and execute with the user's permissions.
 \item Firewall.
-  The Linux kernel provides the netfilter module as a way of deciding whetheran incoming connection should be allowed and various other restrictions on connections.
+  The Linux kernel provides the netfilter module as a way of deciding whether an incoming connection should be allowed and various other restrictions on connections.
   This can help with a DDOS attack (explained later).
 \item AppArmor.
   AppArmor is a suite of operating system tools at the userspace level to restrict applications to certain operations.
@@ -250,7 +250,7 @@ This could include important information such as passwords, payment information,
 OpenBSD is an arguably better system for security.
 It has many security oriented features.
 Some of these features have been touched upon earlier.
-An exhaustive list of features is at \url{https://www.openbsd.org/innovations.html}
+An exhaustive list of features is at \url{https://www.openbsd.org/innovations.html}.
 
 \begin{enumerate}
 \item pledge.
@@ -267,8 +267,8 @@ An exhaustive list of features is at \url{https://www.openbsd.org/innovations.ht
   If an attacker manages to find an exploit in the executable, it can only compromise the installation directory.
 \item sudo.
   Sudo is an openBSD project that runs everywhere!
-  Before to run commands as root, one would have to drop to a root shell.
-  Some times that would also mean giving users scary system capabilities.
+  Before, to run commands as root, one would have to drop to a root shell.
+  Sometimes that would also mean giving users scary system capabilities.
   Sudo gives you access to perform commands as root for one-offs without giving a long list of capabilities to all of your users.
 \end{enumerate}
 
@@ -303,14 +303,14 @@ Here are some simple examples of security provided through virtualization
   We won't go into this too much, just know that they exist.
 \item Hardware virtualization technology.
   Hardware vendors have become increasingly aware that physical protections are needed when emulating instructions.
-  As such, there can be switches enabled by the user that allows the operating system to flip into a virtualization mode where instructions are run as normal but are monitored for malicious activity.
+  As such, there can be switches enabled by the user that allow the operating system to flip into a virtualization mode where instructions are run as normal but are monitored for malicious activity.
   This helps the performance and increases the security of virtualized environments.
 \end{enumerate}
 
 \section{Cyber Security}
 
 Cyber Security is arguably the most popular area of security.
-More and more of our systems are hacked over the web, it is important to understand how we can protect against these attacks
+As more and more of our systems are hacked over the web, it is important to understand how we can protect against these attacks.
 
 \subsection{Security at the TCP Level}
 
@@ -322,13 +322,13 @@ More and more of our systems are hacked over the web, it is important to underst
   In TCP, there is no way to verify the identity of who the program is connecting to.
   There are no checks or federated databases in place.
   One just has to trust the DNS server gave a reasonable response which is almost always the incorrect answer.
-  Apart from systems that have an approved white list or a ``secret'' connection protocol, there is little at the TCP level that one can do to stop.
+  Apart from systems that have an approved white list or a ``secret'' connection protocol, there is little at the TCP level that one can do to stop this.
 \item Syn-Ack Sequence Number.
   This is a security improvement.
   TCP features what we call sequence numbers.
   That means that during the SYN-SYN/ACK-ACK dance, a connection starts at a random integer.
   This is important because if an attacker is trying to spoof packets (pretend those packets are coming from your program) that means that the attacker must either correctly guess -- which is hard -- or be in the route that your packet takes to the destination -- much more likely.
-  ISPs help out with the destination problem because it may send a connection through varying routers which makes it hard for an attacker to sit anywhere and be sure that they will receive your packets -- this is why security experts usually advise against using coffee shop wifi for sensitive tasks.
+  ISPs help out with the destination problem because they may send a connection through varying routers which makes it hard for an attacker to sit anywhere and be sure that they will receive your packets -- this is why security experts usually advise against using coffee shop wifi for sensitive tasks.
 \item Syn-Flood.
   Before the first synchronization packet is acknowledged, there is no connection.
   That means a malicious attacker can write a bad TCP implementation that sends out a flood of SYN packets to a hapless server.
@@ -382,13 +382,13 @@ This can get into serious spoofing attacks if one tries to pretend they are a ma
 
 \item Does deadlock affect the availability of a service?
 
-\item Do buffer overflows / underflows affect the integrity of a data?
+\item Do buffer overflows / underflows affect the integrity of data?
 
-\item Why shouldn't stack memory be executable.
+\item Why shouldn't stack memory be executable?
 
 \item HeartBleed is an example of what kind of security issue? Which one(s) of the triad does it break?
 
-\item Meltdown and Spectre is an example of what kind of security issue? Which one(s) of the triad does it break?
+\item Meltdown and Spectre are examples of what kind of security issue? Which one(s) of the triad does it break?
 
 \end{enumerate}
 

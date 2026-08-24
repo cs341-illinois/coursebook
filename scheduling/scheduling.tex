@@ -10,11 +10,11 @@ No, no, no, no, no, no, no!}{Alice in Wonderland}
 
 CPU Scheduling is the problem of efficiently selecting which process to run on a system's CPU cores.
 In a busy system, there will be more ready-to-run processes than there are CPU cores, so the system kernel must evaluate which processes should be scheduled to run and which processes should be executed later.
-The system must also decide whetherit should take a particular process and pause its execution -- along with any associated threads.
+The system must also decide whether it should take a particular process and pause its execution -- along with any associated threads.
 The balance comes from stopping processes often enough where you have a responsive computer but infrequently enough where the programs themselves are spending minimal time context switching.
 It is a hard balance to get right.
 
-The additional complexity of multi-threaded and multiple CPU cores are considered a distraction to this initial exposition so are ignored here.
+The additional complexity of multi-threaded and multiple CPU cores is considered a distraction to this initial exposition so is ignored here.
 Another gotcha for non-native speakers is the dual meaning of ``Time'': The word ``Time'' can be used in both clock and elapsed duration context.
 For example ``The arrival time of the first process was 9:00am.'' and, ``The running time of the algorithm is 3 seconds''.
 
@@ -23,13 +23,13 @@ That means we will assume that the processes are in memory and ready to go.
 The other types of scheduling are long and medium term.
 Long term schedulers act as gatekeepers to the processing world.
 When a process requests another process to be executed, it can either tell the process yes, no, or wait.
-The medium term scheduler deals with the caveats of moving a process from the paused state in memory to the paused state on disk when there are too many processes or some process are known to use an insignificant amount of CPU cycles.
+The medium term scheduler deals with the caveats of moving a process from the paused state in memory to the paused state on disk when there are too many processes or some processes are known to use an insignificant amount of CPU cycles.
 Think about a process that only checks something once an hour.
 
 \section{High Level Scheduler Overview}
 
 Schedulers are pieces of software programs. In fact, you can implement schedulers yourself!
-If you are given a list of commands to exec, a program can schedule them them with SIGSTOP and SIGCONT.
+If you are given a list of commands to exec, a program can schedule them with SIGSTOP and SIGCONT.
 These are called user space schedulers.
 Hadoop and python's celery may do some sort of user space scheduling or deal with the operating system.
 
@@ -38,7 +38,7 @@ Note, please don't memorize all the states.
 
 \begin{enumerate}
 \item New is the initial state. A process has been requested to schedule. All process requests come from fork or clone. At this point the operating system knows it needs to create a new process.
-\item A process moves from the new state to the ready. This means any structs in the kernel are allocated. From there, it can go into ready suspended or running.
+\item A process moves from the new state to the ready state. This means any structs in the kernel are allocated. From there, it can go into ready suspended or running.
 \item Running is the state that we hope most of our processes are in, meaning they are doing useful work. A process could either get preempted, blocked, or terminate. Preemption brings the process back to the ready state. If a process is blocked, that means it could be waiting on a mutex lock, or it could've called sleep -- either way, it willingly gave up control.
 \item On the blocked state the operating system can either turn the process ready or it can go into a deeper state called blocked suspended.
 \item There are so-called deep slumber states called blocked suspended and blocked ready. You don't need to worry about these.
@@ -51,7 +51,7 @@ We won't make much mention of how to factor in voluntarily blocked states and wh
 
 Scheduling affects the performance of the system, specifically the \emph{latency} and \emph{throughput} of the system.
 The throughput might be measured by a system value, for example, the I/O throughput - the number of bits written per second, or the number of small processes that can complete per unit time.
-The latency might be measured by the response time -- elapse time before a process can start to send a response -- or wait time or turnaround time --the elapsed time to complete a task.
+The latency might be measured by the response time -- elapsed time before a process can start to send a response -- or wait time or turnaround time -- the elapsed time to complete a task.
 Different schedulers offer different optimization trade-offs that may be appropriate for desired use.
 There is no optimal scheduler for all possible environments and goals.
 For example, Shortest Job First will minimize total wait time across all jobs but in interactive (UI) environments it would be preferable to minimize response time at the expense of some throughput, while FCFS seems intuitively fair and easy to implement but suffers from the Convoy Effect.
@@ -62,7 +62,7 @@ If a CPU is idle, the arrival time would also be the starting time of execution.
 
 Without preemption, processes will run until they are unable to utilize the CPU any further.
 For example the following conditions would remove a process from the CPU and the CPU would be available to be scheduled for other processes.
-The process terminates due to a signal, is blocked waiting for concurrency primitive, or exits normally.
+The process terminates due to a signal, is blocked waiting for a concurrency primitive, or exits normally.
 Thus once a process is scheduled it will continue even if another process with a high priority appears on the ready queue.
 
 With preemption, the existing processes may be removed immediately if a more preferred process is added to the ready queue.
@@ -90,7 +90,7 @@ A process is placed on the ready queue when it can use a CPU. Some examples incl
 
 \section{Measures of Efficiency}
 
-First some definitions
+First some definitions.
 
 \begin{enumerate}
   \item \keyword{start\_time} is the wall-clock start time of the process (CPU starts working on it)
@@ -108,7 +108,7 @@ Here are measures of efficiency and their mathematical equations
     \keyword{start\_time - arrival\_time}
   \item \keyword{Wait Time} is the \emph{total} wait time or the total time that a process is on the ready queue.
     A common mistake is to believe it is only the initial waiting time in the ready queue.
-    If a CPU intensive process with no I/O takes 7 minutes of CPU time to complete but required 9 minutes of wall-clock time to complete we can conclude that it was placed on the ready-queue for 2 minutes.
+    If a CPU intensive process with no I/O takes 7 minutes of CPU time to complete but requires 9 minutes of wall-clock time to complete we can conclude that it was placed on the ready-queue for 2 minutes.
     For those 2 minutes, the process was ready to run but had no CPU assigned.
     It does not matter when the job was waiting, the wait time is 2 minutes.
     \keyword{end\_time - arrival\_time - run\_time}
@@ -124,7 +124,7 @@ These processes require a tiny amount of CPU time but they are unable to proceed
 These processes are starved until the CPU bound process releases the CPU.
 But, the CPU will rarely be released.
 For example, in the case of an FCFS scheduler, we must wait until the process is blocked due to an I/O request.
-The I/O intensive process can now finally satisfy their CPU needs, which they can do quickly because their CPU needs are small and the CPU is assigned back to the CPU-intensive process again.
+The I/O intensive processes can now finally satisfy their CPU needs, which they can do quickly because their CPU needs are small and the CPU is assigned back to the CPU-intensive process again.
 Thus the I/O performance of the whole system suffers through an indirect effect of starvation of CPU needs of all processes.
 
 This effect is usually discussed in the context of FCFS scheduler; however, a Round Robin scheduler can also exhibit the Convoy Effect for long time-quanta.
@@ -164,7 +164,7 @@ Unless otherwise stated
 \end{itemize}
 
 The processes all arrive at the start and the scheduler schedules the job with the shortest total CPU time.
-The glaring problem is that this scheduler needs to know how long this program will run over time before it ran the program.
+The glaring problem is that this scheduler needs to know how long this program will run over time before it runs the program.
 
 Technical Note: A realistic SJF implementation would not use the total execution time of the process but the burst time or the number of CPU cycles needed to finish a program.
 The expected burst time can be estimated by using an exponentially decaying weighted rolling average based on the previous burst time \cite[Chapter 6]{silberschatz2005operating}.
@@ -212,10 +212,10 @@ If the scheduler wants to compare the shortest \emph{remaining} time left, that 
 
 Here's what our algorithm does.
 It runs P2 because it is the only thing to run.
-Then P1 comes in at 1000ms, P2 runs for 2000ms, so our scheduler preemptively stops P2, and let's P1 run all the way through.
+Then P1 comes in at 1000ms, P2 runs for 2000ms, so our scheduler preemptively stops P2, and lets P1 run all the way through.
 This is completely up to the algorithm because the times are equal.
-Then, P5 Comes in -- since no processes running, the scheduler will run process 5.
-P4 comes in, and since the runtimes are equal P5, the scheduler stops P5 and runs P4.
+Then, P5 comes in -- since no processes are running, the scheduler will run process 5.
+P4 comes in, and since the runtimes are equal to P5, the scheduler stops P5 and runs P4.
 Finally, P3 comes in, preempts P4, and runs to completion.
 Then P4 runs, then P5 runs.
 
@@ -255,10 +255,10 @@ Then P4 runs, then P5 runs.
 \end{itemize}
 
 Processes are scheduled in the order of arrival.
-One advantage of FCFS is that scheduling algorithm is simple
+One advantage of FCFS is that the scheduling algorithm is simple.
 The ready queue is a FIFO (first in first out) queue.
 FCFS suffers from the Convoy effect.
-Here P2 Arrives, then P1 arrives, then P5, then P4, then P3.
+Here P2 arrives, then P1 arrives, then P5, then P4, then P3.
 You can see the convoy effect for P5.
 
 \textbf{Advantages}
@@ -282,7 +282,7 @@ Processes are scheduled in order of their arrival in the ready queue.
 After a small time step though, a running process will be forcibly removed from the running state and placed back on the ready queue.
 This ensures long-running processes refrain from starving all other processes from running.
 The maximum amount of time that a process can execute before being returned to the ready queue is called the time quanta.
-As the time quanta approaches to infinity, Round Robin will be equivalent to FCFS.
+As the time quanta approaches infinity, Round Robin will be equivalent to FCFS.
 
 \begin{figure}[H]
 \centering

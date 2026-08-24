@@ -18,7 +18,7 @@ struct contact {
 struct contact person;
 \end{lstlisting}
 
-We will often use the following typedef, so we can write use the struct name as the full type.
+We will often use the following typedef, so we can use the struct name as the full type.
 
 \begin{lstlisting}[language=C]
 typedef struct contact contact;
@@ -41,7 +41,7 @@ If you compile the code without any optimizations and reordering, you can expect
 All your compiler does is say "reserve this much space".
 Whenever a read or write occurs in the code, the compiler will calculate the offsets of the variable.
 The offsets are where the variable starts at.
-The phone variables starts at the \keyword{0x128}th bytes and continues for sizeof(int) bytes with this compiler.
+The phone variable starts at the \keyword{0x128}th byte and continues for sizeof(int) bytes with this compiler.
 \textbf{Offsets don't determine where the variable ends though}.
 Consider the following hack seen in a lot of kernel code.
 
@@ -61,7 +61,7 @@ person = malloc(sizeof(string) + length+1);
 \end{lstlisting}
 
 Currently, our memory looks like the following image.
-There is nothing in those boxes
+There is nothing in those boxes.
 
 \begin{figure}[H]
 \centering
@@ -94,7 +94,7 @@ strcpy(person->c_str, to_convert);
 \begin{figure}[H]
 \centering
 \includegraphics[width=.7\textwidth]{introc/drawings/memory_model_full.eps}
-\caption{Struct pointing to 11 boxes, 4 filled with 0006, 7 the stirng ``person''}
+\caption{Struct pointing to 11 boxes, 4 filled with 0006, 7 the string ``person''}
 \end{figure}
 
 We can even do a sanity check to make sure that the strings are equal.
@@ -103,7 +103,7 @@ We can even do a sanity check to make sure that the strings are equal.
 strcmp(person->c_str, "person") == 0 //The strings are equal!
 \end{minted}
 
-What that zero length array does is point to the \textbf{end of the struct} this means that the compiler will leave room for all of the elements calculated with respect to their size on the operating system (ints, chars, etc).
+What that zero length array does is point to the \textbf{end of the struct}. This means that the compiler will leave room for all of the elements calculated with respect to their size on the operating system (ints, chars, etc).
 The zero length array will take up no bytes of space.
 Since structs are continuous pieces of memory, we can allocate \textbf{more} space than required and use the extra space as a place to store extra bytes.
 Although this seems like a parlor trick, it is an important optimization because to have a variable length string any other way, one would need to have two different memory allocation calls.
@@ -129,7 +129,7 @@ The heartbleed bug mentioned earlier in the book is partially because of this.
 
 Strings in C are represented as characters in memory.
 The end of the string includes a NUL (0) byte.
-So "ABC" requires four(4) bytes.
+So "ABC" requires four (4) bytes.
 The only way to find out the length of a C string is to keep reading memory until you find the NUL byte.
 C characters are always exactly one byte each.
 
@@ -165,7 +165,7 @@ char arr1[] = "Mark Twain also likes to write";
 char arr2[] = "Mark Twain also likes to write";
 \end{lstlisting}
 
-Here are some common ways to initialize a string include. Where do they reside in memory?
+Here are some common ways to initialize a string. Where do they reside in memory?
 
 \begin{lstlisting}[language=C]
 char *str = "ABC";
