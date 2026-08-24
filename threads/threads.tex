@@ -53,7 +53,7 @@ In a multi-threaded program, there are multiple stacks but only one address spac
 
 
 A program can have more than one thread running inside a process.
-The programget the first thread for free!
+The program get the first thread for free!
 It runs the code you write inside `main'.
 If a program need more threads, it can call \keyword{pthread\_create} to create a new thread using the pthread library.
 You'll need to pass a pointer to a function so that the thread knows where to start.
@@ -507,7 +507,7 @@ int main() {
   char *child_stack = malloc(STACK_SIZE);
   // Remember stacks work by growing down, so we need
   // to give the top of the stack
-  char *stack_top = stack + STACK_SIZE;
+  char *stack_top = child_stack + STACK_SIZE;
 
   // clone create thread
   pid_t pid = clone(thread_start, stack_top, SIGCHLD, NULL);
