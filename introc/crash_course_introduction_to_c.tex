@@ -22,10 +22,10 @@ int main(void) {
     For regular functions having a declaration like \keyword{void func()} means that the function can be called like \keyword{func(1, 2, 3)}, because there is no delimiter.
     \keyword{main} is a special function.
     There are many ways of declaring \keyword{main} but the standard ones are \keyword{int main(void)}, \keyword{int main()}, and \keyword{int main(int argc, char *argv[])}.
-	\item \keyword{printf("Hello World\n");} is a function call.
+	\item \keyword{printf("Hello World\textbackslash n");} is a function call.
     \keyword{printf} is defined as a part of \keyword{stdio.h}.
     The function has been compiled and lives somewhere else on our machine - the location of the C standard library.
-    Just remember to include the header and call the function with the appropriate parameters (a string literal \keyword{"Hello World\n"}).
+    Just remember to include the header and call the function with the appropriate parameters (a string literal \keyword{"Hello World\textbackslash n"}).
     If the newline isn't included, the buffer will not be flushed (i.e. the write will not complete immediately).
 	\item \keyword{return 0}.
     \keyword{main} has to return an integer.

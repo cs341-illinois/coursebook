@@ -42,13 +42,15 @@ $(ORDER_TEX): $(ORDER_TEX_DEP)
 $(CHAPTER_PDF): %.pdf: %.tex
 	echo '\\let\\cleardoublepage\\clearpage' > $@.tmp
 	echo "\includeonly{$(basename $^)}\input{$(MAIN_TEX)}" >> $@.tmp
-	-latexmk -interaction=nonstopmode -quiet -pdflatex=lualatex -f -pdf -jobname="$@" $@.tmp 2>&1 >/dev/null
+	@latexmk -interaction=nonstopmode -quiet -pdflatex=lualatex -pdf -jobname="$@" $@.tmp \
+		|| { echo "*** latexmk failed for $@"; grep -n -A3 '^! ' $@.log 2>/dev/null; rm -f $@.tmp; false; }
 	@mv $@.pdf $@
 	@ls $@ > /dev/null
 	-@rm $@.tmp
 
 $(MAIN_OUT): $(TEX) $(MAIN_TEX) $(BIBS) Makefile $(ORDER_TEX)
-	-@latexmk -quiet -pdflatex=lualatex -interaction=nonstopmode -f -pdf $(MAIN_TEX)
+	@latexmk -quiet -pdflatex=lualatex -interaction=nonstopmode -pdf $(MAIN_TEX) \
+		|| { echo "*** latexmk failed"; grep -n -A3 '^! ' $(basename $(MAIN_TEX)).log 2>/dev/null; false; }
 	@ls $(PDF_TEX) > /dev/null
 	@mv $(PDF_TEX) $(MAIN_OUT)
 	@echo "Finished"

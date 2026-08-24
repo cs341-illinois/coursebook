@@ -13,7 +13,7 @@
 \setlength{\columnsep}{.5in}
 
 \usepackage{fancyhdr}
-\usepackage{xcolor}
+\usepackage[usenames,dvipsnames]{xcolor}
 \usepackage{mdframed}
 \usepackage{setspace}
 \usepackage{mfirstuc}
@@ -40,7 +40,6 @@ columns=flexible,
 breaklines=true
 }
 
-\usepackage[usenames,dvipsnames]{color}
 \definecolor{greencomments}{rgb}{0,0.5,0}
 \definecolor{redstrings}{rgb}{0.9,0,0}
 \definecolor{mygreen}{rgb}{0,0.6,0}
@@ -69,8 +68,6 @@ breaklines=true
 belowskip=20pt,
 xleftmargin=1.5cm,
 xrightmargin=1.5cm,
-xtopmargin=1cm,
-xbottommargin=1cm,
 framexrightmargin=.5em,
 framexleftmargin=.5em,
 frame=bt,
@@ -105,10 +102,7 @@ rulecolor=\color{shadecolor},}
 \newcommand{\keyword}[1]{\underline{\smash{\textbf{\texttt{#1}}}}}
 \newcommand{\todo}[1]{}
 \renewcommand{\todo}[1]{{\color{red} TODO: {#1}}}
-\lstnewenvironment{lstlisting}[1][]%
-  {\noindent\minipage{\linewidth}\medskip
-   \lstset{basicstyle=\ttfamily\footnotesize,frame=single,#1}}
-  {\endminipage}
+\providecommand{\tightlist}{\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 % For pictures
 \newenvironment{proof}{\begin{shaded*}\paragraph{Proof:}}{\hfill$\square$\end{shaded*}}
@@ -125,7 +119,7 @@ rulecolor=\color{shadecolor},}
 
 % this is a terrible hack, but pandoc sucks
 % we have to call any
-\lstnewenvironment{minted}{m}
+\lstnewenvironment{minted}[1]
   {\noindent\minipage{\linewidth}\medskip 
    \lstset{basicstyle=\ttfamily\footnotesize,frame=single,language=#1}}
   {\endminipage}

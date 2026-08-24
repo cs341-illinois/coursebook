@@ -105,7 +105,7 @@ This overwrites the file from the beginning.
 If you only meant to append to the file, you can use \keyword{>>}.
 Unix also allows file descriptor swapping.
 This means that you can take the output going to one file descriptor and make it seem like it's coming out of another.
-The most common one is \keyword{2>&1} which means take the stderr and make it seem like it is coming out of standard out.
+The most common one is \keyword{2>\&1} which means take the stderr and make it seem like it is coming out of standard out.
 This is important because when you use \keyword{>} and \keyword{>>} they only write the standard output of the file.
 There are some examples below.
 
@@ -134,7 +134,7 @@ $ ((head output.txt) | wc) | head -n 1 # Same as above
 $ ./program | tee intermediate.txt | wc
 \end{lstlisting}
 
-The \keyword{&&} and \keyword{||} operator are operators that execute a command sequentially. \keyword{&&} only executes a command if the previous command succeeds, and \keyword{||} always executes the next command.
+The \keyword{\&\&} and \keyword{||} operator are operators that execute a command sequentially. \keyword{\&\&} only executes a command if the previous command succeeds, and \keyword{||} always executes the next command.
 
 \begin{lstlisting}[language=bash]
 $ false && echo "Hello!"
@@ -693,7 +693,6 @@ answer = 42
 pthread_cond_signal(cv);
 \end{lstlisting}
 
-\\
 \begin{center}
 \begin{table}[h]
 \caption{Signaling without Mutex}
@@ -706,7 +705,6 @@ pthread_cond_signal(cv);
 \end{tabular}
 \end{table}
 \end{center}
-\\
 The problem here is that a programmer expects the signal to wake up the waiting thread.
 Since instructions are allowed to be interleaved without a mutex, this causes an interleaving that is confusing to application designers.
 Note that technically the API of the condition variable is satisfied.
@@ -987,7 +985,7 @@ We'll talk about a language go that is similar to C in terms of simplicity and d
 To get the 5 minute introduction, feel free to read \href{https://learnxinyminutes.com/docs/go/}{the learn x in y guide} for go.
 Here is how we create a "thread" in go.
 
-\begin{lstlisting}[language=golang]
+\begin{lstlisting}[language=Go]
 func hello(out) {
     fmt.Println(out);
 }
@@ -1010,7 +1008,7 @@ There is no boilerplate code, or joining, or odd casting \keyword{void *}.
 We can still use mutexes in go to perform our end result.
 Consider the counting example as before.
 
-\begin{lstlisting}[language=golang]
+\begin{lstlisting}[language=Go]
 var counter = 0;
 var mut sync.Mutex;
 var wg sync.WaitGroup;
@@ -1045,7 +1043,7 @@ The counter is responsible for adding numbers to an internal variable.
 We'll send messages between the threads when we want to add and see the value.
 
 
-\begin{lstlisting}[language=golang]
+\begin{lstlisting}[language=Go]
 const (
   addRequest = iota;
   outputRequest = iota;

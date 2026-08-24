@@ -20,7 +20,6 @@ switch(1) {
     break;
 } /* Continues here */
 \end{lstlisting}
-	      \\
 	      In the context of a loop, using it breaks out of the inner-most loop.
         The loop can be either a \keyword{for}, \keyword{while}, or \keyword{do-while} construct
 	      \\
@@ -512,7 +511,6 @@ while(flag) {
     // Do things unrelated to flag
 }
 \end{lstlisting}
-	      \\
 	      The compiler may, since the internals of the while loop have nothing to do with the flag, optimize it to the following even though a function may alter the data.
 	      \\
 	      \begin{lstlisting}[language=C]
@@ -606,7 +604,7 @@ sig >> 2; // 0000000000000000
 	\item \keyword{~~} is the bitwise NOT operator.
     If a bit is set in the input, it will not be set in the output and vice versa.
 	\item \keyword{?:} is the ternary / conditional operator.
-    You put a boolean condition before the \? and if it evaluates to non-zero the element before the colon is returned otherwise the element after is.
+    You put a boolean condition before the ? and if it evaluates to non-zero the element before the colon is returned otherwise the element after is.
     \keyword{1 ? a : b == a} and \keyword{0 ? a : b == b}.
 	\item \keyword{a, b} is the comma operator.
     \keyword{a} is evaluated and then \keyword{b} is evaluated and \keyword{b} is returned.
