@@ -170,7 +170,7 @@ int assumed_to_be_zero;
 This is where all executable instructions are stored, and is readable (function pointers) but not writable.
 The program counter moves through this segment executing instructions one after the other.
 It is important to note that this is the only executable section of the program, by default.
-If a program's code while it's running, the program most likely will SEGFAULT.
+If a program's code is modified while it's running, the program most likely will SEGFAULT.
 There are ways around it, but we will not be exploring these in this course.
 Why doesn't it always start at zero?
 This is because of a security feature called \href{https://en.wikipedia.org/wiki/Address_space_layout_randomization}{address space layout randomization}.
