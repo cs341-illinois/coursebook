@@ -50,7 +50,6 @@ If the threads had accessed the sum at different times then the count would have
 A few of the possible different orderings are below.
 
 Permissible Pattern
-\\
 \begin{center}
 \begin{table}[h]
 \caption{Good Thread Access Pattern}
@@ -63,10 +62,8 @@ Permissible Pattern
 \end{tabular}
 \end{table}
 \end{center}
-\\
 Partial Overlap
 
-\\
 \begin{center}
 \begin{table}[h]
 \caption{Bad Thread Access Pattern}
@@ -78,10 +75,8 @@ Store (i=1 globally) & Load Addr, Add 1 (i=1 locally) \\
 \end{tabular}
 \end{table}
 \end{center}
-\\
 
 Full Overlap
-\\
 \begin{center}
 \begin{table}[h]
 \caption{Horrible Thread Access Pattern}
@@ -92,7 +87,6 @@ Store (i=1 globally) & Store (i=1 globally) \\
 \end{tabular}
 \end{table}
 \end{center}
-\\
 We would like the first pattern of the code being mutually exclusive.
 Which leads us to our first synchronization primitive, a Mutex.
 
@@ -124,7 +118,7 @@ For all mutexes, there are two ways of initializing a mutex:
 \item\keyword{PTHREAD\_MUTEX\_INITIALIZER}
 \item\keyword{pthread\_mutex\_init(pthread\_mutex\_t *mutex, pthread\_mutexattr\_t *attr)}
 \end{itemize}
-The macro \keyword{PTHREAD\_MUTEX\_INITIALIZER} is functionally equivalent to the more general purpose \keyword{pthread\_mutex\_init(&m,NULL)}.
+The macro \keyword{PTHREAD\_MUTEX\_INITIALIZER} is functionally equivalent to the more general purpose \keyword{pthread\_mutex\_init(\&m,NULL)}.
 In other words, \keyword{PTHREAD\_MUTEX\_INITIALIZER} will create a mutex with default properties.
 The \keyword{attr} in the init version includes options to trade performance for additional error-checking, advanced sharing, and more.
 While we recommend using the init function inside of a program for a mutex located on the heap, you can use either method.
@@ -137,7 +131,7 @@ pthread_mutex_destroy(lock);
 free(lock);
 \end{lstlisting}
 
-Once we are finished with the mutex we should also call \keyword{pthread\_mutex\_destroy(&m)} too.
+Once we are finished with the mutex we should also call \keyword{pthread\_mutex\_destroy(\&m)} too.
 Note, a program can only destroy an unlocked mutex, destroy on a locked mutex is undefined behavior.
 Things to keep in mind about initializing and destroying mutexes:
 
@@ -1070,7 +1064,6 @@ It is impossible for two threads to be inside the critical section at the same t
 However, this code suffers from deadlock!
 Suppose two threads wish to enter the critical section at the same time.
 
-\\
 \begin{center}
 \begin{table}[h]
 \caption{Candidate Solution \#2 Analysis}
@@ -1082,7 +1075,6 @@ Time & Thread 1 & Thread 2 \\ \hline
 \end{tabular}
 \end{table}
 \end{center}
-\\
 
 Both processes are now waiting for the other one to lower their flags.
 Neither one will enter the critical section as both are now stuck forever!
@@ -1133,7 +1125,6 @@ The turn flag now points to the second thread.
 While the first thread is still inside the Critical Section, the second thread arrives.
 The second thread can immediately continue into the Critical Section!
 
-\\
 \begin{center}
 \begin{table}[h]
 \caption{Candidate Solution \#4}
@@ -1146,7 +1137,6 @@ Time & Turn & Thread \# 1 & Thread \# 2 \\ \hline
 \end{tabular}
 \end{table}
 \end{center}
-\\
 
 \section{Working Solutions}
 
@@ -1480,7 +1470,7 @@ int main() {
 \end{lstlisting}
 
 We will use the mutex to ensure that only one thread modifies \keyword{remain} at a time.
-The last arriving thread needs to wake up \emph{all} sleeping threads - so we will use \keyword{pthread\_cond\_broadcast(&cv)} not \keyword{pthread\_cond\_signal}.
+The last arriving thread needs to wake up \emph{all} sleeping threads - so we will use \keyword{pthread\_cond\_broadcast(\&cv)} not \keyword{pthread\_cond\_signal}.
 
 \begin{lstlisting}[language=C]
 pthread_mutex_lock(&m);
