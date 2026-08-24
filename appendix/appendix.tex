@@ -93,7 +93,7 @@ $ pwd
 /usr/
 \end{lstlisting}
 
-\item \keyword{man} every system programmers favorite command tells you more about all your favorite functions!
+\item \keyword{man} every system programmer's favorite command tells you more about all your favorite functions!
 \item \keyword{make} executes programs according to a makefile.
 
 \end{enumerate}
@@ -121,7 +121,7 @@ The UNIX philosophy is writing small programs and chaining them together to do n
 Back in the early days, hard disk space was limited and write times were slow.
 Brian Kernighan wanted to maintain the philosophy while omitting intermediate files that take up hard drive space.
 So, the UNIX pipe was born.
-A pipe takes the \keyword{stdout} of the program on its left and feeds it to the \keyword{stdin} of the program on its write.
+A pipe takes the \keyword{stdout} of the program on its left and feeds it to the \keyword{stdin} of the program on its right.
 Consider the command \keyword{tee}.
 It can be used as a replacement for the redirection operators because tee will both write to a file and output to standard out.
 It also has the added benefit that it doesn't need to be the last command in the list. Meaning, that you can write an intermediate result and continue your piping.
@@ -146,7 +146,7 @@ $ false || echo "Hello!"
 
 Each process gets its own dictionary of environment variables that are copied over to the child. Meaning, if the parent changes their environment variables it won't be transferred to the child and vice versa. This is important in the fork-exec-wait trilogy if you want to exec a program with different environment variables than your parent (or any other process).
 
-For example, you can write a C program that loops through all of the time zones and executes the \keyword{date} command to print out the date and time in all locals. Environment variables are used for all sorts of programs so modifying them is important.
+For example, you can write a C program that loops through all of the time zones and executes the \keyword{date} command to print out the date and time in all locales. Environment variables are used for all sorts of programs so modifying them is important.
 
 
 \subsubsection{Struct packing}
@@ -198,7 +198,7 @@ Visually, we'd add two extra boxes to our diagram
 \end{figure}
 
 This padding is common on a 64-bit system.
-Other time, a processor supports unaligned access, leaving the compiler able to pack structs.
+Other times, a processor supports unaligned access, leaving the compiler able to pack structs.
 What does this mean?
 We can have a variable start at a non-64-bit boundary.
 The processor will figure out the rest.
@@ -213,7 +213,7 @@ struct __attribute__((packed, aligned(4))) picture{
 }
 \end{lstlisting}
 
-Now our figure will look like the clean struct as in figure  \ref{fig:clean_struct}
+Now our figure will look like the clean struct as in figure \ref{fig:clean_struct}.
 But now, every time the processor needs to access \keyword{data} or \keyword{encoding},
 two memory accesses are required.
 A possible alternative is to reorder the struct.
@@ -232,7 +232,7 @@ struct picture{
 Each thread uses a stack memory.
 The stack `grows downwards' - if a function calls another function, then the stack is extended to smaller memory addresses.
 Stack memory includes non-static automatic (temporary) variables, parameter values, and the return address.
-If a buffer is too small some data (e.g.~input values from the user), then there is a real possibility that other stack variables and even the return address will be overwritten.
+If a buffer is too small for some data (e.g.~input values from the user), then there is a real possibility that other stack variables and even the return address will be overwritten.
 The precise layout of the stack's contents and order of the automatic variables is architecture and compiler dependent. With a little investigative work, we can learn how to deliberately smash the stack for a particular architecture.
 
 The example below demonstrates how the return address is stored on the stack.
@@ -296,7 +296,7 @@ $
 Here are the rough stages of compiling for gcc.
 
 \begin{enumerate}
-\item Preprocessing: The preprocessor expands all preprocesor directives.
+\item Preprocessing: The preprocessor expands all preprocessor directives.
 \item Parsing: The compiler parses the text file for function declarations, variable declarations, etc.
 \item Assembly Generation: The compiler then generates assembly code for all the functions after some optimizations if enabled.
 \item Assembling: The assembler turns the assembly into 0s and 1s and creates an object file. This object file maps names to pieces of code.
@@ -309,7 +309,7 @@ Further classes will teach you about parsing and assembly -- preprocessing is an
 Most classes won't teach you about the two different types of linking though.
 Static linking a library is similar to combining object files.
 To create a static library, a compiler combines different object files to create one executable.
-A static library is literally is an archive of object files.
+A static library is literally an archive of object files.
 These libraries are useful when you want your executable to be secure, you know all the code that is being included into your executable, and portable, all the code is bundled with your executable meaning no additional installs.
 
 The other type is a dynamic library.
@@ -442,7 +442,7 @@ If you don't have a framework that does this already -- like the Message Passing
 Also, the messages now encounter additional overhead for serializing and deserializing or at the least.
 And a final drawback is that an actor could take an arbitrarily long time to respond to a message, spurring the need for shadow actors who service the same job.
 
-As mentioned, there are frameworks like \href{https://en.wikipedia.org/wiki/Message\_Passing\_Interface}{Message passing interface} that is somewhat based on the actor model and allows distributed systems in high-performance computing to work effectively, but your mileage may vary
+As mentioned, there are frameworks like \href{https://en.wikipedia.org/wiki/Message\_Passing\_Interface}{Message passing interface} that is somewhat based on the actor model and allows distributed systems in high-performance computing to work effectively, but your mileage may vary.
 If you want to read further on the model, feel free to glance over the Wikipedia page listed below.
 \href{https://en.wikipedia.org/wiki/Actor\_model}{Further reading on the actor model}
 
@@ -516,15 +516,15 @@ These are common to the OpenMP framework \cite{silberschatz2005operating}.
   This works well when each of the subproblems takes roughly the same time because there is no additional overhead.
   All you need to do is write a loop and give the map function to each sub-array.
 \item \keyword{dynamic scheduling} as a new problem becomes available to have a thread serve it.
-  This is useful when you don't know how long the scheduling will take
+  This is useful when you don't know how long the scheduling will take.
 \item \keyword{guided scheduling} This is a mix of the above with a mix of the benefits and tradeoffs.
-  You start with static scheduling and move slowly to dynamic if needed
+  You start with static scheduling and move slowly to dynamic if needed.
 \item \keyword{runtime scheduling} You have absolutely no idea how long the problems are going to take.
   Instead of deciding it yourself, let the program decide what to do!
 \end{itemize}
 
 No need to memorize any of the scheduling routines though.
-Openmp is a standard that is an alternative to pthreads.
+OpenMP is a standard that is an alternative to pthreads.
 For example, here is how to parallelize a for loop
 
 \begin{lstlisting}[language=C]
@@ -537,9 +537,9 @@ for (int i = 0; i < n; i++) {
 // #pragma omp parallel for scheduling(static)
 \end{lstlisting}
 
-Static scheduling will divide the problem into fixed-size chunks
-Dynamic scheduling will give a job once the loop is over
-Guided scheduling is Dynamic with chunks
+Static scheduling will divide the problem into fixed-size chunks.
+Dynamic scheduling will give a job once the loop is over.
+Guided scheduling is Dynamic with chunks.
 Runtime is a whole bag of worms.
 
 \section{threads.h}
@@ -572,19 +572,19 @@ If you ask why we don't teach these, there are a few reasons
 
 \section{Modern Filesystems}
 
-While the API for most filesystems have stayed the same on POSIX over the years, the actual filesystems themselves provide lots of important aspects.
+While the API for most filesystems has stayed the same on POSIX over the years, the actual filesystems themselves provide lots of important aspects.
 
 \begin{itemize}
 \item Data Integrity. File systems use journaling and sometimes checksums to ensure that the data written to is valid. Journalling is a simple invention where the file system writes an operation in a journal. If the filesystem crashes before the operation is complete, it can resume the operation when booted up again using the partial journal.
 \item Caching. Linux does a good job of caching file system operations like finding inodes. This makes disk operations seem nearly instant. If you want to see a slow system, look at Windows with FAT/NTFS. Disk operations need to be cached by the application, or it will burn through the CPU.
-\item Speed. On spinning disk machines, data that is toward the end of a metallic platter will spin faster (angular velocity is farther from the center). Programs used this to reduce time loading large files like movies in a video editing piece of software. SSDs don't have this problem because there is no spinning disk, but they will portion off a section of their space to be used as "swap space" for fiels.
+\item Speed. On spinning disk machines, data that is toward the end of a metallic platter will spin faster (angular velocity is farther from the center). Programs used this to reduce time loading large files like movies in a video editing piece of software. SSDs don't have this problem because there is no spinning disk, but they will portion off a section of their space to be used as "swap space" for files.
 \item Parallelism. Filesystems with multiple heads (for physical hard disks) or multiple controllers (for SSDs) can utilize parallelism by multiplexing the PCIe slot with data, always serving some data to the application whenever possible.
 \item Encryption. Data can be encrypted with one or more keys. A good example of this is Apple's APFS file systems.
 \item Redundancy. Sometimes data can be replicated to blocks to ensure that the data is always available.
-\item Efficient Backups. Many of us have data that we can't store on the cloud for one reason or another. It is useful that when a filesystems is either being used as a backup medium or is the source to the backup that it is able to calculate what has changed efficiently, compress files, and sync between the external drive.
-\item Integriy and Bootability. File systems need to be resillient to bit flipping. Most readers have their operating system installed on the same paritition as the file system that they used to do different operations. The file system needs to make sure a stray read or write doesn't destroy the boot sector -- meaning your computer can't start up again.
+\item Efficient Backups. Many of us have data that we can't store on the cloud for one reason or another. It is useful that when a filesystem is either being used as a backup medium or is the source to the backup that it is able to calculate what has changed efficiently, compress files, and sync between the external drive.
+\item Integrity and Bootability. File systems need to be resilient to bit flipping. Most readers have their operating system installed on the same partition as the file system that they used to do different operations. The file system needs to make sure a stray read or write doesn't destroy the boot sector -- meaning your computer can't start up again.
 \item Fragmentation. Just like a memory allocator, allocating space for a file leads to both internal and external fragmentation. The same caching benefit occurs when disk blocks for a single file are located next to each other. File systems need to perform well under low, high, and possible fragmentation usage.
-\item Distributed. Sometimes, the filesystem should be single machine fault tolerant. Hadoop and other distributed file system allow you to do that.
+\item Distributed. Sometimes, the filesystem should be single machine fault tolerant. Hadoop and other distributed file systems allow you to do that.
 \end{itemize}
 
 \subsection{Cutting Edge File systems}
@@ -594,13 +594,13 @@ The one we'd briefly like to touch on is AMD's StoreMI.
 We aren't trying to sell AMD chipsets, but the featureset of StoreMI warrants a mention.
 
 StoreMI is a hardware microcontroller that analyzes how the operating system accesses files and moves files/blocks around to speed up the load time.
-A common usage can be imagined as having a fast, but small capacity SSD and a slower, large capcity HDD.
+A common usage can be imagined as having a fast, but small capacity SSD and a slower, large capacity HDD.
 To make it seem like all the files are on an SSD, the StoreMI matches the pattern of file access.
 If you are starting up Windows, Windows will often access many files in the same order.
 StoreMI takes note of that and when the microcontroller notices it is starting the boot, it will move files from the HDD drive to the SSD before they are requested by the operating system.
-By the time the operating system needs then, they are already on the SSD.
+By the time the operating system needs them, they are already on the SSD.
 StoreMI also does this with other applications as well.
-The technology still has a lot to be desired for, but it is an interesting intersection of data and pattern matching with filesystems.
+The technology still leaves a lot to be desired, but it is an interesting intersection of data and pattern matching with filesystems.
 
 
 \section{Linux Scheduling}
@@ -612,14 +612,14 @@ Here is how the CFS schedules
 \begin{itemize}
 \tightlist
 \item
-  The CPU creates a Red-Black tree with the processes virtual runtime (runtime / nice\_value) and sleeper fairness flag -- if the process is waiting on something, give it the CPU when it is done waiting.
+  The CPU creates a Red-Black tree with the processes' virtual runtime (runtime / nice\_value) and sleeper fairness flag -- if the process is waiting on something, give it the CPU when it is done waiting.
 \item
   Nice values are the kernel's way of giving priority to certain processes, the lower nice value the higher priority.
 \item
   The kernel chooses the lowest one based on this metric and schedules that process to run next, taking it off the queue. Since the red-black tree is self-balancing this operation is guaranteed \(O(log(n))\) (selecting the min process is the same runtime)
 \end{itemize}
 
-Although it is called the Fair Scheduler there are a fair bit of problems.
+Although it is called the Fair Scheduler there are a fair number of problems.
 
 \begin{itemize}
 \tightlist
@@ -638,7 +638,7 @@ Although it is called the Fair Scheduler there are a fair bit of problems.
 
 Yes
 With a bit of searching, it is possible to find it in production for specific simple mobile processors today.
-Peterson's algorithm is used to implement low-level Linux Kernel locks for the Tegra mobile processor (a system-on-chip ARM process and GPU core by Nvidia) \href{https://android.googlesource.com/kernel/tegra.git/+/android-tegra-3.10/arch/arm/mach-tegra/sleep.S\#58}{Link to Lock Source}
+Peterson's algorithm is used to implement low-level Linux Kernel locks for the Tegra mobile processor (a system-on-chip ARM processor and GPU core by Nvidia) \href{https://android.googlesource.com/kernel/tegra.git/+/android-tegra-3.10/arch/arm/mach-tegra/sleep.S\#58}{Link to Lock Source}
 
 In general now, CPUs and C compilers can re-order CPU instructions or use CPU-core-specific local cache values that are stale if another core updates the shared variables.
 Thus a simple pseudo-code to C implementation is too naive for most platforms.
@@ -650,25 +650,25 @@ Consider the following code,
 while(flag2) { /* busy loop - go around again */
 \end{lstlisting}
 
-An efficient compiler would infer that \keyword{flag2} variable is never changed inside the loop, so that test can be optimized to \keyword{while(true)} Using \keyword{volatile} goes some way to prevent compiler optimizations of this kind.
+An efficient compiler would infer that \keyword{flag2} variable is never changed inside the loop, so that test can be optimized to \keyword{while(true)}. Using \keyword{volatile} goes some way to prevent compiler optimizations of this kind.
 
 Let's say that we solved this by telling the compiler not to optimize.
 Independent instructions can be re-ordered by an optimizing compiler or at runtime by an out-of-order execution optimization by the CPU.
 
 A related challenge is that CPU cores include a data cache to store recently read or modified main memory values.
 Modified values may not be written back to main memory or re-read from memory immediately.
-Thus data changes, such as the state of a flag and turn variable in the above example, may not be shared between two CPU codes.
+Thus data changes, such as the state of a flag and turn variable in the above example, may not be shared between two CPU cores.
 
 But there is a happy ending.
 Modern hardware addresses these issues using `memory fences' also known as a memory barrier.
 This prevents instructions from getting ordered before or after the barrier.
 There is a performance loss, but it is needed for correct programs!
 
-Also, there are CPU instructions to ensure that main memory and the CPU's cache is in a reasonable and coherent state.
-Higher-level synchronization primitives, such as \keyword{pthread\_mutex\_lock} are will call these CPU instructions as part of their implementation.
+Also, there are CPU instructions to ensure that main memory and the CPU's cache are in a reasonable and coherent state.
+Higher-level synchronization primitives, such as \keyword{pthread\_mutex\_lock} will call these CPU instructions as part of their implementation.
 Thus, in practice, surrounding critical sections with a mutex lock and unlock calls is sufficient to ignore these lower-level problems.
 
-For further reading, we suggest the following web post that discusses implementing Peterson's algorithm on an x86 process and the Linux documentation on memory barriers.
+For further reading, we suggest the following web post that discusses implementing Peterson's algorithm on an x86 processor and the Linux documentation on memory barriers.
 \begin{enumerate}
 \item \href{http://bartoszmilewski.com/2008/11/05/who-ordered-memory-fences-on-an-x86/}{Memory Fences}
 \item \href{https://www.kernel.org/doc/Documentation/memory-barriers.txt}{Memory Barriers}
@@ -680,7 +680,7 @@ For further reading, we suggest the following web post that discusses implementi
 Condition variables need a mutex for a few reasons.
 One is simply that a mutex is needed to synchronize the changes of the \textit{condition variable} across threads.
 Imagine a condition variable needing to provide its own internal synchronization to ensure its data structures work correctly.
-Often, we use a mutex to synchronize other parts of our code, so why double the cost of using a condition variable.
+Often, we use a mutex to synchronize other parts of our code, so why double the cost of using a condition variable?
 Another example relates to high priority systems.
 Let's examine a code snippet.
 
@@ -885,8 +885,8 @@ void cond_broadcast(cond_t *cv) {
 \end{lstlisting}
 
 So how does this work?
-Instead of allocating space which could lead to deadlock.
-We keep the data structures or the linked list nodes on each thread's stack.
+Instead of allocating space, which could lead to deadlock,
+we keep the data structures or the linked list nodes on each thread's stack.
 The linked list in the wait function is created \textbf{while the thread has the mutex lock.} This is important because we may have a race condition on the insert and removal.
 A more robust implementation would have a mutex per condition variable.
 
@@ -905,7 +905,7 @@ Do you see how a broadcast could cause a spurious wakeup in this case? Consider 
 \begin{enumerate}
 \item Some number more than 2 threads start waiting
 \item Another thread calls broadcast.
-\item That thread calling broadcast is stopped before it wake any threads.
+\item That thread calling broadcast is stopped before it wakes any threads.
 \item Another thread calls wait on the condition variable and adds itself to the queue.
 \item Broadcast iterates through and frees all of the threads.
 \end{enumerate}
@@ -923,7 +923,7 @@ If you broadcast after you unlock, the time that broadcast takes could be infini
 \item First thread is freed, broadcast thread is frozen. Since the mutex is unlocked, it locks and continues.
 \item It continues for such a long time that it calls broadcast again.
 \item With our implementation of a condition variable, this would be terminated.
-  If you had an implementation that appended to the tail of the list and iterated form the head to the tail, this could go on infinitely many times.
+  If you had an implementation that appended to the tail of the list and iterated from the head to the tail, this could go on infinitely many times.
 \end{enumerate}
 
 In high-performance systems, we want to make sure that each thread that calls wait isn't passed by another thread that calls wait.
@@ -970,13 +970,13 @@ In the previous example, the code can now fail.
 
 \subsection{Acquire/Release}
 
-The order of atomic variables don't need to be consistent -- meaning if atomic var y is assigned to 10 then atomic var x to be 0 those don't need to propagate, and a threa could get stale reads.
+The order of atomic variables doesn't need to be consistent -- meaning if atomic var y is assigned to 10 then atomic var x to be 0 those don't need to propagate, and a thread could get stale reads.
 Non-atomic variables have to get updated in all threads though.
 
 \subsection{Consume}
 
 Imagine the same as above except non-atomic variables don't need to get updated in all threads.
-This model was introduced so that there can be an Acquire/Release/Consume model without mixing in Relaxed because Consume is similar to relax.
+This model was introduced so that there can be an Acquire/Release/Consume model without mixing in Relaxed because Consume is similar to relaxed.
 
 \section{Actor Model and Goroutines}
 
@@ -1123,7 +1123,7 @@ And here are the measures we are trying to optimize.
 \end{center}
 
 Different use cases will be discussed after.
-Let the maximum amount of time that a process run be equal to $S$.
+Let the maximum amount of time that a process runs be equal to $S$.
 We will also assume that there are a finite number of processes running at any given time $c$.
 Here are some concepts from queueing theory that you'll need to know that will help simplify the theories.
 
@@ -1163,7 +1163,7 @@ All results are from Jorma Virtamo's lectures on the matter \cite{virtamo}.
   \]
   The response time is simple to calculate, it is the expected number of people ahead of the process in the queue times the expected time to service each of those processes.
   From Little's Law above, we can substitute that for this. Since we already know the value of the waiting time, we can reason about the response time as well.
-\item A discussion of the results is shows something cool discovered by Conway and Al \cite{conway1967theory}.
+\item A discussion of the results shows something cool discovered by Conway and Al \cite{conway1967theory}.
   Any scheduling discipline that isn't preemptive and doesn't take into account the run time of the process or a priority will have the same wait, response, and turnaround time.
   We will often use this as a baseline.
 \end{enumerate}
@@ -1188,7 +1188,7 @@ The proofs are intuitive for people who don't have a background in queueing theo
     E[W] = 0
     \]
 
-  Under a non-strict analysis of processor sharing though, the number of time that the scheduler waits is best approximated by the number of times the scheduler need to wait.
+  Under a non-strict analysis of processor sharing though, the number of times that the scheduler waits is best approximated by the number of times the scheduler needs to wait.
   You'll need $\frac{E[S]}{Q}$ service periods where $Q$ is the quanta, and you'll need about $E[N] * Q$ time in between those periods.
   Leading to an average time of
   \[
@@ -1239,7 +1239,7 @@ The proofs are intuitive for people who don't have a background in queueing theo
 
 \subsection{Non Preemptive Priority}
 
-We will introduce the notation that there are $k$ different priorities and $\rho_i > 0$ is the average load contribution for priority $i$ We are constrained by $\sum\limits_{i=0}^k \rho_i = \rho$.
+We will introduce the notation that there are $k$ different priorities and $\rho_i > 0$ is the average load contribution for priority $i$. We are constrained by $\sum\limits_{i=0}^k \rho_i = \rho$.
 We will also denote $\rho(x) = \sum\limits_{i=0}^x \rho_i$ which is the load contribution for all higher and similar priority processes to $x$.
 The last bit of notation is that we will assume that the probability of getting a process of priority $i$ is $p_i$ and naturally $\sum\limits_{j=0}^k p_j = 1$
  
@@ -1255,7 +1255,7 @@ The last bit of notation is that we will assume that the probability of getting 
     E[W_x] \leq \frac{1 + C}{2}* \frac{\rho}{(1 - \rho(x))^2} * E[S_i]
     \]
     because the addition of $\rho_x$ can only increase the sum, decrease the denominator or increase the overall function.
-  This means that if one is priority 0, then a process only need to wait for the other P0 processes which there should be $\rho C/ (1 - \rho_0)$ P0 processes arrived before to process in FCFS order.
+  This means that if one is priority 0, then a process only needs to wait for the other P0 processes which there should be $\rho C/ (1 - \rho_0)$ P0 processes arrived before to process in FCFS order.
   Then the next priority has to wait for all the others and so on and so forth.
 
   The expected overall wait time is now
@@ -1343,7 +1343,7 @@ We will also introduce an additional term $C_i$ which denotes the variation amon
 \]
 
 \begin{enumerate}
-\item Response Time. Just a head's up, this isn't going to be pretty.
+\item Response Time. Just a heads up, this isn't going to be pretty.
   \[
   E[R_i] = \frac{\sum\limits_{j=0}^i\frac{(1 + C_j)}{2}}{(1 - \rho(x))*( 1 - \rho(x-1))} * E[S_i]
   \]
@@ -1356,11 +1356,11 @@ We will also introduce an additional term $C_i$ which denotes the variation amon
      E[R] = \sum\limits_{i = 0}^k p_i * E[R_i]
   \]
 
-  If lower priorities jobs come in at a higher service time variance, that means our average response times could go down, unless they make up most of the jobs that come in.
+  If lower priority jobs come in at a higher service time variance, that means our average response times could go down, unless they make up most of the jobs that come in.
   Think of the extreme cases.
   If 99\% of the jobs are high priority and the rest make up the other percent, then the other jobs will get frequently interrupted, but high priority jobs will make up most of the jobs, so the expectation is still low.
-  The other extreme is if one percent of jobs are high priority and they come in a low variance.
-  That means the chances the system getting a high priority jobs that will take a long time is low, thus making our response times lower on average.
+  The other extreme is if one percent of jobs are high priority and they come in at a low variance.
+  That means the chances of the system getting a high priority job that will take a long time is low, thus making our response times lower on average.
   We only run into trouble if high priority jobs make up a non-negligible amount, and they have a high variance in service times.
   This brings down response times as well as wait times.
 
@@ -1418,27 +1418,27 @@ Datagrams are formatted as such
     Although it may seem that the header is a constant size, you can include optional parameters to augment the path that is taken or other instructions.
   \item The next two octets specify the total length of the datagram.
     This means this is the header, the data, the footer, and the padding.
-    This is given in multiple of octets, meaning that a value of 20 means 20 octets.
-  \item The next two are Identification number.
+    This is given in multiples of octets, meaning that a value of 20 means 20 octets.
+  \item The next two are the Identification number.
     IP handles taking packets that are too big to be sent over the physical wire and chunks them up.
     As such, this number identifies what datagram this originally belonged to.
   \item The next octet is various bit flags that can be set.
   \item The next octet and half is fragment number.
-    If this packet was fragmented, this is the number this fragment represents
+    If this packet was fragmented, this is the number this fragment represents.
   \item The next octet is time to live.
     So this is the number of "hops" (travels over a wire) a packet is allowed to go.
     This is set because different routing protocols could cause packets to go in circles, the packets must be dropped at some point.
   \item The next octet is the protocol number.
-    Although protocols between different layers of the OCI model are supposed to be black boxes, this is included, so that hardware can peer into the underlying protocol efficiently.
+    Although protocols between different layers of the OSI model are supposed to be black boxes, this is included, so that hardware can peer into the underlying protocol efficiently.
     Take for example IP over IP (yes you can do that!).
     Your ISP wraps IPv4 packets sent from your computer to the ISP in another IP layer and sends the packet off to be delivered to the website.
     On the reverse trip, the packet is "unwrapped" and the original IP datagram is sent to your computer.
     This was done because we ran out of IP addresses, and this adds additional overhead but it is a necessary fix.
     Other common protocols are TCP, UDP, etc.
-  \item The next two octets is an internet checksum.
+  \item The next two octets are an internet checksum.
     This is a CRC that is calculated to make sure that a wide variety of bit errors are detected.
   \item The source address is what people generally refer to as the IP address.
-    There is no verification of this, so one host can pretend to be any IP address possible
+    There is no verification of this, so one host can pretend to be any IP address possible.
   \item The destination address is where you want the packet to be sent to.
     Destinations are crucial to the routing process.
   \item Additional options: Hosts of additional options, this is variadic in size.
@@ -1472,15 +1472,15 @@ At a high level there are two types of routing
 These two protocols have to interplay with each other nicely to make sure that packets are mostly delivered.
 Also, ISPs need to be nice to each other.
 Theoretically, an ISP can handle a smaller load by forwarding all packets to another ISP.
-If everyone does that then, no packets get delivered at all which won't make customers happy at all.
-These two protocols need to be fair so the result works
+If everyone does that, then no packets get delivered at all which won't make customers happy at all.
+These two protocols need to be fair so the result works.
 
 If you want to read more about this, look at the Wikipedia page for routing here \href{https://en.wikipedia.org/wiki/Routing}{Routing}.
 
 \subsection{Fragmentation/Reassembly}
 
 Lower layers like WiFi and Ethernet have maximum transmission sizes.
-The reason being is
+The reasons are
 
 \begin{enumerate}
   \item One host shouldn't crowd the medium for too long
@@ -1493,7 +1493,7 @@ TCP calculates how many datagrams that it needs to construct a packet and ensure
 The reason that we barely use this feature is that if any fragment is lost, the entire packet is lost.
 Meaning that, assuming the probability of receiving a packet assuming each fragment is lost with an independent percentage, the probability of successfully sending a packet drops off exponentially as packet size increases.
 
-As such, TCP slices its packets so that it fits inside on IP datagram.
+As such, TCP slices its packets so that it fits inside one IP datagram.
 The only time that this applies is when sending UDP packets that are too big, but most people who are using UDP optimize and set the same packet size as well.
 
 \subsection{IP Multicast}
@@ -1509,7 +1509,7 @@ Note that this will cause undue stress on the network, so a series of multicasts
 When it comes to Event-Driven IO, the name of the game is to be fast.
 One extra system call is considered slow.
 OpenBSD and FreeBSD have an arguably better model of asynchronous IO from the kqueue model.
-Kqueue is a system call that is exclusive the BSDs and MacOs.
+Kqueue is a system call that is exclusive to the BSDs and MacOs.
 It allows you to modify file descriptor events and read file descriptors all in a single call under a unified interface.
 So what are the benefits?
 
@@ -1754,7 +1754,7 @@ Someone who never lets their code deadlock\ldots{} but when it does, it causes m
 
 Someone who believes zombies are real.
 
-Someone who doesn't trust their process to run correctly without testing with the same data, kernel, compiler, RAM, filesystem size,file system format, disk brand, core count, CPU load, weather, magnetic flux, orientation, pixie dust, horoscope sign, wall color, wall gloss and reflectance, motherboard, vibration, illumination, backup battery, time of day, temperature, humidity, lunar position, sun-moon, co-position\ldots{}
+Someone who doesn't trust their process to run correctly without testing with the same data, kernel, compiler, RAM, filesystem size, file system format, disk brand, core count, CPU load, weather, magnetic flux, orientation, pixie dust, horoscope sign, wall color, wall gloss and reflectance, motherboard, vibration, illumination, backup battery, time of day, temperature, humidity, lunar position, sun-moon, co-position\ldots{}
 
 A system program \ldots{}
 

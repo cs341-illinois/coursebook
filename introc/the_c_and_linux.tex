@@ -1,10 +1,10 @@
 \section{The C and Linux}
 
 Up until this point, we've covered C's language fundamentals.
-We'll now be focusing our attention to C and the POSIX variety of functions available to us to interact with the operating systems.
-We will talk about portable functions, for example \keyword{fwrite} \keyword{printf}.
+We'll now be focusing our attention on C and the POSIX variety of functions available to us to interact with the operating systems.
+We will talk about portable functions, for example \keyword{fwrite} and \keyword{printf}.
 We will be evaluating the internals and scrutinizing them under the POSIX models and more specifically GNU/Linux.
-There are several things to that philosophy that makes the rest of this easier to know, so we'll put those things here.
+There are several things to that philosophy that make the rest of this easier to know, so we'll put those things here.
 
 \subsection{Everything is a file}
 
@@ -42,7 +42,7 @@ write(file_fd, "Hello!", 6);
 \end{lstlisting}
 
 When we say the kernel tries its best, this includes the possibility that the operation could fail for several reasons.
-Some of them are: the file is no longer valid, the hard drive failed, the system was interrupted etc.
+Some of them are: the file is no longer valid, the hard drive failed, the system was interrupted, etc.
 The way that a programmer communicates with the outside system is with system calls.
 An important thing to note is that system calls are expensive.
 Their cost in terms of time and CPU cycles has recently been decreased, but try to use them as sparingly as possible.

@@ -23,7 +23,7 @@ if (answer = 42) { printf("The answer is %d", answer);}
 
 The quick way to fix that is to get in the habit of putting constants first.
 This mistake is common enough in while loop conditions.
-Most modern compilers disallows assigning variables a condition without parenthesis.
+Most modern compilers disallow assigning variables a condition without parenthesis.
 
 \begin{lstlisting}[language=C]
   if (42 = answer) { printf("The answer is %d", answer);}
@@ -48,12 +48,12 @@ Some snippets of code may do the following.
 time_t start = time();
 \end{lstlisting}
 
-The system function `time' actually takes a parameter a pointer to some memory that can receive the time\_t structure or NULL.
+The system function `time' actually takes as a parameter a pointer to some memory that can receive the time\_t structure or NULL.
 The compiler fails to catch this error because the programmer omitted the valid function prototype by including \keyword{time.h}.
 
 More confusingly this could compile, work for decades and then crash.
 The reason for that is that time would be found at link time, not compile-time in the C standard library which almost surely is already in memory.
-Since a parameter isn't being passed, we are hoping the arguments on the stack (any garbage) is zeroed out because if it isn't, time will try to write the result of the function to that garbage which will cause the program to SEGFAULT.
+Since a parameter isn't being passed, we are hoping the arguments on the stack (any garbage) are zeroed out because if it isn't, time will try to write the result of the function to that garbage which will cause the program to SEGFAULT.
 
 \subsection{Extra Semicolons}
 
@@ -73,7 +73,7 @@ for(int i = 0; i < 5; i++){
 \end{lstlisting}
 
 It is OK to have this kind of code because the C language uses semicolons (;) to separate statements.
-If there is no statement in between semicolons, then there is nothing to do and the compiler moves on to the next statement
+If there is no statement in between semicolons, then there is nothing to do and the compiler moves on to the next statement.
 To save a lot of confusion, \textbf{always use braces.}
 It increases the number of lines of code, which is a great productivity metric.
 

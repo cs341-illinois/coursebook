@@ -11,7 +11,7 @@ This section is a short review of System Architecture topics that you'll need fo
 What is assembly? Assembly is the lowest that you'll get to machine language without writing 1's and 0's.
 Each computer has an architecture, and that architecture has an associated assembly language.
 Each assembly command has a 1:1 mapping to a set of 1's and 0's that tell the computer exactly what to do.
-For example, the following in the widely used x86 Assembly language add one to the memory address 20 \cite{wiki:xxx} -- you can also look in \cite{guide2011intel} Section 2A under the add instruction though it is more verbose.
+For example, the following in the widely used x86 Assembly language adds one to the memory address 20 \cite{wiki:xxx} -- you can also look in \cite{guide2011intel} Section 2A under the add instruction though it is more verbose.
 
 \begin{lstlisting}[language={[x86masm]Assembler}]
 add BYTE PTR [0x20], 1
@@ -47,7 +47,7 @@ Most of the time you can assume the instructions are unlocked.
 Ah yes, Caching.
 One of computer science's greatest problems.
 The caching that we are referring to is processor caching.
-If a particular address is already in the cache when reading or writing, the processor will perform the operation on the cache, such as adding and update the actual memory, later because updating memory is slow \cite[Section 3.4]{intel2015improving}.
+If a particular address is already in the cache when reading or writing, the processor will perform the operation on the cache, such as adding, and update the actual memory later, because updating memory is slow \cite[Section 3.4]{intel2015improving}.
 If it isn't, the processor requests a chunk of memory from the memory chip and stores it in the cache, kicking out the least recently used page -- this depends on caching policy, but Intel's does use this.
 This is done because the l3 processor cache is roughly three times faster to reach than the memory in terms of time \cite[p. 22]{levinthal2009performance} though exact speeds will vary based on the clock speed and architecture.
 Naturally, this leads to problems because there are two different copies of the same value, in the cited paper this refers to an unshared line.
@@ -64,7 +64,7 @@ A short but non-complete list could be
 
 Interrupts are an important part of system programming.
 An interrupt is internally an electrical signal that is delivered to the processor when something happens -- this is a hardware interrupt \cite{redhat_hardware_int}.
-Then the hardware decides if this is something that it should handle (e.g., handling keyboard or mouse input for older keyboard and mouses) or it should pass to the operating system.
+Then the hardware decides if this is something that it should handle (e.g., handling keyboard or mouse input for older keyboards and mice) or it should pass to the operating system.
 The operating system then decides if this is something that it should handle (e.g., paging a memory table from disk) or something the application should handle (e.g., a SEGFAULT).
 If the operating system decides that this is something that the process or program should take care of, it sends a \textbf{software fault} and that software fault is then propagated.
 The application then decides if it is an error (SEGFAULT) or not (SIGPIPE for example) and reports to the user.
@@ -75,8 +75,8 @@ An important application of this is how system calls are served!
 There is a well-established set of registers that the arguments go in according to the kernel as well as a system call ``number'' again defined by the kernel.
 Then the operating system triggers an interrupt which the kernel catches and serves the system call \cite{garg_2006}.
 
-Operating system developers and instruction set developers alike didn't like the overhead of causing an interrupt on a system call. Now, systems use \keyword{SYSENTER} and \keyword{SYSEXIT} which has a cleaner way of transferring control safely to the kernel and safely back.
-What safely means is obvious out of the scope for this class, but it persists.
+Operating system developers and instruction set developers alike didn't like the overhead of causing an interrupt on a system call. Now, systems use \keyword{SYSENTER} and \keyword{SYSEXIT} which have a cleaner way of transferring control safely to the kernel and safely back.
+What safely means is obviously out of the scope for this class, but it persists.
 \subsection{Optional: Hyperthreading}
 
 Hyperthreading is a new technology and is in no way shape or form multithreading.
@@ -103,7 +103,7 @@ Let's go through some of the common tools that you'll be working on and need to 
 
 \keyword{ssh} is short for the Secure Shell \cite{openbsd_ssh}.
 It is a network protocol that allows you to spawn a shell on a remote machine.
-Most of the times in this class you will need to ssh into your VM like this
+Most of the time in this class you will need to ssh into your VM like this
 
 \begin{lstlisting}[language=bash]
 $ ssh netid@sem-cs341-VM.cs.illinois.edu
@@ -135,7 +135,7 @@ Host vm
 
 \subsection{git}
 
-What is `git`? Git is a version control system. What that means is git stores the entire history of a directory. We refer to the directory as a repository. So what do you need to know is a few things. First, create your repository with the repo creator. If you haven't already signed into enterprise GitHub, make sure to do so otherwise your repository won't be created for you. After that, your repository is created on the server. Git is a decentralized version control system, meaning that you'll need to get a repository onto your VM. We can do this with a clone. Whatever you do, \textbf{do not go through the README.md tutorial}.
+What is `git`? Git is a version control system. What that means is git stores the entire history of a directory. We refer to the directory as a repository. So what you need to know is a few things. First, create your repository with the repo creator. If you haven't already signed into enterprise GitHub, make sure to do so otherwise your repository won't be created for you. After that, your repository is created on the server. Git is a decentralized version control system, meaning that you'll need to get a repository onto your VM. We can do this with a clone. Whatever you do, \textbf{do not go through the README.md tutorial}.
 
 \begin{lstlisting}[language=bash]
 $ git clone https://github.com/illinois-cs-coursework/fa23_cs341_<netid>
@@ -151,7 +151,7 @@ $ git push origin master
 \end{lstlisting}
 
 Now to explain git well, you need to understand that git for our purposes will look like a linked list.
-You will always be at the head of master, and you will do the edit-add-commit-push loop. We have a separate branch on Github that we push feedback to under a specific branch which you can view on Github website. The markdown file will have information on the test cases and results (like standard out).
+You will always be at the head of master, and you will do the edit-add-commit-push loop. We have a separate branch on Github that we push feedback to under a specific branch which you can view on the Github website. The markdown file will have information on the test cases and results (like standard out).
 
 Every so often git can break. Here is a list of commands you probably won't need to fix your repo
 
@@ -201,7 +201,7 @@ nothing to commit, working directory clean
 Don't panic, but your repository may be in an unworkable state.
 If you aren't nearing a deadline, come to office hours or ask your question on Edstem, and we'd be happy to help.
 In an emergency scenario, delete your repository and re-clone (you'll have to add the \keyword{release} as above).
-\textbf{This will lose any local uncommitted changes. Make sure to copy any files you were working on outside the directory, remove and copy them back in}
+\textbf{This will lose any local uncommitted changes. Make sure to copy any files you were working on outside the directory, remove and copy them back in.}
 
 If you want to learn more about git, there are all but an endless number of tutorials and resources online that can help you.
 Here are some links that can help you out
@@ -225,14 +225,14 @@ To run commands in vim, you can first type \keyword{:} and then a command after 
 For instance, to quit vim, simply type \keyword{:q} (q stands for quit).
 If you have any unsaved edits, you must either save them \keyword{:w}, save and quit \keyword{:wq}, or quit and discard changes \keyword{:q!}.
 To make edits you can either type \keyword{i} to change you into insert mode or \keyword{a} to change to insert mode \textbf{a}fter the cursor.
-This is the basics when it comes to vim.
+These are the basics when it comes to vim.
 In addition to the countless great resources out there on the internet, vim also has its own built-in tutorials set up for beginners.
 To access the interactive tutorial, enter \keyword{vimtutor} in the command line (not inside of vim), and you are all set!
 
 Emacs is more of a way of life, and I don't mean that figuratively.
 A lot of people say that emacs is a powerful operating system lacking a decent text editor.
 This means emacs can house a terminal, gdb session, ssh session, code and a whole lot more.
-It would not be fitting any other way to introduce you to the gnu-emacs any other way than the gnu-docs \url{https://www.gnu.org/software/emacs/tour/}.
+It would not be fitting to introduce you to the gnu-emacs any other way than the gnu-docs \url{https://www.gnu.org/software/emacs/tour/}.
 Just note that emacs is \textit{insanely} powerful.
 You can do almost anything with it.
 There are a fair number of students who like the IDE-aspect of other programming languages.
@@ -254,11 +254,11 @@ I'll give my soapbox for why I like it, but be warned that if you are starting f
 \begin{enumerate}
 \item Extensible. Spacemacs has a clean design written in lisp. There are 100s of packages ready to be installed by editing your spacemacs config and reloading that do everything from syntax checking, automatic static analyzing, etc.
 \item Most of the good parts from vim and emacs. Emacs is good at doing everything by being a fast editor. Vim is good at making fast edits and moving around. Spacemacs is the best of both worlds allowing vim keybindings to all the emacs goodness underneath.
-\item Lots of preconfiguration done. As opposed with a fresh emacs install, a lot of the configurations with language and projects are done for you like neotree, helm, various language layers. All that you have to do is navigate neotree to the base of your project and emacs will turn into an IDE for that programming language.
+\item Lots of preconfiguration done. As opposed to a fresh emacs install, a lot of the configurations with language and projects are done for you like neotree, helm, various language layers. All that you have to do is navigate neotree to the base of your project and emacs will turn into an IDE for that programming language.
 \end{enumerate}
 
 But obviously to each his or her own.
-Many people will argue that editor gurus spend more time editing their editors and actually editing.
+Many people will argue that editor gurus spend more time editing their editors than actually editing.
 
 \subsection{Clean Code}
 
@@ -300,12 +300,12 @@ But for the sake of debugging, it may benefit you in the long run to adopt some 
 
 Use assertions to make sure your code works up to a certain point -- and importantly, to make sure you don't break it later.
 For example, if your data structure is a doubly-linked list, you can do something like \keyword{assert(node == node->next->prev)} to assert that the next node has a pointer to the current node.
-You can also check the pointer is pointing to an expected range of memory address, non-null, -\textgreater{}size is reasonable, etc.
+You can also check the pointer is pointing to an expected range of memory addresses, non-null, -\textgreater{}size is reasonable, etc.
 The \keyword{DEBUG} macro will disable all assertions, so don't forget to set that once you finish debugging \cite{cplusplus_assert}.
 
 Here is a quick example with an assert.
 Let's say that we are writing code using memcpy.
-We would want to put an assert before that checks whether my two memory regions overlap.
+We would want to put an assert before that checks whether the two memory regions overlap.
 If they do overlap, memcpy runs into undefined behavior, so we want to discover that problem sooner rather than later.
 
 \begin{lstlisting}[language=C]
@@ -381,14 +381,14 @@ Let's see what Valgrind will output.
 
 \textbf{Definitely lost}: Memory leak --- you probably forgot to free a memory block.
 
-Valgrind is a effective tool to check for errors at runtime. C is special when it comes to such behavior, so after compiling your program you can use Valgrind to fix errors that your compiler may miss and that usually happens when your program is running.
+Valgrind is an effective tool to check for errors at runtime. C is special when it comes to such behavior, so after compiling your program you can use Valgrind to fix errors that your compiler may miss and that usually happens when your program is running.
 
-For more information, you can refer to the manual \cite{valgrind}
+For more information, you can refer to the manual \cite{valgrind}.
 
 \subsection{TSAN}
 
 ThreadSanitizer is a tool from Google, built into clang and gcc, to help you detect race conditions in your code \cite{threadsanitizercppmanual_2018}.
-Note, that running with tsan will slow your code down a bit. Consider the following code.
+Note that running with tsan will slow your code down a bit. Consider the following code.
 
 \begin{lstlisting}[language=C]
 #include <pthread.h>
@@ -412,7 +412,7 @@ int main() {
 
 We can see that there is a race condition on the variable \keyword{global}.
 Both the main thread and created thread will try to change the value at the same time.
-But, does ThreadSantizer catch it?
+But, does ThreadSanitizer catch it?
 
 \begin{lstlisting}[language=bash]
 $ ./a.out
@@ -635,7 +635,7 @@ What do you actually use to run your program? A shell! A shell is a programming 
 
 The undefined behavior sanitizer is a wonderful tool provided by the llvm project.
 It allows you to compile code with a runtime checker to make sure that you don't do undefined behavior for various categories.
-We will try to include it into our projects, but requires support form all the external libraries that we use so we may not get around to all of them.
+We will try to include it into our projects, but it requires support from all the external libraries that we use so we may not get around to all of them.
 \url{https://clang.llvm.org/docs/UndefinedBehaviorSanitizer.html}
 
 \subsubsection{Undefined behavior - why we can't solve it in general}
@@ -647,7 +647,7 @@ Also please please read Chris Lattner's 3 Part blog post on undefined behavior. 
 
 \subsection{Clang Static Build Tools}
 
-Clang provides a great drop-in replacement tools for compiling programs.
+Clang provides great drop-in replacement tools for compiling programs.
 If you want to see if there is an error that may cause a race condition, casting error, etc, all you need to do is the following.
 
 \begin{lstlisting}[language=bash]
@@ -704,7 +704,7 @@ fstat(3, {st_mode=S_IFREG|0644, st_size=32804, ...}) = 0
 ...
 \end{lstlisting}
 
-If the output is too verbose, you can use trace= with a command delimited list of syscalls to filter all but those calls.
+If the output is too verbose, you can use trace= with a comma delimited list of syscalls to filter all but those calls.
 
 \begin{lstlisting}[language=bash]
 $ strace -e trace=read,write head README.md
@@ -733,7 +733,7 @@ Meaning that you'll have to install it from the source.
 
 When all else fails, print! Each of your functions should have an idea of what it is going to do.
 You want to test that each of your functions is doing what it set out to do and see exactly where your code breaks.
-In the case with race conditions, tsan may be able to help, but having each thread print out data at certain times could help you identify the race condition.
+In the case of race conditions, tsan may be able to help, but having each thread print out data at certain times could help you identify the race condition.
 
 To make printfs useful, try to have a macro that fills in the context by which the printf was called -- a log statement if you will. A simple useful but untested log statement could be as follows.
 Try to make a test and figure out something that is going wrong, then log the state of your variables.
@@ -783,7 +783,7 @@ Try to make a test and figure out something that is going wrong, then log the st
   }
 \end{lstlisting}
 
-And then use as appropriately. Check out the compiling and linking section in the appendix if you have any questions on how a C program gets translated to machine code.
+And then use as appropriate. Check out the compiling and linking section in the appendix if you have any questions on how a C program gets translated to machine code.
 
 \newpage
 
@@ -850,7 +850,7 @@ Questions? Comments? Use the current semester's CS341 Edstem:
 The in-browser virtual machine runs entirely in JavaScript and is fastest in Chrome.
 Note the VM and any code you write is reset when you reload the page, \textbf{so copy your code to a separate document.}
 The post-video challenges are not part of homework 0, but you learn the most by doing rather than passively watching.
-You have some fun with each end-of-video challenge.
+Have some fun with each end-of-video challenge.
 
 HW0 questions are below. Copy your answers into a text document because you'll need to submit them later in the course.
 
@@ -868,7 +868,7 @@ The triangle should look like this, for n = 3:
 **
 ***
 \end{lstlisting}
-\item \textbf{Writing to files} Take your program from "Hello, World!" modify it write to a file called \keyword{hello\_world.txt}. Make sure to use correct flags and a correct mode for \keyword{open()} (\keyword{man 2 open} is your friend).
+\item \textbf{Writing to files} Take your program from "Hello, World!" and modify it to write to a file called \keyword{hello\_world.txt}. Make sure to use correct flags and a correct mode for \keyword{open()} (\keyword{man 2 open} is your friend).
 \item \textbf{Not everything is a system call} Take your program from "Writing to files" and replace \keyword{write()} with \keyword{printf()}. \textit{Make sure to print to the file instead of standard out!}
 \item What are some differences between \keyword{write()} and \keyword{printf()}?
 \end{enumerate}
@@ -880,7 +880,7 @@ Sizing up C types and their limits, \keyword{int} and \keyword{char} arrays, and
 \begin{enumerate}
 \item How many bits are there in a byte?
 \item How many bytes are there in a \keyword{char}?
-\item How many bytes the following are on your machine? \keyword{int}, \keyword{double}, \keyword{float}, \keyword{long}, and \keyword{long long}
+\item How many bytes are the following on your machine? \keyword{int}, \keyword{double}, \keyword{float}, \keyword{long}, and \keyword{long long}
 \item On a machine with 8 byte integers, the declaration for the variable \keyword{data} is \keyword{int data[8]}.
 If the address of data is \keyword{0x7fbd9d40}, then what is the address of \keyword{data+2}?
 \item What is \keyword{data[3]} equivalent to in C? Hint: what does C convert \keyword{data[3]} to before dereferencing the address?
@@ -950,8 +950,8 @@ Create functions to create and destroy a Person (Person's and their names should
 \item \keyword{create()} should take a name and age.
   The name should be copied onto the heap.
   Use malloc to reserve sufficient memory for everyone having up to ten friends.
-  Be sure initialize all fields (why?).
-\item \keyword{destroy()} should free up both the memory of the person struct and all of its attributes that are stored on the heap. Destroying one person keeps other people in tact any other.
+  Be sure to initialize all fields (why?).
+\item \keyword{destroy()} should free up both the memory of the person struct and all of its attributes that are stored on the heap. Destroying one person keeps other people intact.
 \end{enumerate}
 
 \subsection{Chapter 5}
@@ -986,7 +986,7 @@ Explain why this may be insufficient to generate a new build.
 \subsection{Optional: Just for fun}
 
 \begin{itemize}
-\item Convert a song lyrics into System Programming and C code covered in this wiki book and share on the class forum.
+\item Convert song lyrics into System Programming and C code covered in this wiki book and share on the class forum.
 \item Find, in your opinion, the best and worst C code on the web and post the link to the class forum.
 \item Write a short C program with a deliberate subtle C bug and post it on the class forum to see if others can spot your bug.
 \item Do you have any cool/disastrous system programming bugs you've heard about? Feel free to share with your peers and the course staff on the class forum.
@@ -1010,7 +1010,7 @@ Oh, and did I mention that this is an easy way to score points with your interns
 \item Did I Google the error message and a few permutations thereof if necessary? How about StackOverflow.
 \item Did I try commenting out, printing, and/or stepping through parts of the code bit by bit to find out precisely where the error occurs?
 \item \textbf{Did I commit my code to git in case the TAs need more context?}
-\item Did I include the console/GDB/Valgrind output **AND** code surrounding the bug in my the class forum post?
+\item Did I include the console/GDB/Valgrind output **AND** code surrounding the bug in my class forum post?
 \item Have I fixed other segmentation faults unrelated to the issue I'm having?
 \item Am I following good programming practice? (i.e. encapsulation, functions to limit repetition, etc)
 \end{enumerate}

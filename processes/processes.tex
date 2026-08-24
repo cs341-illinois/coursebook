@@ -116,7 +116,7 @@ Every time a new variable is declared, the program moves the stack pointer down 
 This segment of the stack is writable but not executable.
 This behavior is controlled by the no-execute (NX) bit, sometimes called the W\^{}X (write XOR execute) bit, which helps prevent malicious code, such as \keyword{shellcode} from being run on the stack.
 
-If the stack grows too far -- meaning that it either grows beyond a preset boundary or intersects the heap -- the program will stack overflow error, most likely resulting in a SEGFAULT.
+If the stack grows too far -- meaning that it either grows beyond a preset boundary or intersects the heap -- the program will produce a stack overflow error, most likely resulting in a SEGFAULT.
 \textbf{The stack is statically allocated by default; there is only a certain amount of space to which one can write.}
 
 \item \textbf{A Heap}
@@ -128,7 +128,7 @@ The heap starts at the top of the text segment and grows upward, meaning \keywor
 
 We will explore this in more depth in our chapter on memory allocation.
 This area is also writable but not executable.
-One can run out of heap memory if the system is constrained or if a program run out of addresses, a phenomenon that is more common on a 32-bit system.
+One can run out of heap memory if the system is constrained or if a program runs out of addresses, a phenomenon that is more common on a 32-bit system.
 
 \item \textbf{A Data Segment}
 
@@ -174,7 +174,7 @@ If a program's code is modified while it's running, the program most likely will
 There are ways around it, but we will not be exploring these in this course.
 Why doesn't it always start at zero?
 This is because of a security feature called \href{https://en.wikipedia.org/wiki/Address_space_layout_randomization}{address space layout randomization}.
-The reasons for and explanation about this is outside the scope of this class, but it is good to know about its existence.
+The reasons for and explanation about this are outside the scope of this class, but it is good to know about its existence.
 Having said that, this address can be made constant, if a program is compiled with the DEBUG flag.
 
 \end{itemize}
@@ -216,7 +216,7 @@ According to the POSIX specification, a process only needs a thread and address 
 Process forking is a powerful and dangerous tool.
 If you make a mistake resulting in a fork bomb, \textbf{you can bring down an entire system}.
 To reduce the chances of this, limit your maximum number of processes to a small number e.g. 1024 by typing \keyword{ulimit\ -u\ 1024} into a command line.
-Note, this limit is only for the user, which means if you fork bomb, then you won't be able to kill all created process since calling \keyword{killall} requires your shell to \keyword{fork()}.
+Note, this limit is only for the user, which means if you fork bomb, then you won't be able to kill all created processes since calling \keyword{killall} requires your shell to \keyword{fork()}.
 Quite unfortunate.
 One solution is to spawn another shell instance as another user (for example root) beforehand and kill processes from there.
 
@@ -233,7 +233,7 @@ Fork can be \textbf{extremely} dangerous if you aren't prepared for it. \textbf{
 The \keyword{fork} system call clones the current process to create a new process, called a child process.
 This occurs by duplicating the state of the existing process with a few minor differences.
 \begin{itemize}
-    \item The child process  executes the next line after the \keyword{fork()} as the parent process does.
+    \item The child process executes the next line after the \keyword{fork()} as the parent process does.
     \item Just as a side remark, in older UNIX systems, the entire address space of the parent process was directly copied regardless of whether the resource was modified or not. The current behavior is for the kernel to perform a \href{https://en.wikipedia.org/wiki/Copy-on-write}{copy-on-write}, which saves a lot of resources, while being time efficient \cite[Copy-on-write section]{Bovet:2005:ULK:1077084}.
 \end{itemize}
 
@@ -271,7 +271,7 @@ We say may because the contents may be unwritten given a bad program exit as wel
 To write code that is different for the parent and child process, check the return value of \keyword{fork()}.
 If \keyword{fork()} returns -1, that implies something went wrong in the process of creating a new child.
 One should check the value stored in \emph{errno} to determine what kind of error occurred.
-Common errors include \keyword{EAGAIN} and \keyword{ENOENT} Which are essentially "try again -- resource temporarily unavailable", and "no such file or directory".
+Common errors include \keyword{EAGAIN} and \keyword{ENOENT}, which are essentially "try again -- resource temporarily unavailable", and "no such file or directory".
 
 Similarly, a return value of 0 indicates that we are operating in the context of the child process, whereas a positive integer shows that we are in the context of the parent process.
 
@@ -314,7 +314,7 @@ int main(int argc, char **argv) {
 \end{minted}
 
 Another example is below.
-This is the amazing parallel apparent-O(N) \emph{sleepsort} is today's silly winner.
+The amazing parallel apparent-O(N) \emph{sleepsort} is today's silly winner.
 First published on \href{https://dis.4chan.org/read/prog/1295544154}{4chan in 2011}.
 A version of this awful but amusing sorting algorithm is shown below.
 This sorting algorithm may fail to produce the correct output.
@@ -535,11 +535,11 @@ To make a long story short, here is what to do to avoid the example.
 \item If it is a file descriptor or an unbuffered \keyword{FILE*}, it is already prepared.
 \item If the \keyword{FILE*} is open for reading and has been read fully, it is already prepared.
 \item Otherwise, the \keyword{FILE*} \textbf{must} be \keyword{fflush}'ed or closed to be prepared.
-\item If the file descriptor is prepared, it must unactive in the parent process if the child process is using it or vice versa. A process is using it if it is read or written or if that process \textit{for whatever reason} calls \keyword{exit}. If a process uses it when the other process is as well, the whole application's behavior is undefined.
+\item If the file descriptor is prepared, it must be inactive in the parent process if the child process is using it or vice versa. A process is using it if it is read or written or if that process \textit{for whatever reason} calls \keyword{exit}. If a process uses it when the other process is as well, the whole application's behavior is undefined.
 \end{enumerate}
 
 So how would we fix the code?
-We would have to flush the file before forking and refrain from using it until after the \keyword{wait} call -- more on the specifics of this next section.
+We would have to flush the file before forking and refrain from using it until after the \keyword{wait} call -- more on the specifics of this in the next section.
 
 \begin{lstlisting}[language=C]
 size_t buffer_cap = 0;
@@ -558,7 +558,7 @@ while((nread = getline(&buffer, &buffer_cap, file) != -1) {
 \end{lstlisting}
 
 What if the parent process and the child process need to perform asynchronously and need to keep the file handle open?
-Due to event ordering, we need to make sure that parent process knows that the child is finished using \keyword{wait}.
+Due to event ordering, we need to make sure that the parent process knows that the child is finished using \keyword{wait}.
 We'll talk about Inter-Process communication in a later chapter, but now we can use the double fork method.
 
 \begin{lstlisting}[language=C]
@@ -590,7 +590,7 @@ If the parent process wants to wait for the child to finish, it must use \keywor
 \item The child was resumed by a signal
 \end{enumerate}
 
-Note that waitpid can be set to be non-blocking, which means they will return immediately, letting a program know if the child has exited.
+Note that waitpid can be set to be non-blocking, which means it will return immediately, letting a program know if the child has exited.
 
 \begin{lstlisting}[language=C]
 pid_t child_id = fork();
@@ -615,13 +615,13 @@ Here is the behavior of \keyword{waitpid}:
 \item A program \emph{can} wait on a specific process, or it can pass in special values for the \keyword{pid} to do different things (check the man pages).
 \item The last parameter to waitpid is an option parameter.
 The options are listed below:
-  \begin{enunmerate}
-      \item WNOHANG - Return whetherthe searched process has exited
+  \begin{enumerate}
+      \item WNOHANG - Return whether the searched process has exited
       \item WNOWAIT - Wait, but leave the child wait-able by another wait call
       \item WEXITED - Wait for exited children
       \item WSTOPPED - Wait for stopped children
       \item WCONTINUED - Wait for continued children
-  \end{enunmerate}
+  \end{enumerate}
 \end{enumerate}
 
 Exit statuses or the value stored in the integer pointer for both of the calls above are explained below.
@@ -652,12 +652,12 @@ if (child > 0) {
 
 A process can only have 256 return values, the rest of the bits are informational, and the information is extracted with bit shifting.
 However, the kernel has an internal way of keeping track of signaled, exited, or stopped processes.
-This API is abstracted so that that the kernel developers are free to change it at will.
+This API is abstracted so that the kernel developers are free to change it at will.
 Remember: these macros only make sense if the precondition is met.
 For example, a process' exit status won't be defined if the process isn't signaled.
 The macros will not do the checking for the program, so it's up to the programmer to make sure the logic is correct.
 As an example above, the program should use the \keyword{WIFSTOPPED} to check if a process was stopped and then the \keyword{WSTOPSIG} to find the signal that stopped it.
-As such, there is no need to memorize the following. This is a high-level overview of how information is stored inside the status variables. From the \keyword{sys/wait.h} of an old Berkeley Standard Distribution(BSD) kernel \cite{sys/wait.h}:
+As such, there is no need to memorize the following. This is a high-level overview of how information is stored inside the status variables. From the \keyword{sys/wait.h} of an old Berkeley Standard Distribution (BSD) kernel \cite{sys/wait.h}:
 
 \begin{lstlisting}[language=C]
 /* If WIFEXITED(STATUS), the low-order 8 bits of the status. */
@@ -674,14 +674,14 @@ There is a convention about exit codes.
 If the process exited normally and everything was successful, then a zero should be returned.
 Beyond that, there aren't too many widely accepted conventions.
 If a program specifies return codes to mean certain conditions, it may be able to make more sense of the 256 error codes.
-For example, a program could return \keyword{1} if the program went to stage 1 (like writing to a file) \keyword{2} if it did something else, etc.
+For example, a program could return \keyword{1} if the program went to stage 1 (like writing to a file), \keyword{2} if it did something else, etc.
 Usually, UNIX programs are not designed to follow this policy, for the sake of simplicity.
 
 
 \subsection{Zombies and Orphans}
 
 It is good practice to wait on your process' children.
-If a parent doesn't wait on your children they become, what are called zombies.
+If a parent doesn't wait on your children they become what are called zombies.
 Zombies are created when a child terminates and then takes up a spot in the kernel process table for your process.
 The process table keeps track of the following information about a process: PID, status, and how it was killed.
 The only way to get rid of a zombie is to wait on your children.
@@ -826,7 +826,7 @@ POSIX details all of the semantics that exec needs to cover \cite{exec_2018}.
 Note the following:
 
 \begin{enumerate}
-\item File descriptors are preserved after an exec. That means if a program open a file and doesn't to close it, it remains open in the child.
+\item File descriptors are preserved after an exec. That means if a program opens a file and doesn't close it, it remains open in the child.
   This is a problem because usually the child doesn't know about those file descriptors. Nevertheless, they take up a slot in the file descriptor table and could possibly prevent other processes from accessing the file.
   The one exception to this is if the file descriptor has the Close-On-Exec flag set (O\_CLOEXEC) -- we will go over setting flags later.
 \item Various signal semantics: the executed processes preserve the signal mask and the pending signal set but do not preserve the signal handlers since it is a different program.
@@ -916,8 +916,8 @@ $ echo $PATH
 /usr/local/sbin:/usr/bin:...
 \end{lstlisting}
 
-How would a program later these in C?
-They can call \keyword{getenv} and \keyword{setenv} function respectively.
+How would a program alter these in C?
+They can call \keyword{getenv} and \keyword{setenv} functions respectively.
 
 \begin{lstlisting}[language=C]
 char* home = getenv("HOME"); // Will return /home/user
@@ -961,7 +961,7 @@ Note that we aren't expecting you to memorize the man page.
 \item Using exec with a path
 \item Understanding what fork and exec and waitpid do. E.g. how to use their return values.
 \item SIGKILL vs SIGSTOP vs SIGINT.
-\item What signal is sent when press CTRL-C at a terminal?
+\item What signal is sent when you press CTRL-C at a terminal?
 \item Using kill from the shell or the kill POSIX call.
 \item Process memory isolation.
 \item Process memory layout (where is the heap, stack etc; invalid memory addresses).
@@ -988,7 +988,7 @@ Note that we aren't expecting you to memorize the man page.
     \item
           My terminal is anchored to PID = 1337 and has become unresponsive. Write me the terminal command and the C code to send \keyword{SIGQUIT} to it.
     \item
-          Can one process alter another processes memory through normal means? Why?
+          Can one process alter another process' memory through normal means? Why?
     \item
           Where is the heap, stack, data, and text segment? Which segments can a program write to? What are invalid memory addresses?
     \item

@@ -29,7 +29,7 @@ Put in multiple layers of abstraction and checks to make sure that data isn't le
 For example the above is a problem insofar as getting information back to the attackers if it is allowed to communicate with them.
 This means that you can harden your machine ports by disallowing connections on all but a few ports.
 Also, you can harden your system to never perform exec calls to perform tasks (i.e. perform an exec call to update a value) and instead do it in C or your favorite programming language of choice.
-Although you don't have flexibility, you have peace of mind what you allow users to do.
+Although you don't have flexibility, you have peace of mind about what you allow users to do.
 
 \section{Heartbleed}
 
@@ -37,7 +37,7 @@ Required: Intro to C
 
 To put it simply, there were no bounds on buffer checking.
 The SSL Heartbeat is super simple.
-A server sends a string of a certain length, and the second server is supposed to send the string of the length back.
+A server sends a string of a certain length, and the second server is supposed to send the string of that length back.
 The problem is someone can maliciously change the size of the request to larger than what they sent (i.e. send ``cat'' but request 500 bytes) and get crucial information like passwords from the server.
 There is a \href{https://xkcd.com/1354/}{Relevant XKCD} on it.
 
@@ -51,7 +51,7 @@ Required: Processes/Virtual Memory
 \href{https://en.wikipedia.org/wiki/Dirty_COW}{Dirty Cow}
 
 A process usually has access to a set of read-only mappings of memory that if they try to write to they get a segfault.
-Dirty COW is a vulnerability where a bunch of threads attempts to access the same piece of memory at the same time hoping that one of the threads flips the NX bit and the writable bit.
+Dirty COW is a vulnerability where a bunch of threads attempt to access the same piece of memory at the same time hoping that one of the threads flips the NX bit and the writable bit.
 After that, an attacker can modify the page.
 This can be done to the effective user id bit and the process can pretend it was running as root and spawn a root shell, allowing access to the system from a normal shell.
 
@@ -59,7 +59,7 @@ Lessons Learned: Spinlocks in the kernel are hard.
 
 \section{Meltdown}
 
-There is an example of this in the background section
+There is an example of this in the background section.
 
 \section{Spectre}
 
@@ -71,11 +71,11 @@ Required sections: Synchronization and a bit of Scheduling
 
 \href{https://www.microsoft.com/en-us/research/people/mbj/#!just-for-fun}{Pathfinder Link}
 
-The mars pathfinder was a mission that tried to collect climate data on Mars. The finder uses a single bus to communicate with different parts. Since this was 1997, the hardware itself didn't have advanced features like efficient locking so it was up to the operating system developers to regulate that with mutexes. The architecture was pretty simple. There was a thread that controlled data along the information bus, communications thread, and data collection thread in with high, regular, and low priorities with respect to scheduling. The other caveat is that if an interrupt happened at some interval and a task is running and a task is to be scheduled, the task that has the higher priority wins.
+The Mars Pathfinder was a mission that tried to collect climate data on Mars. The finder uses a single bus to communicate with different parts. Since this was 1997, the hardware itself didn't have advanced features like efficient locking so it was up to the operating system developers to regulate that with mutexes. The architecture was pretty simple. There was a thread that controlled data along the information bus, communications thread, and data collection thread with high, regular, and low priorities with respect to scheduling. The other caveat is that if an interrupt happened at some interval and a task is running and a task is to be scheduled, the task that has the higher priority wins.
 
 The pattern that caused everything to start failing was the data collection thread starts writing to the bus, the information bus thread is waiting on the data.
-Then out the communication thread comes in to preempt the other lower priority thread \textbf{while the lower priority thread still held the mutex}. This means when the regular priority thread tried to lock the bus, the rover would deadlock.
-After some time the system would reset but isn't good to leave to chance.
+Then the communication thread comes in to preempt the other lower priority thread \textbf{while the lower priority thread still held the mutex}. This means when the regular priority thread tried to lock the bus, the rover would deadlock.
+After some time the system would reset, but that isn't good to leave to chance.
 
 Moral of the lesson? Don't have the applications themselves deal with the synchronization. Define a module that handles mutex locking and have the module communicate through files, IPC, etc.
 
@@ -93,11 +93,11 @@ Required sections: Intro to C
 
 \href{https://en.wikipedia.org/wiki/Year_2038_problem}{2038}
 
-This is issue that hasn't happened yet.
+This is an issue that hasn't happened yet.
 Unix timestamps are kept as the number of seconds from a particular day (Jan 1st 1970).
 This is stored as a 32 bit signed integer.
 In March of 2038, this number will overflow.
-This isn't a problem for most modern operating system who store 64 bit signed integers which is enough to keep us going until the end of time, but it is a problem for embedded devices that we can't change the internal hardware to.
+This isn't a problem for most modern operating systems that store 64 bit signed integers which is enough to keep us going until the end of time, but it is a problem for embedded devices that we can't change the internal hardware to.
 Stay tuned to see what happens.
 
 Lessons learned: Plan like your application will be huge one day.
@@ -125,7 +125,7 @@ Apple probably knows why this happened, but our guess is that the parsing of the
 When you get a segfault in the kernel, your kernel panics, and the entire device reboots.
 Undefined behavior means anything though, and a lot of varied things did happen with this bug.
 
-Lessons Learned: Fuzz your kernel
+Lessons Learned: Fuzz your kernel.
 
 \section{Apple SSL Verification}
 
@@ -149,15 +149,15 @@ Picture this.
 It's 2005, Limewire came a few years prior, the internet was a growing pool of illegal activities -- not to say that is fixed now.
 Sony knew that it didn't have the computing power to police all the interwebs or get around the various technologies people were using to get around copyright protection.
 So what did they do?
-With 22 million Music CDs, they required users to install a rootkit on their operating system, so Sony can monitor the device for unethical activities.
+With 22 million Music CDs, they required users to install a rootkit on their operating system, so Sony could monitor the device for unethical activities.
 
-Privacy concerns aside, and believe me there are a lot of them, the big problem was that this rootkit is a backdoor for everyone's systems if programmed incorrectly.
+Privacy concerns aside, and believe me there are a lot of them, the big problem was that this rootkit was a backdoor for everyone's systems if programmed incorrectly.
 A rootkit is a piece of code usually installed kernel-side that keeps track of almost anything that a user does.
 What websites visited, what clicks or keys typed etc.
 If a hacker finds out about this and there is a way to access that API from the user space level, that means any program can find out important information about your device.
 Needless to say, people were angry.
 
-Lessons Learned: Get an antivirus and/or apparmor and make sure that an application is only requesting permissions that make sense. If you are torn, try something like Windows sandbox or keep a Sacrificial VM around to see if installing it makes your computer horrible. Don't trust certificates trust code.
+Lessons Learned: Get an antivirus and/or apparmor and make sure that an application is only requesting permissions that make sense. If you are torn, try something like Windows sandbox or keep a Sacrificial VM around to see if installing it makes your computer horrible. Don't trust certificates, trust code.
 
 \section{Civilization and Ghandi}
 
@@ -200,7 +200,7 @@ Required Sections: Intro to C/Malloc
 Appnexus uses an asynchronous garbage collector that reclaims different parts of the heap when it believes that objects are unused.
 The architecture is that an element is in the unavailable list and then it is taken out to a to-be-freed list.
 After a certain time if that element was unused, it is freed and added to the free list.
-This is fine until two thread try to delete the same object at once, adding to the list twice. After less time, one of the objects was deleted, the delete was announced to other computers.
+This is fine until two threads try to delete the same object at once, adding to the list twice. After less time, one of the objects was deleted, the delete was announced to other computers.
 
 Lessons Learned: Avoid making hacky software if you need to. Modularize, and set memory limits, and monitor different parts of your code and optimize by hand. There is no general catch-all garbage collector that fits everyone. Even highly tested ones like the JVM need some nudges if you want to get performance out of them.
 

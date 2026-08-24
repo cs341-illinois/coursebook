@@ -2,13 +2,13 @@
 
 \epigraph{If you want to teach systems, don't drum up the programmers, sort the issues, and make PRs. Instead, teach them to yearn for the vast and endless C.}{Antoine de Saint-Exup\'{e}ry (With edits)}
 
-Note: This chapter is long and goes into a lot of detail. Feel free to gloss over parts with which you have experience in.
+Note: This chapter is long and goes into a lot of detail. Feel free to gloss over parts with which you have experience.
 
-C is the de-facto programming language to do serious system serious programming.
+C is the de-facto programming language to do serious system programming.
 Why?
 Most kernels have their API accessible through C.
-The Linux kernel \cite{Love} and the XNU kernel \cite{xnukernel} of which MacOS is based on are written in C and have C API - Application Programming Interface.
-The Windows Kernel uses C++, but doing system programming on that is much harder on windows that UNIX for novice system programmers.
+The Linux kernel \cite{Love} and the XNU kernel \cite{xnukernel} on which MacOS is based are written in C and have a C API - Application Programming Interface.
+The Windows Kernel uses C++, but doing system programming on that is much harder on Windows than UNIX for novice system programmers.
 C doesn't have abstractions like classes and Resource Acquisition Is Initialization (RAII) to clean up memory.
 C also gives you much more of an opportunity to shoot yourself in the foot, but it lets you do things at a much more fine-grained level.
 

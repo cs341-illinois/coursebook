@@ -9,7 +9,7 @@
 Deadlock is defined as when a system cannot make any forward progress.
 We define a system for the rest of the chapter as a set of rules by which a set of processes can move from one state to another, where a state is either working or waiting for a particular resource.
 Forward progress is defined as if there is at least one process working or we can award a process waiting for a resource that resource.
-In a lot of systems, Deadlock is avoided by ignoring the entire concept \cite[P.237]{silberschatz2006operating}.
+In a lot of systems, deadlock is avoided by ignoring the entire concept \cite[P.237]{silberschatz2006operating}.
 Have you heard about turn it on and off again?
 For products where the stakes are low (User Operating Systems, Phones), it may be more efficient to allow deadlock.
 But in the cases where ``failure is not an option'' - Apollo 13, you need a system that tracks, breaks, or prevents deadlocks.
@@ -105,9 +105,9 @@ These are known as the Coffman Conditions \cite{coffman1971system}.
 	$\leftarrow$ If the four conditions are apparent, the system is deadlocked.
 	We will prove that if the system is not deadlocked, the four conditions are not apparent.
 	Though this proof is not formal, let us build a system with the three requirements not including circular wait.
-	Let assume that there is a set of processes $P = \{p_1, p_2, ..., p_n\}$ and there is a set of resources $R = \{r_1, r_2, ..., r_m\}$.
+	Let us assume that there is a set of processes $P = \{p_1, p_2, ..., p_n\}$ and there is a set of resources $R = \{r_1, r_2, ..., r_m\}$.
 	For simplicity, a process can only request one resource at a time but the proof can be generalized to multiple.
-	Let assume that the system is a state at time $t$.
+	Let us assume that the system is in a state at time $t$.
 	Let us assume that the state of the system is a tuple $(h_t, w_t)$ where there are two functions $h_t: R \rightarrow P \cup \{\text{unassigned}\}$ that maps resources to the processes that own them (this is a function, meaning that we have mutual exclusion) and or unassigned and $w_t: P \rightarrow R \cup \{\text{satisfied}\}$ that maps the requests that each process makes to a resource or if the process is satisfied.
 	If the process is satisfied, we consider the work trivial and the process exits, releasing all resources -- this can also be generalized.
 	Let $L_t \subseteq P \times R$ be a set of lists of requests that a process uses to release a resource at any given time.
@@ -138,9 +138,9 @@ Without loss of generality, that means a student would have to be waiting on a p
 We have contradicted ourselves because one student grabbed the paper without grabbing the pen, so deadlock fails to occur.
 Breaking hold and wait could be that the students try to get the pen and then the paper and if a student fails to grab the paper then they release the pen.
 This introduces a new problem called \textit{livelock} which will be discussed later.
-Breaking preemption means that if the two students are in deadlock the teacher can come in and break up the deadlock by giving one of the students a held item or tell both students to put the items down.
+Breaking preemption means that if the two students are in deadlock the teacher can come in and break up the deadlock by giving one of the students a held item or telling both students to put the items down.
 
-livelock relates to deadlock.
+Livelock relates to deadlock.
 Consider the breaking hold-and-wait solution as above.
 Though deadlock is avoided, if the philosopher picks up the same device again and again in the same pattern, no work will be done.
 Livelock is generally harder to detect because the processes generally look like they are working to the outside operating system whereas in deadlock the operating system generally knows when two processes are waiting on a system-wide resource.
@@ -176,7 +176,7 @@ The operating system chooses a random resource to break \keyword{hold-and-wait}.
 Now even though a user can craft a program where breaking hold and wait on each resource will result in a livelock, this doesn't happen as often on machines that run programs in practice or the livelock that does happen happens for a couple of cycles.
 These systems are good for products that need to maintain a non-deadlocked state but can tolerate a small chance of livelock for a short time.
 
-In addition, we have the \textit{Banker's Algorithm}. Which the basic premise is the bank never runs dry, which prevents livelock. Feel free to check out the appendix for more details.
+In addition, we have the \textit{Banker's Algorithm}, whose basic premise is that the bank never runs dry, which prevents livelock. Feel free to check out the appendix for more details.
 
 \section{Dining Philosophers}
 
@@ -184,7 +184,7 @@ The Dining Philosophers problem is a classic synchronization problem.
 Imagine we invite $n$ (let's say 6) philosophers to a meal.
 We will sit them at a table with 6 chopsticks, one between each philosopher.
 A philosopher alternates between wanting to eat or think.
-To eat the philosopher must pick up the two chopsticks either side of their position.
+To eat the philosopher must pick up the two chopsticks on either side of their position.
 The original problem required each philosopher to have two forks, but one can eat with a single fork so we rule this out.
 However, these chopsticks are shared with his neighbor.
 
@@ -220,9 +220,9 @@ void* philosopher(void* forks){
 
 This looks good but.
 What if everyone picks up their left fork and is waiting on their right fork? We have deadlocked the program.
-It is important to note that deadlock doesn't happen all the time and the probability that this solution deadlock goes down as the number of philosophers goes up.
-What is important to note is that eventually that this solution will deadlock, letting threads starve which is bad.
-Here is a simple resource allocation graph that shows how the system could be deadlocked
+It is important to note that deadlock doesn't happen all the time and the probability that this solution deadlocks goes down as the number of philosophers goes up.
+What is important to note is that eventually this solution will deadlock, letting threads starve which is bad.
+Here is a simple resource allocation graph that shows how the system could be deadlocked.
 
 \begin{figure}[H]
 	\centering
@@ -275,7 +275,7 @@ We have now livelocked our solution! Our poor philosophers are still starving, s
 
 \section{Viable Solutions}
 
-The naive arbitrator solution has one arbitrator a mutex for example.
+The naive arbitrator solution has one arbitrator, a mutex for example.
 Have each of the philosophers ask the arbitrator for permission to eat or trylock an arbitrator mutex.
 This solution allows one philosopher to eat at a time.
 When they are done, another philosopher can ask for permission to eat.
@@ -290,7 +290,7 @@ Assuming that all the philosophers are good-willed, the arbitrator needs to be f
 In practical systems, the arbitrator tends to give forks to the same processes because of scheduling or pseudo-randomness.
 Another important thing to note is that this prevents deadlock for the entire system.
 But in our model of dining philosophers, the philosopher has to release the lock themselves.
-Then, you can consider the case of the malicious philosopher (let's say Descartes because of his Evil Demons) could hold on to the arbitrator forever.
+Then, you can consider the case where a malicious philosopher (let's say Descartes because of his Evil Demons) could hold on to the arbitrator forever.
 He would make forward progress and the system would make forward progress but there is no way of ensuring that each process makes forward progress without assuming something about the processes or having true preemption -- meaning that a higher authority (let's say Steve Jobs) tells them to stop eating forcibly.
 
 
@@ -316,7 +316,7 @@ No.
 How about 2 philosophers?
 3?
 You can see where this is going.
-Stallings' \cite[P. 280]{stalling} solution removes philosophers from the table until deadlock is not possible -- think about what the magic number of philosophers at the table.
+Stallings' \cite[P. 280]{stalling} solution removes philosophers from the table until deadlock is not possible -- think about what the magic number of philosophers at the table is.
 The way to do this in the actual system is through semaphores and letting a certain number of philosophers through.
 This has the benefit that multiple philosophers can be eating.
 
@@ -333,8 +333,8 @@ This works best with timeouts or forced context switches to ensure bounded wait 
 	A philosopher $p_i$ needs resource $r_{i-1 \mod n}$ and $r_{i + 1 \mod n}$.
 	Without loss of generality, let us take $p_i$ out of the picture.
 	Each resource had exactly two philosophers that could use it.
-	Now resources $r_{i-1 \mod n}$ and $r_{i + 1 \mod n}$ only have on philosopher waiting on it.
-	Even if hold and wait, no preemption, and mutual exclusion or present, the resources can never enter a state where one philosopher requests them and they are held by another philosopher because only one philosopher can request them.
+	Now resources $r_{i-1 \mod n}$ and $r_{i + 1 \mod n}$ only have one philosopher waiting on it.
+	Even if hold and wait, no preemption, and mutual exclusion are present, the resources can never enter a state where one philosopher requests them and they are held by another philosopher because only one philosopher can request them.
 	Since there is no way to generate a cycle otherwise, circular wait cannot hold.
 	Since circular wait cannot hold, deadlock cannot happen.
 \end{proof}
@@ -345,7 +345,7 @@ The system is about to deadlock, but the approach resolves it.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.9\textwidth]{deadlock/drawings/dining_stalling.eps}
-	\caption{Stalling solution almost deadlock}
+	\caption{Stallings solution almost deadlock}
 \end{figure}
 
 
@@ -353,12 +353,12 @@ The system is about to deadlock, but the approach resolves it.
 
 This is Dijkstra's solution \cite[P. 20]{EWD:EWD310}. He was the one to propose this problem on an exam.
 Why does the first solution deadlock? Dijkstra thought that the last philosopher who picks up his left fork (causing the solution to deadlock) should pick up his right.
-He accomplishes it by number the forks $1..n$, and tells each of the philosophers to pick up his lower number fork.
+He accomplishes it by numbering the forks $1..n$, and tells each of the philosophers to pick up his lower number fork.
 Let's run through the deadlock condition again.
 Everyone tries to pick up their lower number fork first.
 Philosopher $1$ gets fork $1$, Philosopher $2$ gets fork $2$, and so on until we get to Philosopher $n$.
 They have to choose between fork $1$ and $n$.
-fork $1$ is already held up by philosopher $1$, so they can't pick up that fork, meaning he won't pick up fork $n$.
+Fork $1$ is already held up by philosopher $1$, so they can't pick up that fork, meaning he won't pick up fork $n$.
 We have broken \keyword{circular wait}! Meaning deadlock isn't possible.
 
 Some problems are that an entity either needs to know the finite set of resources in advance or be able to produce a consistent partial order such that circular wait cannot happen.
@@ -372,14 +372,14 @@ This prioritizes philosophers that have already eaten but can be made fairer by 
 	Let's number the philosophers $\{p_0, p_1, .., p_{n-1}\}$ and the resources $\{r_0, r_1, .., r_{n-1}\}$.
 	A philosopher $p_i$ needs resource $r_{i-1 \mod n}$ and $r_{i + 1 \mod n}$.
 	Each philosopher will grab $r_{i-1 \mod n}$ then $r_{i + 1 \mod n}$ but the last philosopher will grab in the reverse order.
-	Even if hold and wait, no preemption, and mutual exclusion or present.
+	Even if hold and wait, no preemption, and mutual exclusion are present.
 	Since the last philosopher will grab $r_{n-1}$ then $r_0$ there are two cases either the philosopher has the first lock or the philosopher doesn't.
 	
 	If the last philosopher $p_{n-1}$ holds the first lock meaning the previous philosopher $p_{n-2}$ is waiting on $r_{n-1}$ meaning $r_{n-2}$ is available.
 	Since no other blockers, the philosopher previous $p_{n-3}$ will grab her first lock.
-	This is now a reduction to the previous proof of stalling because we now have $n$ resources but only $n-1$ philosophers, meaning this cannot deadlock.
+	This is now a reduction to the previous proof of Stallings because we now have $n$ resources but only $n-1$ philosophers, meaning this cannot deadlock.
 	
-	If the philosopher doesn't obtain that first lock, then we have a reduction to Stalling's proof above because now have $n-1$ philosophers vying for $n$ resources.
+	If the philosopher doesn't obtain that first lock, then we have a reduction to Stallings' proof above because we now have $n-1$ philosophers vying for $n$ resources.
 	Since we can't reach deadlock in either case, this solution cannot deadlock which is what we needed to show.
 	
 \end{proof}
@@ -387,7 +387,7 @@ This prioritizes philosophers that have already eaten but can be made fairer by 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.9\textwidth]{deadlock/drawings/dining_partial.eps}
-	\caption{Stalling solution partial deadlock}
+	\caption{Stallings solution partial deadlock}
 \end{figure}
 
 There are a few other solutions (clean/dirty forks and the actor model) in the appendix.

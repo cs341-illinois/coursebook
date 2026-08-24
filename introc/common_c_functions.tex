@@ -2,10 +2,10 @@
 
 To find more information about any functions, please use the man pages.
 Note the man pages are organized into sections.
-Section 2 are System calls.
-Section 3 are C libraries.
+Section 2 is System calls.
+Section 3 is C libraries.
 On the web, Google \keyword{man 7 open}.
-In the shell, \keyword{man -S2 open} or \keyword{man -S3 printf}
+In the shell, \keyword{man -S2 open} or \keyword{man -S3 printf}.
 
 \subsection{Handling Errors}
 
@@ -19,7 +19,7 @@ There are a number of arguments against exceptions.
 \item Exceptions may be complex objects.
 \end{enumerate}
 
-There are a few arguments for exceptions as well
+There are a few arguments for exceptions as well.
 
 \begin{enumerate}
 \item Exceptions can come from several layers deep.
@@ -41,7 +41,7 @@ if (NULL == f) {
 }
 \end{lstlisting}
 
-There is a shortcut function \keyword{perror} that prints the english description of errno.
+There is a shortcut function \keyword{perror} that prints the English description of errno.
 Also, a function may return the error code in the return value itself.
 
 \begin{lstlisting}[language=C]
@@ -57,7 +57,7 @@ Be sure to check the man page for return code characteristics.
 
 In this section we will cover all the basic input and output functions in the standard library with references to system calls.
 Every process has three streams of data when it starts execution: standard input (for program input), standard output (for program output), and standard error (for error and debug messages).
-Usually, standard input is sourced from the terminal in which the program is being run in, and standard out is the same terminal.
+Usually, standard input is sourced from the terminal in which the program is being run, and standard out is the same terminal.
 However, a programmer can use redirection such that their program can send output and/or receive input, to and from a file, or other programs.
 
 They are designated by the file descriptors 0 and 1 respectively. 2 is reserved for standard error which by library convention is unbuffered (i.e. IO operations are performed immediately).
@@ -67,7 +67,7 @@ They are designated by the file descriptors 0 and 1 respectively. 2 is reserved 
 Standard output or stdout oriented streams are streams whose only options are to write to stdout.
 \keyword{printf} is the function with which most people are familiar in this category.
 The first parameter is a format string that includes placeholders for the data to be printed.
-Common format specifiers are the following
+Common format specifiers are the following.
 \begin{enumerate}
 \item \keyword{\%s} treat the argument as a c string pointer, keep printing all characters until the NULL-character is reached
 \item \keyword{\%d} prints the argument as an integer
@@ -86,10 +86,10 @@ printf("Debug: The string and int are stored at: %p and %p\n", name, &score );
 
 From the previous section,
 \keyword{printf} calls the system call \keyword{write}.
-\keyword{printf} is a C library function, while \keyword{write} is a system call system.
+\keyword{printf} is a C library function, while \keyword{write} is a system call.
 
-The buffering semantics of printf is a little complicated.
-ISO defines three types of streams \cite[P. 278]{ISON1124}
+The buffering semantics of printf are a little complicated.
+ISO defines three types of streams \cite[P. 278]{ISON1124}.
 \begin{itemize}
 \item Unbuffered, where the contents of the stream reach their destination as soon as possible.
 \item Line Buffered, where the contents of the stream reach their destination as soon as a newline is provided.
@@ -111,13 +111,13 @@ putchar('1');
 
 \subsubsection{Other streams}
 
-To print to other file streams, use \keyword{fprintf(\ \_file\_\ ,\ "Hello\ \%s,\ score:\ \%d",\ name,\ score);} Where \_file\_ is either predefined (`stdout' or `stderr') or a FILE pointer that was returned by \keyword{fopen} or \keyword{fdopen}.
+To print to other file streams, use \keyword{fprintf(\ \_file\_\ ,\ "Hello\ \%s,\ score:\ \%d",\ name,\ score);} where \_file\_ is either predefined (`stdout' or `stderr') or a FILE pointer that was returned by \keyword{fopen} or \keyword{fdopen}.
 There is a printf equivalent that works with file descriptors, called dprintf.
 Just use \keyword{dprintf(int\ fd,\ char*\ format\_string,\ ...);}.
 
 To print data into a C string, use \keyword{sprintf} or better \keyword{snprintf}.
 \keyword{snprintf} returns the number of characters written excluding the terminating byte.
-We would use \keyword{sprintf} the size of the printed string is less than the provided buffer -- think about printing an integer, it will never be more than 11 characters with the NUL byte.
+We would use \keyword{sprintf} if the size of the printed string is less than the provided buffer -- think about printing an integer, it will never be more than 11 characters with the NUL byte.
 If printf is dealing with variadic input, it is safer to use the former function as shown in the following snippet.
 
 \begin{lstlisting}[language=C]
@@ -135,7 +135,7 @@ int len = snprintf(result, sizeof(result), "%s:%d", name, score);
 Standard input or stdin oriented functions read from stdin directly.
 Most of these functions have been deprecated due to them being poorly designed. These functions treat stdin as a file from which we can read bytes.
 One of the most notorious offenders is \keyword{gets}.
-\keyword{gets} is deprecated in C99 standard and has been removed from the latest C standard (C11).
+\keyword{gets} is deprecated in the C99 standard and has been removed from the latest C standard (C11).
 The reason that it was deprecated was that there is no way to control the length being read, therefore buffers could get overrun easily.
 When this is done maliciously to hijack program control flow, this is known as a buffer overflow.
 
@@ -153,7 +153,7 @@ char *result = fgets(buffer, sizeof(buffer), stdin);
 \end{lstlisting}
 
 Note that, unlike \keyword{gets}, \keyword{fgets} copies the newline into the buffer.
-On the other hand, one of the advantages of \keyword{getline} is that will automatically allocate and reallocate a buffer on the heap of sufficient size.
+On the other hand, one of the advantages of \keyword{getline} is that it will automatically allocate and reallocate a buffer on the heap of sufficient size.
 
 \begin{lstlisting}[language=C]
 // ssize_t getline(char **lineptr, size_t *n, FILE *stream);
@@ -222,7 +222,7 @@ char buffer[10];
 scanf("%9s", buffer); // reads up to 9 characters from input (leave room for the 10th byte to be the terminating byte)
 \end{lstlisting}
 
-One last thing to note is if system calls are expensive, the \keyword{scanf} family is much more expensive due to compatibility reasons.
+One last thing to note is that if system calls are expensive, the \keyword{scanf} family is much more expensive due to compatibility reasons.
 Since it needs to be able to process all of the printf specifiers correctly, the code isn't efficient \todo{citation needed}.
 For highly performant programs, one should write the parsing themselves.
 If it is a one-off program or script, feel free to use scanf.
@@ -240,7 +240,7 @@ Any behavior missing from the documentation, such as the result of \keyword{strl
 	\item \keyword{int strlen(const char *s)} returns the length of the string.
 
 	\item \keyword{int strcmp(const char *s1, const char *s2)} returns an integer determining the lexicographic order of the strings.
-    If s1 where to come before s2 in a dictionary, then a -1 is returned.
+    If s1 were to come before s2 in a dictionary, then a -1 is returned.
     If the two strings are equal, then 0.
     Else, 1.
 
@@ -261,7 +261,7 @@ Any behavior missing from the documentation, such as the result of \keyword{strl
 
 	  A dangerous but useful function strtok takes a string and tokenizes it.
     Meaning that it will transform the strings into separate strings.
-    This function has a lot of specs so please read the man pages a contrived example is below.
+    This function has a lot of specs so please read the man pages. A contrived example is below.
 
 	      \begin{lstlisting}[language=C]
         #include <stdio.h>
@@ -299,7 +299,7 @@ tricky
 
 	      What these functions do is take the pointer to your string
 	      \keyword{*nptr} and a \keyword{base} (i.e. binary, octal, decimal,
-	      hexadecimal etc) and an optional pointer \keyword{endptr} and returns a
+	      hexadecimal etc) and an optional pointer \keyword{endptr} and return a
 	      parsed value.
 
 	      \begin{lstlisting}[language=C]

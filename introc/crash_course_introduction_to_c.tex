@@ -22,7 +22,7 @@ int main(void) {
     For regular functions having a declaration like \keyword{void func()} means that the function can be called like \keyword{func(1, 2, 3)}, because there is no delimiter.
     \keyword{main} is a special function.
     There are many ways of declaring \keyword{main} but the standard ones are \keyword{int main(void)}, \keyword{int main()}, and \keyword{int main(int argc, char *argv[])}.
-	\item \keyword{printf("Hello World\n");} is what a function call.
+	\item \keyword{printf("Hello World\n");} is a function call.
     \keyword{printf} is defined as a part of \keyword{stdio.h}.
     The function has been compiled and lives somewhere else on our machine - the location of the C standard library.
     Just remember to include the header and call the function with the appropriate parameters (a string literal \keyword{"Hello World\n"}).
@@ -54,7 +54,7 @@ If systems programming was as easy as writing hello world though, our jobs would
 
 What is the preprocessor?
 Preprocessing is a copy and paste operation that the compiler performs \textbf{before} actually compiling the program.
-The following is an example of substitution
+The following is an example of substitution.
 
 \begin{lstlisting}[language=C]
 // Before preprocessing
