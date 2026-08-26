@@ -17,7 +17,6 @@ Brandon Chong <bchong95@users.noreply.github.com>
 Ben Kurtovic <ben.kurtovic@gmail.com>
 dprorok2 <dprorok2@illinois.edu>
 anchal-agrawal <aagrawa4@illinois.edu>
-Lawrence Angrave <angrave@illinois.eduuutoomanyu>
 daeyun <daeyunshin@gmail.com>
 bchong95 <bschong2@illinois.edu>
 rushingseas8 <georgealeks@hotmail.com>
@@ -204,7 +203,6 @@ Aneesh Durg <durg2@illinois.edu>
 Assassin Eclipse <hungwoei96@hotmail.com>
 Eric Cao <eric7252000@gmail.com>
 Raphael Long <rafilong42@gmail.com>
-WeiL <z920631580@gmail.com>
 williamsentosa95 <38774380+williamsentosa95@users.noreply.github.com>
 Pradyumna Shome <pradyumna.shome@gmail.com>
 Benjamin West Pollak <benjaminwpollak@gmail.com>
