@@ -36,34 +36,71 @@ If a process is \emph{requesting} a resource, an arrow is drawn from the process
 If there is a cycle in the Resource Allocation Graph and each resource in the cycle provides only one instance, then the processes will deadlock.
 For example, if process 1 holds resource A, process 2 holds resource B and process 1 is waiting for B and process 2 is waiting for A, then processes 1 and 2 will be deadlocked \ref{ragfigure}.
 We'll make the distinction that the system is in deadlock by definition if all workers cannot perform an operation other than waiting.
-We can detect a deadlock by traversing the graph and searching for a cycle using a graph traversal algorithm, such as the Depth First Search (DFS).
-This graph is considered as a directed graph and we can treat both the processes and resources as nodes.
+So, as long as every resource offers a single instance, detecting deadlock means searching the graph for a cycle.
+Both the processes and the resources are nodes, and every edge has a direction, so this is cycle detection in a \emph{directed} graph.
+The usual tool is a depth-first search that records two different facts about each node: whether we have finished exploring it, and whether it sits on the path we are currently walking.
+The pseudocode below keeps each of those facts in a \keyword{set}, which you can picture as a hash set of node identifiers offering constant time insertion, removal and membership tests.
 
-\begin{minted}{C}
-	typedef struct {
-		int node_id; // Node in this particular graph
-		Graph **reachable_nodes; // List of nodes that can be reached from this node
-		int size_reachable_nodes; // Size of the List
-	} Graph;
-	
-	// isCyclic() traverses a graph using DFS and detects whether it has a cycle
-	// isCyclic() uses a recursive approach
-	// G points to a node in a graph, which can be either a resource or a process
-	// is_visited is an array indexed with node_id and initialized with zeros (false) to record whether a particular node has been visited
-	int isCyclic(Graph *G, int* is_visited) {
-		if (this graph has been visited) {
-			// Oh! the cycle is found
-			return true;
-			} else {
-			1. Mark this node as visited
-			2. Traverse through all nodes in the reachable_nodes
-			3. Call isCyclic() for each node
-			4. Evaluate the return value of isCyclic()
-		}
-		// Nope, this graph is acyclic
-		return false;
-	}
-\end{minted}
+\begin{lstlisting}[language=C]
+// Pseudocode. A node is either a process or a resource.
+// finished: nodes that have already been explored completely.
+// path:     nodes on the current search stack, i.e. how we got here.
+
+static bool visit(const graph *g, node n, set *finished, set *path);
+
+bool is_cyclic(const graph *g) {
+    set *finished = set_create();
+    set *path = set_create();
+    bool cyclic = false;
+
+    // A search from one node only explores what that node reaches, so
+    // every node gets a turn as the starting point. 'finished' is shared
+    // across those searches, so no node is explored twice.
+    for (each node n in g) {
+        if (visit(g, n, finished, path)) {
+            cyclic = true;
+            break;
+        }
+    }
+
+    // Note the single exit: returning as soon as a cycle turns up
+    // would skip the set_destroy calls below and leak both sets.
+    set_destroy(finished);
+    set_destroy(path);
+    return cyclic;
+}
+
+static bool visit(const graph *g, node n, set *finished, set *path) {
+    // n is on the route that brought us here: we walked in a circle
+    if (set_contains(path, n)) return true;
+    // n was explored before, and no cycle was found through it
+    if (set_contains(finished, n)) return false;
+
+    set_add(path, n);
+    for (each node m that n points to) {
+        if (visit(g, m, finished, path)) return true;
+    }
+    set_remove(path, n); // n is behind us; no longer on the path
+    set_add(finished, n);
+
+    return false;
+}
+\end{lstlisting}
+
+Every node is expanded at most once, so the search costs $O(V + E)$ for $V$ nodes and $E$ edges.
+
+Those two sets do different jobs, and collapsing them into one is a popular way to get this wrong.
+The tempting shortcut is ``if I have seen this node before, there is a cycle'', and it is broken on \emph{any} graph rather than merely unsuited to directed ones.
+On an undirected graph it fires on the very first edge you walk, because the node you just came from has already been seen.
+On a directed graph it survives that test and fails in a quieter way.
+Suppose processes 1 and 2 are both waiting for resource A, which process 3 currently holds.
+The edges are $P_1 \rightarrow A$, $P_2 \rightarrow A$ and $A \rightarrow P_3$.
+Nothing is deadlocked here -- process 3 will finish and release A -- but a search that starts at process 1 explores A and process 3, and when the outer loop restarts at process 2 it reaches A a second time.
+Under the shortcut that second sighting is a deadlock report for a system that is running perfectly well, and the same false alarm happens inside a single search whenever two routes converge on one node.
+Seeing a node twice only means two paths lead to it; it is a cycle only when the second sighting happens while the first visit is still unfinished, which is precisely what \keyword{path} records.
+
+Remember that the answer this search gives you is only as strong as the single instance assumption.
+If a resource in the cycle offers several interchangeable instances, a process outside the cycle may still return an instance and free somebody to continue, so a cycle remains necessary for deadlock but stops being sufficient.
 
 \begin{figure}[H]
 	\centering
