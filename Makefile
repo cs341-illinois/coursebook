@@ -39,9 +39,12 @@ $(MAIN_EPUB): $(ORDER_TEX) $(MAIN_TEX_SOURCE)
 $(ORDER_TEX): $(ORDER_TEX_DEP)
 	python3 _scripts/gen_order.py $^ > $@
 
-$(CHAPTER_PDF): %.pdf: %.tex
+# order.tex is generated, and main.tex \input's it, so a chapter build from
+# a clean tree needs it too. Note $< rather than $^: the recipe wants only
+# the chapter's own .tex here, not every prerequisite.
+$(CHAPTER_PDF): %.pdf: %.tex $(ORDER_TEX)
 	echo '\\let\\cleardoublepage\\clearpage' > $@.tmp
-	echo "\includeonly{$(basename $^)}\input{$(MAIN_TEX)}" >> $@.tmp
+	echo "\includeonly{$(basename $<)}\input{$(MAIN_TEX)}" >> $@.tmp
 	@latexmk -interaction=nonstopmode -quiet -pdflatex=lualatex -pdf -jobname="$@" $@.tmp \
 		|| { echo "*** latexmk failed for $@"; grep -n -A3 '^! ' $@.log 2>/dev/null; rm -f $@.tmp; false; }
 	@mv $@.pdf $@
