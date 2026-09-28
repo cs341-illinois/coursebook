@@ -33,8 +33,9 @@ debug: $(PDF_TEX)-debug
 .PHONY: epub
 epub: $(MAIN_EPUB)
 
-$(MAIN_EPUB): $(ORDER_TEX) $(MAIN_TEX_SOURCE)
-	pandoc --toc -s -f latex -t epub --filter pandoc-citeproc --filter _scripts/pandoc_epub_filter.py -M link-citations=true --epub-cover-image _images/cover.png -M author="B. Venkatesh, L. Angrave, et Al." -o $(MAIN_EPUB) $(MAIN_TEX_SOURCE);
+$(MAIN_EPUB): $(ORDER_TEX) $(MAIN_TEX_SOURCE) _scripts/pandoc_epub_filter.py _scripts/alt_text.py _scripts/epub-accessibility.yaml _scripts/mark_epub_cover_decorative.py
+	pandoc --toc -s -f latex -t epub --citeproc --filter _scripts/pandoc_epub_filter.py --metadata-file _scripts/epub-accessibility.yaml -M link-citations=true --epub-cover-image _images/cover.png -M author="B. Venkatesh, L. Angrave, et Al." -o $(MAIN_EPUB) $(MAIN_TEX_SOURCE) -M lang=en-US -M date=$(shell date -u +%Y-%m-%d);
+	python3 _scripts/mark_epub_cover_decorative.py $(MAIN_EPUB)
 
 $(ORDER_TEX): $(ORDER_TEX_DEP)
 	python3 _scripts/gen_order.py $^ > $@

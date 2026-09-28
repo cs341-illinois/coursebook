@@ -40,7 +40,6 @@ prelude_file = 'prelude.tex'
 # Compatibility with github
 github_shim = 'github_redefinitions.tex'
 # Weird glyph that appears regex
-sed_regex = r'0,/\\\[1\\\]\\\[\\\]/{//d;}'
 # Do all ops in the /tmp directory
 tmp_dir = '/tmp/'
 # Cache file directory
@@ -69,20 +68,20 @@ jinja_templ = """
 # Coursebook
 
 <p align="center">
-    <img src="https://raw.githubusercontent.com/illinois-cs241/coursebook/master/_images/duck-alpha-cropped.png" width="50%" class="emoji"/>
+    <img src="https://raw.githubusercontent.com/illinois-cs241/coursebook/master/_images/duck-alpha-cropped.png" alt="Coursebook logo" width="50%" class="emoji"/>
 </p>
 
 This coursebook is being built by students and faculty from the University of Illinois. It is based on a crowd-source authoring wikibook experiment by Lawrence Angrave from CS @ Illinois, but is now its own .tex based project. Its source code is located at [the Github link](https://github.com/illinois-cs241/coursebook) which you can find a pdf version of the book as well.
 
 This book is an introduction to programming in C, and system programming (processes, threads, synchronization, networking and more!). We assume you've already had some programming experience, in an earlier computer science course. If you have any typos to report or content to request, feel free to file an issue at the link above. Happy Reading!
 
-<h3 id="one-big-pdf" class="title-text"><a href="https://github.com/illinois-cs241/coursebook/tree/pdf_deploy/main.pdf?raw=true" alt="PDF Version" class="wiki-link">One Big PDF<img src="https://raw.githubusercontent.com/illinois-cs241/coursebook/master/_images/pdf_icon.png" style="margin-left: 10px;" width="auto" height="50px"> </a></h3>
+<h3 id="one-big-pdf" class="title-text"><a href="https://github.com/illinois-cs241/coursebook/tree/pdf_deploy/main.pdf?raw=true" alt="PDF Version" class="wiki-link">One Big PDF<img src="https://raw.githubusercontent.com/illinois-cs241/coursebook/master/_images/pdf_icon.png" alt="PDF file icon" style="margin-left: 10px;" width="auto" height="50px"> </a></h3>
 
-<h3 id="one-big-epub" class="title-text"><a href="https://github.com/illinois-cs241/coursebook/tree/epub_deploy/main.epub?raw=true" alt="Epub Versions" class="wiki-link">One Big EPUB<img src="https://raw.githubusercontent.com/illinois-cs241/coursebook/master/_images/epub_icon.png" style="margin-left: 10px;" width="auto" height="50px"> </a></h3>
+<h3 id="one-big-epub" class="title-text"><a href="https://github.com/illinois-cs241/coursebook/tree/epub_deploy/main.epub?raw=true" alt="Epub Versions" class="wiki-link">One Big EPUB<img src="https://raw.githubusercontent.com/illinois-cs241/coursebook/master/_images/epub_icon.png" alt="EPUB file icon" style="margin-left: 10px;" width="auto" height="50px"> </a></h3>
 
 
 {% for chapter in chapters %}
-## {{loop.index}}. [{{chapter.meta['name']}}](./{{chapter.bare_title}}) [<img src="https://raw.githubusercontent.com/illinois-cs241/coursebook/master/_images/pdf_icon.png" width="auto" height="50px" />](https://github.com/illinois-cs241/coursebook/blob/pdf_deploy/{{chapter.pdf_path}}) {% for section_name in (chapter.meta['subsections'] or []) %}
+## {{loop.index}}. [{{chapter.meta['name']}}](./{{chapter.bare_title}}) [<img src="https://raw.githubusercontent.com/illinois-cs241/coursebook/master/_images/pdf_icon.png" alt="PDF file icon" width="auto" height="50px" />](https://github.com/illinois-cs241/coursebook/blob/pdf_deploy/{{chapter.pdf_path}}) {% for section_name in (chapter.meta['subsections'] or []) %}
 {{loop.index}}. [{{section_name}}](./{{chapter.bare_title}}#{{section_name.lower().replace(' ', '-')}}){% endfor %}
 {% endfor %}
 """
@@ -212,8 +211,7 @@ def convert_latex_to_md(files_m):
                     # Github Flavored Markdown + Add raw HTML + link any bare HTTPS;//
                     # + get mathjax to display correctly
                     '-s', # Create a standalone wiki page not a fragment
-                    '--filter',
-                    'pandoc-citeproc', # Filter with citeproc first. It has to be first!
+                    '--citeproc', # Keep citeproc before the custom filters.
                     # Otherwise our filter can't process citations
                     '--filter',
                     '_scripts/pandoc_wiki_filter.py', # Give it to our filter
@@ -231,9 +229,6 @@ def convert_latex_to_md(files_m):
         logger.info(' '.join(command))
         subprocess.check_call(command)
 
-        # Run this sed command to remove a weird glyph that appears
-        # TODO: Figure out why the glyph appears at all
-        subprocess.check_call(['sed', '-i', sed_regex, md_path])
 
 def main(args):
     """

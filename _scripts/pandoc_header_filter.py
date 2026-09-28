@@ -18,6 +18,8 @@ import dateutil.parser
 import datetime
 import requests
 
+from alt_text import image_alt_text
+
 link_cache_days = 30
 
 # Per-request timeout for the link check. Without this a host that
@@ -41,11 +43,6 @@ if not os.path.isfile(cache_file):
 else:
     with open(cache_file, 'r') as f:
         link_cache = yaml.load(f, Loader=Loader)
-
-default_image_alt = 'image'
-
-class NoAltTagException(Exception):
-    pass
 
 class BadLinkException(Exception):
     pass
@@ -99,13 +96,7 @@ def output_yaml(elem, doc):
     This also validates all images and links within a cache
     """
     if type(elem) == Image:
-        # Get the number of chars for the alt tag
-        alt_name = ''.join(map(deserialize, elem._content.list))
-        alt_length = len(elem._content)
-        # No alt means no compile
-        # Accessibility by default
-        if alt_length == 0 or alt_name.lower() == default_image_alt:
-            raise NoAltTagException(elem.url)
+        image_alt_text(elem)
 
 
     if type(elem) == Header and elem.level <= max_level:
@@ -117,7 +108,7 @@ def output_yaml(elem, doc):
             # If we are displaying a chapter, include a special entry for it
             meta['name'] = name
     if isinstance(elem, MetaMap):
-        dictionary_map = elem._content
+        dictionary_map = elem.content
         if 'bibliography' in dictionary_map:
             bib_file = deserialize(dictionary_map['bibliography'][0].content[0])
             meta['bib_file'] = bib_file

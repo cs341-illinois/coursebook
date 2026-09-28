@@ -1,66 +1,90 @@
 #!/usr/bin/env python3
 
-"""
-Pandoc filter to change each relative URL to absolute
-"""
+"""Convert Pandoc figures to accessible Markdown for the GitHub wiki."""
 
-from panflute import run_filter, Str, Header, Image, Math, Link, RawInline
-import sys
-import re
 import os.path
+
+import panflute as pf
+
+from alt_text import image_alt_text, inlines_from_alt
+
 
 base_raw_url = 'https://raw.githubusercontent.com/illinois-cs241/coursebook/master/'
 eps_ext = '.eps'
 
+
 def replace_suffix(content, suffix_old, suffix_new):
-    ret = content
     if content.endswith(suffix_old):
-        ret = content[:-len(suffix_old)] + suffix_new
-    return ret
+        return content[:-len(suffix_old)] + suffix_new
+    return content
 
-def deserialize(x):
-    """
-    Takes a panflute element x and returns
-    a basic stringified version of that element
-    """
 
-    if type(x) == Str:
-        return x.text
-    return ' '
+def _wiki_image(image):
+    alt = image_alt_text(image)
+    url = replace_suffix(image.url, eps_ext, '.png')
+    if url.startswith(base_raw_url):
+        url = url[len(base_raw_url):]
+    if not os.path.isfile(url):
+        raise ValueError('{} Not found'.format(url))
+    return pf.Image(
+        *inlines_from_alt(alt),
+        url=base_raw_url + url,
+        title=image.title,
+        identifier=image.identifier,
+        classes=list(image.classes),
+        attributes=dict(image.attributes),
+    )
+
 
 def doc_filter(elem, doc):
-    if type(elem) == Image:
-        # Link to the raw user link instead of relative
-        # That way the wiki and the site will have valid links automagically
-        new_url = replace_suffix(elem.url, eps_ext, '.png')
-        if not os.path.isfile(new_url):
-            raise ValueError('{} Not found'.format(new_url))
-        elem.url = base_raw_url + new_url
-        return elem
+    if isinstance(elem, pf.Figure):
+        images = []
+        for block in elem.content:
+            if isinstance(block, pf.Image):
+                images.append(block)
+            elif isinstance(block, (pf.Para, pf.Plain)):
+                if any(not isinstance(child, pf.Image) for child in block.content):
+                    raise ValueError('Unsupported content inside figure')
+                images.extend(block.content)
+            else:
+                raise ValueError('Unsupported block inside figure')
 
-    if isinstance(elem, Math):
-        # Raw inline mathlinks so jekyll renders them
-        content = elem.text
-        escaped = "$$ {} $$".format(content)
-        return RawInline(escaped)
-    if isinstance(elem, Link):
-        # Transform all Links into a tags
-        # Reason being is github and jekyll are weird
-        # About leaving html as is and markdown as parsing
-        # So we change everything to avoid ambiguity
-        # There is a script injection possibility here so be careful
+        if not images:
+            return None
 
-        url = elem.url
-        title = str(elem.title)
-        if title == "":
-            title = elem.url
-        link = '<a href="{}">{}</a>'.format(url, title)
-        return RawInline(link)
+        markdown_images = []
+        for image in images:
+            if markdown_images:
+                markdown_images.append(pf.Space())
+            markdown_images.append(_wiki_image(image))
 
+        result = [pf.Para(*markdown_images)]
+        caption = []
+        if elem.caption is not None:
+            for block in elem.caption.content:
+                if isinstance(block, (pf.Para, pf.Plain)):
+                    caption.extend(block.content)
+                else:
+                    caption.extend(inlines_from_alt(pf.stringify(block)))
+        if caption:
+            result.append(pf.Para(*caption))
+        return result
+
+    if isinstance(elem, pf.Image):
+        return _wiki_image(elem)
+
+    if isinstance(elem, pf.Math):
+        return pf.RawInline("$$ {} $$".format(elem.text))
+
+    if isinstance(elem, pf.Link):
+        # Raw HTML keeps links unambiguous in GitHub's wiki Markdown parser.
+        title = str(elem.title) or elem.url
+        return pf.RawInline('<a href="{}">{}</a>'.format(elem.url, title))
 
 
 def main(doc=None):
-    return run_filter(doc_filter, doc=doc)
+    return pf.run_filter(doc_filter, doc=doc)
+
 
 if __name__ == "__main__":
     main()

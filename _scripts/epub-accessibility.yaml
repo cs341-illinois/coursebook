@@ -1,0 +1,12 @@
+accessModes:
+  - textual
+  - visual
+accessModeSufficient:
+  - textual,visual
+accessibilityFeatures:
+  - alternativeText
+  - readingOrder
+  - structuralNavigation
+  - tableOfContents
+accessibilityHazards:
+  - none

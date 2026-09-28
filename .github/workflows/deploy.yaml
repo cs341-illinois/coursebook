@@ -41,9 +41,8 @@ jobs:
     - name: Checkout repo
       uses: actions/checkout@v4
 
-    # Python 3.7 has no build for ubuntu-24.04 or 26.04, so setup-python
-    # could not find it. 3.11 has builds for 22.04, 24.04 and 26.04, and
-    # works with panflute 1.12.5, which still targets pandoc 2.7's AST.
+    # Python 3.11 is supported on the current Ubuntu runners and by the
+    # pinned panflute 2.3.1 used with Pandoc 3.10.2.
     - name: Setup python
       uses: actions/setup-python@v5
       with:
@@ -58,6 +57,14 @@ jobs:
     - name: Build coursebook
       run: |
         bash _scripts/script.sh
+
+    - name: Validate EPUB accessibility
+      if: matrix.build_focus == 'EPUB'
+      run: python3 _scripts/validate_alt_text_outputs.py epub main.epub
+
+    - name: Validate wiki accessibility
+      if: matrix.build_focus == 'WIKI'
+      run: python3 _scripts/validate_alt_text_outputs.py wiki _wiki
 
     - name: Deploy site
       env:
@@ -103,3 +110,31 @@ jobs:
         fi
 
         bash _scripts/deploy.sh
+
+    - name: Checkout source for post-deploy validation
+      if: matrix.build_focus == 'EPUB' || matrix.build_focus == 'WIKI'
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.sha }}
+        path: source
+
+    - name: Checkout deployed EPUB branch
+      if: matrix.build_focus == 'EPUB'
+      uses: actions/checkout@v4
+      with:
+        ref: epub_deploy
+        path: deployed-epub
+
+    - name: Validate deployed EPUB
+      if: matrix.build_focus == 'EPUB'
+      run: python3 source/_scripts/validate_alt_text_outputs.py epub deployed-epub/main.epub --root source
+
+    - name: Clone deployed wiki
+      if: matrix.build_focus == 'WIKI'
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: git clone "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.wiki.git" "$RUNNER_TEMP/deployed-wiki"
+
+    - name: Validate deployed wiki
+      if: matrix.build_focus == 'WIKI'
+      run: python3 source/_scripts/validate_alt_text_outputs.py wiki "$RUNNER_TEMP/deployed-wiki" --root source
