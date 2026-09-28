@@ -13,6 +13,24 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint-alt-text:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v4
+
+    - name: Setup python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Check figure alt text
+      run: python3 _scripts/check_alt_text.py
+
+    - name: Test figure alt-text lint
+      run: python3 -m unittest discover -s _scripts -p 'test_check_alt_text.py'
+
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 30

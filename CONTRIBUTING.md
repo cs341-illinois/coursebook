@@ -94,6 +94,12 @@ If you'd like the project to automatically recompile as you make changes, run `.
 
 By default, `./rebuilder.sh` will create a new file in `/tmp/` and will re-use it every time it is ran for logging purposes. If a command line argument is specified, `./rebuilder.sh` will treat the argument as a path and will use that as its logging file instead.
 
+## Figure Alt Text
+
+Every content figure must have non-empty `alt={...}` text on its `\includegraphics` command.
+The CI check verifies that alt text is present, but it cannot verify that the description matches the figure.
+Any PR that changes an `alt=` value or a figure must include a rendered list of the changed alt texts next to their figures so reviewers can check their accuracy.
+
 # Your First Contribution
 
 To start contributing, feel free to take an issue or find a problem, file an issue and start working on it.
