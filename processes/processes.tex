@@ -274,7 +274,7 @@ We say may because the contents may be unwritten given a bad program exit as wel
 To write code that is different for the parent and child process, check the return value of \keyword{fork()}.
 If \keyword{fork()} returns -1, that implies something went wrong in the process of creating a new child.
 One should check the value stored in \emph{errno} to determine what kind of error occurred.
-Common errors include \keyword{EAGAIN} and \keyword{ENOENT}, which are essentially "try again -- resource temporarily unavailable", and "no such file or directory".
+Common errors include \keyword{EAGAIN} and \keyword{ENOMEM}, which are essentially "try again -- resource temporarily unavailable", and "insufficient memory or kernel resources are available".
 
 Similarly, a return value of 0 indicates that we are operating in the context of the child process, whereas a positive integer shows that we are in the context of the parent process.
 
