@@ -64,7 +64,7 @@ Though when you are pushing production code, make sure to ask about the differen
 
 \section{What is a filesystem?}
 
-You may have encountered the old UNIX adage, "everything is a file".
+You may have encountered the old UNIX adage, ``everything is a file''.
 In most UNIX systems, file operations provide an interface to abstract many different operations.
 Network sockets, hardware devices, and data on the disk are all represented by file-like objects.
 A file-like object must follow the following conventions:
@@ -101,7 +101,7 @@ To clarify, a mount point is simply a mapping of a directory to a filesystem rep
 It tells you what filesystem directory-based system calls resolve to.
 For example, \keyword{/} is resolved by the \keyword{ext4} filesystem in our case, but \keyword{/proc/2} is resolved by the \keyword{procfs} system even though it contains \keyword{/} as a subsystem.
 
-As you may have noticed, some filesystems provide an interface to things that aren't "files".
+As you may have noticed, some filesystems provide an interface to things that aren't ``files''.
 Filesystems such as \keyword{procfs} are usually referred to as \emph{virtual} filesystems, since they don't provide data access in the same sense as a traditional filesystem would.
 Technically, all filesystems in the kernel are represented by virtual filesystems, but we will differentiate \emph{virtual} filesystems as filesystems that actually don't store anything on a hard disk.
 
@@ -491,7 +491,7 @@ Apple's ``Time Machine'' software does this.
 \subsection{Pathing}
 
 Now that we have definitions, and have talked about directories, we come across the concept of a path.
-A path is a sequence of directories that provide one with a "path" in the graph that is a filesystem.
+A path is a sequence of directories that provide one with a ``path'' in the graph that is a filesystem.
 However, there are some nuances.
 It is possible to have a path called \texttt{a/b/../c/./}.
 Since \keyword{..} and \keyword{.} are special entries in directories, this is a valid path that actually refers to \texttt{a/c}.

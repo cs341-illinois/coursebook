@@ -41,7 +41,7 @@ The overall process for how a kernel sends a signal is below.
 \begin{enumerate}
 \item If no signals have arrived, the process can install its own signal handlers.
   This tells the kernel that when the process gets signal X that it should jump to function Y.
-\item A signal that is created is in a "generated" state.
+\item A signal that is created is in a ``generated'' state.
 \item The time between when a signal is generated and the kernel can apply the mask rules is called the pending state.
 \item Then the kernel checks the process's signal mask.
   If the mask says all the threads in a process are blocking the signal, then the signal is currently blocked and nothing happens until a thread unblocks it.
@@ -217,8 +217,8 @@ void func(const char *str) {
 \item The string gets copied over to the buffer completely (strcmp(buffer, "Hello") == 0)
 \item A signal is delivered and the function state freezes, we also stop accepting any new signals until after the handler (we do this for convenience)
 \item We execute \keyword{func("World")}
-\item Now (strcmp(buffer, "World") == 0) and the buffer is printed out "World".
-\item We resume the interrupted function and now print out the buffer once again "World" instead of what the function call originally intended "Hello"
+\item Now (strcmp(buffer, "World") == 0) and the buffer is printed out ``World''.
+\item We resume the interrupted function and now print out the buffer once again ``World'' instead of what the function call originally intended ``Hello''
 \end{enumerate}
 
 Guaranteeing that your functions are signal handler safe can't be solved by removing shared buffers.

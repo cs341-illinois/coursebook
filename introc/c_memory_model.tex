@@ -38,7 +38,7 @@ If you compile the code without any optimizations and reordering, you can expect
 &person.phone     // 0x128 = 0x100+0x28
 \end{lstlisting}
 
-All your compiler does is say "reserve this much space".
+All your compiler does is say ``reserve this much space''.
 Whenever a read or write occurs in the code, the compiler will calculate the offsets of the variable.
 The offsets are where the variable starts at.
 The phone variable starts at the \keyword{0x128}th byte and continues for sizeof(int) bytes with this compiler.
@@ -129,7 +129,7 @@ The heartbleed bug mentioned earlier in the book is partially because of this.
 
 Strings in C are represented as characters in memory.
 The end of the string includes a NUL (0) byte.
-So "ABC" requires four (4) bytes.
+So ``ABC'' requires four (4) bytes.
 The only way to find out the length of a C string is to keep reading memory until you find the NUL byte.
 C characters are always exactly one byte each.
 
