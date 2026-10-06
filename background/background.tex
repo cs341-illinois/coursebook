@@ -867,7 +867,7 @@ HW0 questions are below. Copy your answers into a text document because you'll n
 In which our intrepid hero battles standard out, standard error, file descriptors and writing to files.
 
 \begin{enumerate}
-\item \textbf{Hello, World! (system call style)} Write a program that uses \keyword{write()} to print out "Hi! My name is <Your Name>".
+\item \textbf{Hello, World! (system call style)} Write a program that uses \keyword{write()} to print out ``Hi! My name is <Your Name>''.
 \item \textbf{Hello, Standard Error Stream!} Write a function to print out a triangle of height \keyword{n} to standard error.
 Your function should have the signature \keyword{void write\_triangle(int n)} and should use \keyword{write()}.
 The triangle should look like this, for n = 3:
@@ -876,8 +876,8 @@ The triangle should look like this, for n = 3:
 **
 ***
 \end{lstlisting}
-\item \textbf{Writing to files} Take your program from "Hello, World!" and modify it to write to a file called \keyword{hello\_world.txt}. Make sure to use correct flags and a correct mode for \keyword{open()} (\keyword{man 2 open} is your friend).
-\item \textbf{Not everything is a system call} Take your program from "Writing to files" and replace \keyword{write()} with \keyword{printf()}. \textit{Make sure to print to the file instead of standard out!}
+\item \textbf{Writing to files} Take your program from ``Hello, World!'' and modify it to write to a file called \keyword{hello\_world.txt}. Make sure to use correct flags and a correct mode for \keyword{open()} (\keyword{man 2 open} is your friend).
+\item \textbf{Not everything is a system call} Take your program from ``Writing to files'' and replace \keyword{write()} with \keyword{printf()}. \textit{Make sure to print to the file instead of standard out!}
 \item What are some differences between \keyword{write()} and \keyword{printf()}?
 \end{enumerate}
 
@@ -936,7 +936,7 @@ Heap and stack memory, and working with structs.
 \item If I want to use data after the lifetime of the function it was created in ends, where should I put it? How do I put it there?
 \item What are the differences between heap and stack memory?
 \item Are there other kinds of memory in a process?
-\item Fill in the blank: "In a good C program, for every malloc, there is a \_\_\_".
+\item Fill in the blank: ``In a good C program, for every malloc, there is a \_\_\_''.
 \item What is one reason \keyword{malloc} can fail?
 \item What are some differences between \keyword{time()} and \keyword{ctime()}?
 \item What is wrong with this code snippet?
@@ -953,7 +953,7 @@ printf("%s\n", ptr);
 \item Create a \keyword{struct} that represents a \keyword{Person}.
   Then make a \keyword{typedef}, so that \keyword{struct Person} can be replaced with a single word.
   A person should contain the following information: their name (a string), their age (an integer), and a list of their friends (stored as a pointer to an array of pointers to \keyword{Person}s).
-\item Now, make two persons on the heap, "Agent Smith" and "Sonny Moore", who are 128 and 256 years old respectively and are friends with each other.
+\item Now, make two persons on the heap, ``Agent Smith'' and ``Sonny Moore'', who are 128 and 256 years old respectively and are friends with each other.
 Create functions to create and destroy a Person (Person's and their names should live on the heap).
 \item \keyword{create()} should take a name and age.
   The name should be copied onto the heap.
@@ -969,7 +969,7 @@ Text input and output and parsing using \keyword{getchar}, \keyword{gets}, and \
 \begin{enumerate}
 \item What functions can be used for getting characters from \keyword{stdin} and writing them to \keyword{stdout}?
 \item Name one issue with \keyword{gets()}.
-\item Write code that parses the string "Hello 5 World" and initializes 3 variables to "Hello", 5, and "World".
+\item Write code that parses the string ``Hello 5 World'' and initializes 3 variables to ``Hello'', 5, and ``World''.
 \item What does one need to define before including \keyword{getline()}?
 \item Write a C program to print out the content of a file line-by-line using \keyword{getline()}.
 \end{enumerate}

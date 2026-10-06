@@ -328,7 +328,7 @@ There are a number of drawbacks as well.
 \begin{itemize}
 \item All the code is no longer bundled into your program. This means that users have to install something else.
 \item There could be security flaws in the other code leading to security exploits in your program.
-\item Standard Linux allows you to "replace" dynamic libraries, leading to possible social engineering attacks.
+\item Standard Linux allows you to ``replace'' dynamic libraries, leading to possible social engineering attacks.
 \item This adds additional complexity to your application. Two identical binaries with different shared libraries could lead to different results.
 \end{itemize}
 
@@ -340,7 +340,7 @@ To parse the \href{http://pubs.opengroup.org/onlinepubs/9699919799.2008edition/f
 The sentence that sets the expectation is the following
 
 \begin{quote}
-The result of function calls involving any one handle (the "active handle") is defined elsewhere in this volume of POSIX.1-2008, but if two or more handles are used, and any one of them is a stream, the application shall ensure that their actions are coordinated as described below. If this is not done, the result is undefined.
+The result of function calls involving any one handle (the ``active handle'') is defined elsewhere in this volume of POSIX.1-2008, but if two or more handles are used, and any one of them is a stream, the application shall ensure that their actions are coordinated as described below. If this is not done, the result is undefined.
 \end{quote}
 
 What this means is that if we don't follow POSIX to the letter when using two file descriptors that refer to the same description across processes, we get undefined behavior.
@@ -399,8 +399,8 @@ Also, each person will work for a finite period and give back our money.
 \end{itemize}
 
 Why does this work? Well at the start we are in a safe state -- defined by we have enough money to suit at least one person.
-Each of these "loans" results in a safe state.
-If we have exhausted our reserve, one person is working and will give us money greater than or equal to our previous "loan", thus putting us in a safe state again.
+Each of these ``loans'' results in a safe state.
+If we have exhausted our reserve, one person is working and will give us money greater than or equal to our previous ``loan'', thus putting us in a safe state again.
 Since we can always make one additional move, the system can never deadlock.
 Now, there is no guarantee that the system won't livelock.
 If the process we hope to request something never does, no work will be done -- but not due to deadlock.
@@ -577,7 +577,7 @@ While the API for most filesystems has stayed the same on POSIX over the years, 
 \begin{itemize}
 \item Data Integrity. File systems use journaling and sometimes checksums to ensure that the data written to is valid. Journalling is a simple invention where the file system writes an operation in a journal. If the filesystem crashes before the operation is complete, it can resume the operation when booted up again using the partial journal.
 \item Caching. Linux does a good job of caching file system operations like finding inodes. This makes disk operations seem nearly instant. If you want to see a slow system, look at Windows with FAT/NTFS. Disk operations need to be cached by the application, or it will burn through the CPU.
-\item Speed. On spinning disk machines, data that is toward the end of a metallic platter will spin faster (angular velocity is farther from the center). Programs used this to reduce time loading large files like movies in a video editing piece of software. SSDs don't have this problem because there is no spinning disk, but they will portion off a section of their space to be used as "swap space" for files.
+\item Speed. On spinning disk machines, data that is toward the end of a metallic platter will spin faster (angular velocity is farther from the center). Programs used this to reduce time loading large files like movies in a video editing piece of software. SSDs don't have this problem because there is no spinning disk, but they will portion off a section of their space to be used as ``swap space'' for files.
 \item Parallelism. Filesystems with multiple heads (for physical hard disks) or multiple controllers (for SSDs) can utilize parallelism by multiplexing the PCIe slot with data, always serving some data to the application whenever possible.
 \item Encryption. Data can be encrypted with one or more keys. A good example of this is Apple's APFS file systems.
 \item Redundancy. Sometimes data can be replicated to blocks to ensure that the data is always available.
@@ -985,7 +985,7 @@ Posix threads are the finest grained thread construct, allowing for tight contro
 Other languages have their abstractions.
 We'll talk about a language that is similar to C in terms of simplicity and design: Go (or golang).
 To get the 5 minute introduction, feel free to read \href{https://learnxinyminutes.com/docs/go/}{the learn x in y guide} for go.
-Here is how we create a "thread" in go.
+Here is how we create a ``thread'' in go.
 
 \begin{lstlisting}[language=Go]
 func hello(out) {
@@ -1001,7 +1001,7 @@ func main() {
 This actually creates what is known as a goroutine.
 A goroutine can be thought of as a lightweight thread.
 Internally, it is a worker pool of threads that executes instructions of all the running goroutines.
-When a goroutine needs to be stopped, it is frozen and "context switched" to another thread.
+When a goroutine needs to be stopped, it is frozen and ``context switched'' to another thread.
 Context switch is in quotes because this is done at the run time level versus real context switching which is done at the operating system level.
 
 The advantage to gofuncs is pretty self explanatory.
@@ -1425,13 +1425,13 @@ Datagrams are formatted as such
   \item The next thirteen bits, completing those two octets, are the fragment offset.
     If this packet was fragmented, this says where this fragment's data belongs in the original datagram, counted in units of 8 octets.
   \item The next octet is time to live.
-    So this is the number of "hops" (travels over a wire) a packet is allowed to go.
+    So this is the number of ``hops'' (travels over a wire) a packet is allowed to go.
     This is set because different routing protocols could cause packets to go in circles, the packets must be dropped at some point.
   \item The next octet is the protocol number.
     Although protocols between different layers of the OSI model are supposed to be black boxes, this is included, so that hardware can peer into the underlying protocol efficiently.
     Take for example IP over IP (yes you can do that!).
     Your ISP wraps IPv4 packets sent from your computer to the ISP in another IP layer and sends the packet off to be delivered to the website.
-    On the reverse trip, the packet is "unwrapped" and the original IP datagram is sent to your computer.
+    On the reverse trip, the packet is ``unwrapped'' and the original IP datagram is sent to your computer.
     This was done because we ran out of IP addresses, and this adds additional overhead but it is a necessary fix.
     Other common protocols are TCP, UDP, etc.
   \item The next two octets are an internet checksum.
@@ -1449,7 +1449,7 @@ Datagrams are formatted as such
 
 The Internet Protocol routing is an amazing intersection of theory and application.
 We can imagine the entire Internet as a set of graphs.
-Most peers are connected to what we call "peering points" -- these are the WiFi routers and Ethernet ports that one finds at home, at work, and in public.
+Most peers are connected to what we call ``peering points'' -- these are the WiFi routers and Ethernet ports that one finds at home, at work, and in public.
 These peering points are then connected to a wired network of routers, switches, and servers that all route themselves.
 At a high level there are two types of routing
 
@@ -1465,7 +1465,7 @@ At a high level there are two types of routing
   If an evil ISP is trying to dump all network traffic onto your ISP, these routers would deal with that.
   These protocols also deal with gathering information about the outside world to each router.
   The external routing protocol of today's Internet is BGP, the Border Gateway Protocol.
-  Instead of computing shortest paths, BGP routers advertise which networks they can reach, and this is how information about the "foreign" networks is disseminated to each ISP.
+  Instead of computing shortest paths, BGP routers advertise which networks they can reach, and this is how information about the ``foreign'' networks is disseminated to each ISP.
   Each ISP then picks among the advertised routes according to its own policies.
 \end{enumerate}
 
@@ -1484,7 +1484,7 @@ The reasons are
 
 \begin{enumerate}
   \item One host shouldn't crowd the medium for too long
-  \item If an error occurs, we want some sort of "progress bar" on how far the communication has gone instead of retransmitting the entire stream.
+  \item If an error occurs, we want some sort of ``progress bar'' on how far the communication has gone instead of retransmitting the entire stream.
   \item There are physical limitations, keeping a laser beam in optics working continuously may cause bit errors.
 \end{enumerate}
 

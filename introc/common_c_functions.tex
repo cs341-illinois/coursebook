@@ -347,7 +347,7 @@ tricky
 
 	    \item \keyword{void *memcpy(void *dest, const void *src, size\_t n)} moves \keyword{n} bytes starting at \keyword{src} to \keyword{dest}.
         \textbf{Be careful}, there is undefined behavior when the memory regions overlap.
-        This is one of the classic "This works on my machine!" examples because many times Valgrind won't be able to pick it up because it will look like it works on your machine.
+        This is one of the classic ``This works on my machine!'' examples because many times Valgrind won't be able to pick it up because it will look like it works on your machine.
         Consider the safer version \keyword{memmove}.
 
 	    \item \keyword{void *memmove(void *dest, const void *src, size\_t n)} does the same thing as above, but if the memory regions overlap then it is guaranteed that all the bytes will get copied over correctly.

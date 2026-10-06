@@ -64,7 +64,7 @@ The following is a short introduction to internet protocol (IP), the primary way
 IPv4 carried most Internet traffic for decades and is still widely used today, although IPv6 is catching up (see below).
 A significant limitation of IPv4 is that source and destination addresses are limited to 32 bits.
 IPv4 was designed at a time when the idea of 4 billion devices connected to the same network was unthinkable or at least not worth making the packet size larger.
-IPv4 addresses are written typically in a sequence of four octets delimited by periods "255.255.255.0" for example.
+IPv4 addresses are written typically in a sequence of four octets delimited by periods ``255.255.255.0'' for example.
 
 Each IPv4 datagram includes a small header - typically 20 octets, that includes a source and destination address.
 Conceptually, each source and destination address can be split into two parts: the upper bits are a network number, and the lower bits represent a particular host number on that network.
@@ -72,9 +72,9 @@ Conceptually, each source and destination address can be split into two parts: t
 A newer packet protocol IPv6 solves many of the limitations of IPv4 like making routing tables simpler and 128-bit addresses.
 Adoption was slow at first: in 2018, only a small fraction of web traffic used IPv6 \cite{internet_society_2018}.
 By the mid-2020s, Google measured roughly half of its user traffic arriving over IPv6 \cite{google_ipv6_stats}.
-We write IPv6 addresses as eight groups of four hexadecimal digits separated by colons, like "1F45:0000:0000:0000:0000:0000:0000:0000".
-Since that can get unruly, we can replace one run of consecutive all-zero groups with "::", so the address above becomes "1F45::".
-The "::" may appear only once in an address; otherwise, you couldn't tell how many zero groups each one stands for.
+We write IPv6 addresses as eight groups of four hexadecimal digits separated by colons, like ``1F45:0000:0000:0000:0000:0000:0000:0000''.
+Since that can get unruly, we can replace one run of consecutive all-zero groups with ``::'', so the address above becomes ``1F45::''.
+The ``::'' may appear only once in an address; otherwise, you couldn't tell how many zero groups each one stands for.
 A machine can have an IPv6 address and an IPv4 address.
 
 There are special IP Addresses.
@@ -504,13 +504,13 @@ freeaddrinfo(result);
 The next piece of code sends the request. Here is what each header means.
 
 \begin{enumerate}
-  \item "GET \%s HTTP/1.1" This is the request method interpolated with the path. This means to perform the GET method on the path using the HTTP/1.1 protocol version.
-  \item "Host: \%s" The name of the server we want to talk to.
+  \item ``GET \%s HTTP/1.1'' This is the request method interpolated with the path. This means to perform the GET method on the path using the HTTP/1.1 protocol version.
+  \item ``Host: \%s'' The name of the server we want to talk to.
     HTTP/1.1 requires this header because one IP address often hosts many different websites, and the server needs to know which one we meant.
-  \item "Connection: close" Means that as soon as the response is over, please close the connection.
+  \item ``Connection: close'' Means that as soon as the response is over, please close the connection.
     HTTP/1.1 keeps connections open by default so that more requests can reuse them.
     Asking the server to close keeps our client simple: the end of the response is just the end of the file, so we don't have to parse \keyword{Content-Length}.
-  \item "Accept: */*" This means that the client is willing to accept anything.
+  \item ``Accept: */*'' This means that the client is willing to accept anything.
 \end{enumerate}
 
 A more robust piece of code would also check if the write fails or if the call was interrupted.
