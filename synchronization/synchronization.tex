@@ -115,7 +115,12 @@ For all mutexes, there are two ways of initializing a mutex:
 \item\keyword{PTHREAD\_MUTEX\_INITIALIZER}
 \item\keyword{pthread\_mutex\_init(pthread\_mutex\_t *mutex, pthread\_mutexattr\_t *attr)}
 \end{itemize}
-The macro \keyword{PTHREAD\_MUTEX\_INITIALIZER} is functionally equivalent to the more general purpose \keyword{pthread\_mutex\_init(\&m,NULL)}.
+The macro \keyword{PTHREAD\_MUTEX\_INITIALIZER} is functionally equivalent to the more general purpose initializer:
+
+\begin{lstlisting}[language=C]
+pthread_mutex_init(&m, NULL);
+\end{lstlisting}
+
 In other words, \keyword{PTHREAD\_MUTEX\_INITIALIZER} will create a mutex with default properties.
 The \keyword{attr} in the init version includes options to trade performance for additional error-checking, advanced sharing, and more.
 While we recommend using the init function inside of a program for a mutex located on the heap, you can use either method.
